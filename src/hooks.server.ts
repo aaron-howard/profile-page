@@ -6,7 +6,7 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 	event.locals.user = null;
 	event.locals.session = null;
 	return resolve(event);
-	
+
 	// Original auth code (commented out to avoid database dependency)
 	/*
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
