@@ -7,7 +7,7 @@ A modern, responsive personal portfolio website built with **SvelteKit**, **Type
 - **Modern Tech Stack**: SvelteKit 2.16.0, TypeScript, Tailwind CSS v4
 - **Responsive Design**: Mobile-first approach with beautiful UI/UX
 - **Multiple Sections**: Home, Bio, Projects, Blog, and Contact pages
-- **Database Ready**: PostgreSQL with Drizzle ORM for data persistence
+- **Database Ready**: PostgreSQL with Prisma ORM for data persistence
 - **Authentication System**: Built-in auth system (currently disabled for portfolio use)
 - **SEO Optimized**: Proper meta tags and semantic HTML
 - **Accessibility**: ARIA labels and keyboard navigation support
@@ -17,24 +17,27 @@ A modern, responsive personal portfolio website built with **SvelteKit**, **Type
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm, yarn, or pnpm
 - PostgreSQL (optional, for database features)
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <your-repo-url>
    cd profile-page
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -52,7 +55,7 @@ A modern, responsive personal portfolio website built with **SvelteKit**, **Type
 - `npm run format` - Format code with Prettier
 - `npm run db:push` - Push database schema changes
 - `npm run db:migrate` - Run database migrations
-- `npm run db:studio` - Open Drizzle Studio
+- `npm run db:studio` - Open Prisma Studio
 
 ## 📁 Project Structure
 
@@ -86,16 +89,17 @@ profile-page/
 Update the following files with your information:
 
 1. **Home Page** (`src/routes/+page.svelte`)
+
    ```typescript
    const profileData = {
-     name: "Your Name",
-     title: "Your Title",
-     tagline: "Your tagline",
-     socialLinks: {
-       github: "https://github.com/yourusername",
-       linkedin: "https://linkedin.com/in/yourusername",
-       // ... other social links
-     }
+   	name: 'Your Name',
+   	title: 'Your Title',
+   	tagline: 'Your tagline',
+   	socialLinks: {
+   		github: 'https://github.com/yourusername',
+   		linkedin: 'https://linkedin.com/in/yourusername'
+   		// ... other social links
+   	}
    };
    ```
 

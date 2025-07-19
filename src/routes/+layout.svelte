@@ -10,7 +10,7 @@
 		<nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 			<div class="flex h-16 items-center justify-between">
 				<div class="flex items-center">
-					<h1 class="text-xl font-bold text-slate-900">Your Name</h1>
+					<h1 class="text-xl font-bold text-slate-900">Aaron Howard</h1>
 				</div>
 				<div class="hidden md:block">
 					<div class="ml-10 flex items-baseline space-x-4">
@@ -71,7 +71,7 @@
 	<footer class="mt-16 border-t border-slate-200 bg-white">
 		<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 			<div class="text-center text-slate-600">
-				<p>&copy; 2024 Your Name. All rights reserved.</p>
+				<p>&copy; 2025 Aaron Howard. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>

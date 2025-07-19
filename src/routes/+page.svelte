@@ -1,15 +1,15 @@
 <script lang="ts">
 	// You can customize these values
 	const profileData = {
-		name: 'Your Name',
+		name: 'Aaron Howard',
 		title: 'Full Stack Developer',
 		tagline: 'Building modern web applications with passion and precision',
 		avatar: '/avatar.jpg', // Add your avatar image to static folder
 		socialLinks: {
-			github: 'https://github.com/yourusername',
-			linkedin: 'https://linkedin.com/in/yourusername',
+			github: 'https://github.com/aaron-howard',
+			linkedin: 'https://www.linkedin.com/in/aaronjhoward/',
 			twitter: 'https://twitter.com/yourusername',
-			email: 'your.email@example.com'
+			email: 'mr.aaronjhoward@outlook.com'
 		}
 	};
 </script>

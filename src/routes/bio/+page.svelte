@@ -1,9 +1,9 @@
 <script lang="ts">
 	// Customize this data with your information
 	const bioData = {
-		name: 'Your Name',
+		name: 'Aaron Howard',
 		title: 'Full Stack Developer',
-		location: 'Your City, Country',
+		location: 'Irving, USA',
 		about:
 			"I'm a passionate full-stack developer with a love for creating elegant, user-friendly applications. With several years of experience in web development, I specialize in modern JavaScript frameworks, cloud technologies, and building scalable solutions that solve real-world problems.",
 
