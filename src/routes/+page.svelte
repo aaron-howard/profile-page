@@ -8,7 +8,7 @@
 		socialLinks: {
 			github: 'https://github.com/aaron-howard',
 			linkedin: 'https://www.linkedin.com/in/aaronjhoward/',
-			twitter: 'https://twitter.com/yourusername',
+			bluesky: 'https://bsky.app/profile/aaronjhoward.bsky.social',
 			email: 'mr.aaronjhoward@outlook.com'
 		}
 	};
@@ -57,9 +57,9 @@
 				</svg>
 			</a>
 			<a
-				href={profileData.socialLinks.twitter}
+				href={profileData.socialLinks.bluesky}
 				class="text-slate-600 transition-colors hover:text-slate-900"
-				aria-label="Twitter Profile"
+				aria-label="Bluesky Profile"
 			>
 				<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
 					<path
