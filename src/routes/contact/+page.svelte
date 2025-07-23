@@ -1,17 +1,17 @@
 <script lang="ts">
 	// Customize this data with your information
 	const contactData = {
-		name: 'Your Name',
-		email: 'your.email@example.com',
-		location: 'Your City, Country',
-		phone: '+1 (555) 123-4567',
+		name: 'Aaron Howard',
+		email: 'mr.aaronjhoward@outlook.com',
+		location: 'Irving, TX, USA',
+		phone: '+1 (459) 964-2476',
 		socialLinks: {
-			github: 'https://github.com/yourusername',
-			linkedin: 'https://linkedin.com/in/yourusername',
-			twitter: 'https://twitter.com/yourusername',
-			instagram: 'https://instagram.com/yourusername'
+			github: 'https://github.com/aaron-howard',
+			linkedin: 'https://linkedin.com/in/aaronjhoward/',
+			bluesky: 'https://bsky.app/profile/aaronjhoward.bsky.social',
+			
 		},
-		availability: "I'm currently available for freelance work and full-time opportunities.",
+		availability: "I'm currently available for freelance work opportunities.",
 		responseTime: 'I typically respond within 24 hours.'
 	};
 

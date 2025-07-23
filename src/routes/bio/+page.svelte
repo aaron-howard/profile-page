@@ -10,29 +10,29 @@
 		skills: {
 			frontend: ['React', 'Vue.js', 'Svelte', 'TypeScript', 'Tailwind CSS', 'Next.js'],
 			backend: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'Express.js', 'FastAPI'],
-			tools: ['Git', 'Docker', 'AWS', 'Vercel', 'Figma', 'Postman'],
+			tools: ['Git', 'Docker', 'Netlify', 'Vercel', 'Figma', 'Postman'],
 			languages: ['JavaScript', 'TypeScript', 'Python', 'SQL', 'HTML/CSS']
 		},
 
 		experience: [
 			{
 				title: 'Senior Full Stack Developer',
-				company: 'Tech Company',
+				company: 'City of Dallas',
 				period: '2022 - Present',
 				description:
-					'Leading development of web applications using React, Node.js, and cloud technologies.'
+					'Leading development of web applications using React, Node.js, and cloud technologies. Certified Advanced Scrum Master for our ServiceNow Platform.'
 			},
 			{
 				title: 'Frontend Developer',
-				company: 'Startup Inc',
+				company: 'City of Dallas',
 				period: '2020 - 2022',
 				description:
 					'Built responsive user interfaces and improved user experience across multiple products.'
 			},
 			{
 				title: 'Junior Developer',
-				company: 'Digital Agency',
-				period: '2018 - 2020',
+				company: 'City of Dallas',
+				period: '2015 - 2020',
 				description:
 					'Developed websites and web applications for various clients using modern technologies.'
 			}
@@ -40,9 +40,15 @@
 
 		education: [
 			{
-				degree: 'Bachelor of Computer Science',
-				school: 'University Name',
-				period: '2014 - 2018',
+				degree: 'Bachelor of Business Administration in Business Analytics',
+				school: 'East Texas A&M University',
+				period: '2015 - 2019',
+				description: 'Focused on software engineering and web development'
+			},
+			{
+				degree: 'Associate of Applied Science in Computer Science',
+				school: 'Front Range Community College',
+				period: '2013 - 2015',
 				description: 'Focused on software engineering and web development'
 			}
 		],
