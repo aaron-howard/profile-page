@@ -9,7 +9,8 @@
 			github: 'https://github.com/aaron-howard',
 			linkedin: 'https://linkedin.com/in/aaronjhoward/',
 			bluesky: 'https://bsky.app/profile/aaronjhoward.bsky.social',
-			
+			twitter: 'https://twitter.com/aaronjhoward',
+			instagram: 'https://instagram.com/aaronjhoward'
 		},
 		availability: "I'm currently available for freelance work opportunities.",
 		responseTime: 'I typically respond within 24 hours.'
