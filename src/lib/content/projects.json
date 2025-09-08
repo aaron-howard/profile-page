@@ -50,8 +50,8 @@
     "image": "/projects/portfolio.jpg",
     "technologies": ["SvelteKit", "Tailwind CSS", "TypeScript", "Vite"],
     "category": "frontend",
-    "github": "https://github.com/yourusername/portfolio",
-    "live": "https://your-portfolio.com",
+    "github": "https://github.com/aaron-howard/profile-page",
+    "live": "https://portfilio-aaron-howard.vercel.app/",
     "featured": true
   },
   {
