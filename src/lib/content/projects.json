@@ -17,8 +17,8 @@
     "image": "/projects/taskapp.jpg",
     "technologies": ["Vue.js", "Firebase", "Vuex", "Vuetify"],
     "category": "frontend",
-    "github": "https://github.com/yourusername/task-app",
-    "live": "https://task-app-demo.com",
+    "github": "https://github.com/aaron-howard/task-management-app",
+    "live": "https://task-management-app-32eee.web.app/",
     "featured": true
   },
   {
