@@ -28,8 +28,8 @@
     "image": "/projects/weather.jpg",
     "technologies": ["JavaScript", "Chart.js", "Weather API", "CSS3"],
     "category": "frontend",
-    "github": "https://github.com/yourusername/weather-dashboard",
-    "live": "https://weather-demo.com",
+    "github": "https://github.com/aaron-howard/weather-dashboard",
+    "live": "https://aaron-howard.github.io/weather-dashboard/demo.html",
     "featured": false
   },
   {
