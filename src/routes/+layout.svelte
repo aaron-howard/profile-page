@@ -1,7 +1,9 @@
 <script lang="ts">
 	import '../app.css';
 
-	// Using standard Svelte slot instead of Svelte 5 {@render children()} pattern for compatibility
+	// This layout uses the standard Svelte <slot /> for content projection.
+	// The previous Svelte 5 {@render children()} pattern and the `children` prop are no longer used,
+	// to ensure compatibility with SvelteKit and to follow current best practices.
 	let theme: 'light' | 'dark' = 'light';
 	if (typeof window !== 'undefined') {
 		theme = (localStorage.getItem('theme') as 'light' | 'dark') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
