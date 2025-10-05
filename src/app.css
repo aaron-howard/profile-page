@@ -1,3 +1,188 @@
 @import 'tailwindcss';
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
+
+/* =============================================
+	 Custom Color System (60-30-10)
+	 ============================================= */
+:root {
+	/* Primary (60%) */
+	--color-primary-50: #f8fafc;
+	--color-primary-100: #f1f5f9;
+	--color-primary-200: #e2e8f0;
+	--color-primary-300: #cbd5e1;
+	--color-primary-400: #94a3b8;
+	--color-primary-500: #64748b;
+	--color-primary-600: #475569;
+	--color-primary-700: #334155;
+	--color-primary-800: #1e293b;
+	--color-primary-900: #0f172a;
+
+	/* Secondary (30%) */
+	--color-secondary-50: #fafafa;
+	--color-secondary-100: #f4f4f5;
+	--color-secondary-200: #e4e4e7;
+	--color-secondary-300: #d4d4d8;
+	--color-secondary-400: #a1a1aa;
+	--color-secondary-500: #71717a;
+	--color-secondary-600: #52525b;
+	--color-secondary-700: #3f3f46;
+	--color-secondary-800: #27272a;
+	--color-secondary-900: #18181b;
+
+	/* Accent (10%) */
+	--color-accent-50: #eff6ff;
+	--color-accent-100: #dbeafe;
+	--color-accent-200: #bfdbfe;
+	--color-accent-300: #93c5fd;
+	--color-accent-400: #60a5fa;
+	--color-accent-500: #3b82f6;
+	--color-accent-600: #2563eb;
+	--color-accent-700: #1d4ed8;
+	--color-accent-800: #1e40af;
+	--color-accent-900: #1e3a8a;
+
+	/* Semantic Status */
+	--color-success: #10b981;
+	--color-success-light: #d1fae5;
+	--color-success-dark: #065f46;
+	--color-warning: #f59e0b;
+	--color-warning-light: #fef3c7;
+	--color-warning-dark: #92400e;
+	--color-error: #ef4444;
+	--color-error-light: #fecaca;
+	--color-error-dark: #991b1b;
+	--color-info: #3b82f6;
+	--color-info-light: #dbeafe;
+	--color-info-dark: #1e40af;
+
+	/* Semantic Layer Mapping */
+	--color-bg-page: var(--color-primary-100);
+	--color-bg-surface: #ffffff;
+	--color-bg-surface-alt: var(--color-primary-50);
+	--color-border: var(--color-primary-200);
+	--color-border-strong: var(--color-primary-300);
+	--color-text-heading: var(--color-secondary-900);
+	--color-text-body: var(--color-primary-700);
+	--color-text-muted: var(--color-primary-500);
+	--color-text-inverse: #ffffff;
+	--color-link: var(--color-accent-600);
+	--color-link-hover: var(--color-accent-700);
+	--color-focus-ring: var(--color-accent-500);
+}
+
+/* Dark mode scaffold (optional future) */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-bg-page: var(--color-primary-900);
+		--color-bg-surface: var(--color-primary-800);
+		--color-bg-surface-alt: var(--color-primary-700);
+		--color-border: var(--color-primary-700);
+		--color-border-strong: var(--color-primary-600);
+		--color-text-heading: var(--color-primary-50);
+		--color-text-body: var(--color-primary-200);
+		--color-text-muted: var(--color-primary-400);
+		--color-link: var(--color-accent-400);
+		--color-link-hover: var(--color-accent-300);
+	}
+}
+
+/* Manual dark theme override (takes precedence when attribute present) */
+[data-theme='dark'] {
+	--color-bg-page: var(--color-primary-900);
+	--color-bg-surface: var(--color-primary-800);
+	--color-bg-surface-alt: var(--color-primary-700);
+	--color-border: var(--color-primary-700);
+	--color-border-strong: var(--color-primary-600);
+	--color-text-heading: var(--color-primary-50);
+	--color-text-body: var(--color-primary-200);
+	--color-text-muted: var(--color-primary-400);
+	--color-link: var(--color-accent-400);
+	--color-link-hover: var(--color-accent-300);
+	--color-focus-ring: var(--color-accent-500);
+}
+
+/* Explicit light theme mirror (ensures deterministic override when toggling) */
+[data-theme='light'] {
+	--color-bg-page: var(--color-primary-100);
+	--color-bg-surface: #ffffff;
+	--color-bg-surface-alt: var(--color-primary-50);
+	--color-border: var(--color-primary-200);
+	--color-border-strong: var(--color-primary-300);
+	--color-text-heading: var(--color-secondary-900);
+	--color-text-body: var(--color-primary-700);
+	--color-text-muted: var(--color-primary-500);
+	--color-link: var(--color-accent-600);
+	--color-link-hover: var(--color-accent-700);
+	--color-focus-ring: var(--color-accent-500);
+}
+
+/* Smooth theme transition (opt-in class to avoid flash on initial load) */
+.theme-transition * {
+	transition: background-color .35s ease, color .35s ease, border-color .35s ease, fill .35s ease, stroke .35s ease;
+}
+
+@layer base {
+	body {
+		background: var(--color-bg-page);
+		color: var(--color-text-body);
+	}
+	h1,h2,h3,h4,h5,h6 { color: var(--color-text-heading); }
+	a { color: var(--color-link); }
+	a:hover { color: var(--color-link-hover); }
+	:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+}
+
+@layer utilities {
+	/* Background helpers */
+	.bg-page { background-color: var(--color-bg-page); }
+	.bg-surface { background-color: var(--color-bg-surface); }
+	.bg-surface-alt { background-color: var(--color-bg-surface-alt); }
+	.bg-primary-500 { background-color: var(--color-primary-500); }
+		.bg-primary-200 { background-color: var(--color-primary-200); }
+		.bg-primary-300 { background-color: var(--color-primary-300); }
+	.bg-secondary-700 { background-color: var(--color-secondary-700); }
+		.bg-secondary-200 { background-color: var(--color-secondary-200); }
+		.bg-secondary-300 { background-color: var(--color-secondary-300); }
+	.bg-accent-500 { background-color: var(--color-accent-500); }
+		.bg-accent-100 { background-color: var(--color-accent-100); }
+		.bg-accent-200 { background-color: var(--color-accent-200); }
+	.bg-accent-gradient { background: linear-gradient(135deg,var(--color-accent-500),var(--color-accent-700)); }
+	.bg-primary-gradient { background: linear-gradient(135deg,var(--color-primary-50),var(--color-primary-200)); }
+
+	/* Text helpers */
+	.text-heading { color: var(--color-text-heading); }
+	.text-body { color: var(--color-text-body); }
+	.text-muted { color: var(--color-text-muted); }
+	.text-inverse { color: var(--color-text-inverse); }
+	.text-accent { color: var(--color-accent-600); }
+	.text-accent:hover { color: var(--color-accent-700); }
+
+	/* Border helpers */
+	.border-base { border-color: var(--color-border); }
+	.border-strong { border-color: var(--color-border-strong); }
+		.border-accent { border-color: var(--color-accent-500); }
+
+	/* Buttons */
+		.btn { display:inline-flex; align-items:center; justify-content:center; font-weight:500; border-radius:0.5rem; padding:0.5rem 1rem; transition:color .15s,background-color .15s,box-shadow .15s; }
+		.btn:focus-visible { outline:2px solid var(--color-focus-ring); outline-offset:2px; }
+	.btn-primary { background: var(--color-accent-600); color: var(--color-text-inverse); }
+	.btn-primary:hover { background: var(--color-accent-700); }
+	.btn-secondary { background: var(--color-secondary-700); color: var(--color-text-inverse); }
+	.btn-secondary:hover { background: var(--color-secondary-600); }
+	.btn-ghost { background: transparent; color: var(--color-text-body); }
+	.btn-ghost:hover { background: var(--color-primary-200); }
+
+	/* Badges */
+		.badge { display:inline-flex; align-items:center; border-radius:9999px; padding:0.25rem 0.75rem; font-size:0.75rem; line-height:1rem; font-weight:500; background: var(--color-primary-200); color: var(--color-primary-700); }
+	.badge-accent { background: var(--color-accent-100); color: var(--color-accent-700); }
+
+	/* Cards */
+	.card { background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: 0.75rem; }
+	.card-elevated { box-shadow: 0 2px 4px rgba(0,0,0,0.04),0 6px 12px rgba(0,0,0,0.06); }
+
+	/* Utility for focus ring background offset */
+	.focus-ring-offset { outline: 2px solid var(--color-focus-ring); outline-offset: 4px; }
+}
+
+/* Optional: transitional theming classes for gradually migrating existing markup */
+.legacy-accent-text { color: var(--color-accent-600); }
+.legacy-accent-bg { background: var(--color-accent-500); }

@@ -1,4 +1,5 @@
-import { mdsvex } from 'mdsvex';
+/** Graceful mdsvex optional integration (synchronous fallback) */
+import { mdsvex } from 'mdsvex'; // Ensure devDependency installed; remove if not using .svx
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 

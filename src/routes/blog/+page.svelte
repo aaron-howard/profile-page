@@ -34,8 +34,8 @@
 <div class="mx-auto max-w-6xl">
 	<!-- Header -->
 	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold text-slate-900">Blog</h1>
-		<p class="mx-auto max-w-3xl text-xl text-slate-600">
+		<h1 class="mb-4 text-4xl font-bold text-heading">Blog</h1>
+		<p class="mx-auto max-w-3xl text-xl text-body">
 			Thoughts, tutorials, and insights about web development, technology, and the industry.
 		</p>
 	</div>
@@ -46,10 +46,7 @@
 			{#each categories as category}
 				<button
 					on:click={() => filterPosts(category.id)}
-					class="rounded-lg px-6 py-2 font-medium transition-colors {selectedCategory ===
-					category.id
-						? 'bg-blue-600 text-white'
-						: 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'}"
+					class="rounded-lg px-6 py-2 font-medium transition-colors border {selectedCategory === category.id ? 'bg-accent-500 text-inverse border-accent' : 'bg-surface text-body border-base hover:bg-surface-alt'}"
 				>
 					{category.name}
 				</button>
@@ -60,14 +57,14 @@
 	<!-- Featured Posts -->
 	{#if selectedCategory === 'all' || filteredPosts.some((p) => p.featured)}
 		<div class="mb-16">
-			<h2 class="mb-8 text-2xl font-semibold text-slate-900">Featured Posts</h2>
+			<h2 class="mb-8 text-2xl font-semibold text-heading">Featured Posts</h2>
 			<div class="grid gap-8 lg:grid-cols-2">
 				{#each filteredPosts.filter((p) => p.featured) as post}
 					<article
-						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
+						class="overflow-hidden rounded-lg card card-elevated transition-shadow hover:shadow-xl"
 					>
 						<div
-							class="flex h-48 items-center justify-center bg-gradient-to-br from-purple-500 to-pink-600"
+							class="flex h-48 items-center justify-center bg-accent-gradient"
 						>
 							<div class="text-4xl font-bold text-white">
 								{post.title
@@ -78,17 +75,17 @@
 						</div>
 						<div class="p-6">
 							<div class="mb-4 flex items-center gap-4">
-								<span class="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
+								<span class="rounded-full badge-accent text-xs"
 									>{post.category}</span
 								>
-								<span class="text-sm text-slate-500">{post.readTime}</span>
+								<span class="text-sm text-muted">{post.readTime}</span>
 							</div>
-							<h3 class="mb-3 text-xl font-semibold text-slate-900">{post.title}</h3>
-							<p class="mb-4 text-slate-600">{post.excerpt}</p>
+							<h3 class="mb-3 text-xl font-semibold text-heading">{post.title}</h3>
+							<p class="mb-4 text-body">{post.excerpt}</p>
 
 							<div class="mb-6 flex flex-wrap gap-2">
 								{#each post.tags as tag}
-									<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
+									<span class="rounded bg-surface-alt px-2 py-1 text-xs font-medium text-body"
 										>{tag}</span
 									>
 								{/each}
@@ -104,9 +101,9 @@
 											.map((n) => n[0])
 											.join('')}
 									</div>
-									<span class="text-sm text-slate-600">{post.author}</span>
+									<span class="text-sm text-body">{post.author}</span>
 								</div>
-								<span class="text-sm text-slate-500">{formatDate(post.date)}</span>
+								<span class="text-sm text-muted">{formatDate(post.date)}</span>
 							</div>
 						</div>
 					</article>
@@ -119,10 +116,10 @@
 	<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 		{#each filteredPosts.filter((p) => !p.featured || selectedCategory !== 'all') as post}
 			<article
-				class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
+				class="overflow-hidden rounded-lg card shadow-md transition-shadow hover:shadow-lg"
 			>
 				<div
-					class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600"
+					class="flex h-40 items-center justify-center bg-primary-gradient"
 				>
 					<div class="text-2xl font-bold text-white">
 						{post.title
@@ -133,22 +130,22 @@
 				</div>
 				<div class="p-6">
 					<div class="mb-3 flex items-center gap-3">
-						<span class="rounded bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800"
+						<span class="rounded badge-accent"
 							>{post.category}</span
 						>
-						<span class="text-xs text-slate-500">{post.readTime}</span>
+						<span class="text-xs text-muted">{post.readTime}</span>
 					</div>
-					<h3 class="mb-2 text-lg font-semibold text-slate-900">{post.title}</h3>
-					<p class="mb-4 line-clamp-3 text-sm text-slate-600">{post.excerpt}</p>
+					<h3 class="mb-2 text-lg font-semibold text-heading">{post.title}</h3>
+					<p class="mb-4 line-clamp-3 text-sm text-body">{post.excerpt}</p>
 
 					<div class="mb-4 flex flex-wrap gap-1">
 						{#each post.tags.slice(0, 2) as tag}
-							<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
+							<span class="rounded bg-surface-alt px-2 py-1 text-xs font-medium text-body"
 								>{tag}</span
 							>
 						{/each}
 						{#if post.tags.length > 2}
-							<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
+							<span class="rounded bg-surface-alt px-2 py-1 text-xs font-medium text-body"
 								>+{post.tags.length - 2}</span
 							>
 						{/if}
@@ -164,9 +161,9 @@
 									.map((n) => n[0])
 									.join('')}
 							</div>
-							<span class="text-xs text-slate-600">{post.author}</span>
+							<span class="text-xs text-body">{post.author}</span>
 						</div>
-						<span class="text-xs text-slate-500">{formatDate(post.date)}</span>
+						<span class="text-xs text-muted">{formatDate(post.date)}</span>
 					</div>
 				</div>
 			</article>
@@ -177,9 +174,9 @@
 	{#if filteredPosts.length === 0}
 		<div class="py-16 text-center">
 			<div
-				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-slate-100"
+				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-surface-alt"
 			>
-				<svg class="h-12 w-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg class="h-12 w-12 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -188,8 +185,8 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-xl font-semibold text-slate-900">No posts found</h3>
-			<p class="text-slate-600">Try selecting a different category to see more blog posts.</p>
+			<h3 class="mb-2 text-xl font-semibold text-heading">No posts found</h3>
+			<p class="text-body">Try selecting a different category to see more blog posts.</p>
 		</div>
 	{/if}
 </div>

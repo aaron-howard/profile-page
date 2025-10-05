@@ -24,8 +24,8 @@
 <div class="mx-auto max-w-6xl">
 	<!-- Header -->
 	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold text-slate-900">My Projects</h1>
-		<p class="mx-auto max-w-3xl text-xl text-slate-600">
+		<h1 class="mb-4 text-4xl font-bold text-heading">My Projects</h1>
+		<p class="mx-auto max-w-3xl text-xl text-body">
 			Here are some of the projects I've worked on. Each one represents a unique challenge and
 			learning experience.
 		</p>
@@ -37,10 +37,7 @@
 			{#each categories as category}
 				<button
 					on:click={() => filterProjects(category.id)}
-					class="rounded-lg px-6 py-2 font-medium transition-colors {selectedCategory ===
-					category.id
-						? 'bg-blue-600 text-white'
-						: 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'}"
+					class="rounded-lg px-6 py-2 font-medium transition-colors border {selectedCategory === category.id ? 'bg-accent-500 text-inverse border-accent' : 'bg-surface text-body border-base hover:bg-surface-alt'}"
 				>
 					{category.name}
 				</button>
@@ -51,14 +48,14 @@
 	<!-- Featured Projects -->
 	{#if selectedCategory === 'all' || filteredProjects.some((p) => p.featured)}
 		<div class="mb-16">
-			<h2 class="mb-8 text-2xl font-semibold text-slate-900">Featured Projects</h2>
+			<h2 class="mb-8 text-2xl font-semibold text-heading">Featured Projects</h2>
 			<div class="grid gap-8 lg:grid-cols-2">
 				{#each filteredProjects.filter((p) => p.featured) as project}
 					<div
-						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
+						class="overflow-hidden rounded-lg card card-elevated transition-shadow hover:shadow-xl"
 					>
 						<div
-							class="flex h-48 items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600"
+							class="flex h-48 items-center justify-center bg-accent-gradient"
 						>
 							<!-- Project image placeholder -->
 							<div class="text-4xl font-bold text-white">
@@ -69,28 +66,25 @@
 							</div>
 						</div>
 						<div class="p-6">
-							<h3 class="mb-3 text-xl font-semibold text-slate-900">{project.title}</h3>
-							<p class="mb-4 text-slate-600">{project.description}</p>
+							<h3 class="mb-3 text-xl font-semibold text-heading">{project.title}</h3>
+							<p class="mb-4 text-body">{project.description}</p>
 
 							<div class="mb-6 flex flex-wrap gap-2">
 								{#each project.technologies as tech}
-									<span
-										class="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700"
-										>{tech}</span
-									>
+									<span class="rounded-full badge">{tech}</span>
 								{/each}
 							</div>
 
 							<div class="flex gap-4">
 								<a
 									href={project.github}
-									class="flex-1 rounded-lg bg-slate-900 px-4 py-2 text-center text-white transition-colors hover:bg-slate-800"
+									class="flex-1 btn btn-secondary"
 								>
 									View Code
 								</a>
 								<a
 									href={project.live}
-									class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-center text-white transition-colors hover:bg-blue-700"
+									class="flex-1 btn btn-primary"
 								>
 									Live Demo
 								</a>
@@ -103,11 +97,11 @@
 	{/if}
 
 	<!-- All Projects Grid -->
-	<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 		{#each filteredProjects.filter((p) => !p.featured || selectedCategory !== 'all') as project}
-			<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
+			<div class="overflow-hidden rounded-lg card shadow-md transition-shadow hover:shadow-lg">
 				<div
-					class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600"
+					class="flex h-40 items-center justify-center bg-primary-gradient"
 				>
 					<!-- Project image placeholder -->
 					<div class="text-2xl font-bold text-white">
@@ -118,17 +112,17 @@
 					</div>
 				</div>
 				<div class="p-6">
-					<h3 class="mb-2 text-lg font-semibold text-slate-900">{project.title}</h3>
-					<p class="mb-4 line-clamp-3 text-sm text-slate-600">{project.description}</p>
+					<h3 class="mb-2 text-lg font-semibold text-heading">{project.title}</h3>
+					<p class="mb-4 line-clamp-3 text-sm text-body">{project.description}</p>
 
 					<div class="mb-4 flex flex-wrap gap-1">
 						{#each project.technologies.slice(0, 3) as tech}
-							<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
+							<span class="rounded bg-surface-alt px-2 py-1 text-xs font-medium text-body"
 								>{tech}</span
 							>
 						{/each}
 						{#if project.technologies.length > 3}
-							<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
+							<span class="rounded bg-surface-alt px-2 py-1 text-xs font-medium text-body"
 								>+{project.technologies.length - 3}</span
 							>
 						{/if}
@@ -137,13 +131,13 @@
 					<div class="flex gap-2">
 						<a
 							href={project.github}
-							class="flex-1 rounded bg-slate-900 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-slate-800"
+							class="flex-1 btn btn-secondary text-sm"
 						>
 							Code
 						</a>
 						<a
 							href={project.live}
-							class="flex-1 rounded bg-blue-600 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-blue-700"
+							class="flex-1 btn btn-primary text-sm"
 						>
 							Demo
 						</a>
@@ -157,9 +151,9 @@
 	{#if filteredProjects.length === 0}
 		<div class="py-16 text-center">
 			<div
-				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-slate-100"
+				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-surface-alt"
 			>
-				<svg class="h-12 w-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<svg class="h-12 w-12 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -168,8 +162,8 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-xl font-semibold text-slate-900">No projects found</h3>
-			<p class="text-slate-600">Try selecting a different category to see more projects.</p>
+			<h3 class="mb-2 text-xl font-semibold text-heading">No projects found</h3>
+			<p class="text-body">Try selecting a different category to see more projects.</p>
 		</div>
 	{/if}
 </div>

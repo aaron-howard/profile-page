@@ -1,42 +1,60 @@
 <script lang="ts">
 	import '../app.css';
 
-	let { children } = $props();
+	// Using standard Svelte slot instead of Svelte 5 {@render children()} pattern for compatibility
+	let theme: 'light' | 'dark' = 'light';
+	if (typeof window !== 'undefined') {
+		theme = (localStorage.getItem('theme') as 'light' | 'dark') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+		updateRoot();
+	}
+	function toggleTheme() {
+		theme = theme === 'light' ? 'dark' : 'light';
+		localStorage.setItem('theme', theme);
+		updateRoot();
+	}
+	function updateRoot() {
+		if (typeof document !== 'undefined') {
+			document.documentElement.dataset.theme = theme;
+		}
+	}
 </script>
 
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+<div class="min-h-screen bg-page">
 	<!-- Navigation Header -->
-	<header class="border-b border-slate-200 bg-white shadow-sm">
-		<nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+	<header class="border-b border-base bg-surface shadow-sm">
+		<nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Primary Navigation">
 			<div class="flex h-16 items-center justify-between">
-				<div class="flex items-center">
-					<h1 class="text-xl font-bold text-slate-900">Aaron Howard</h1>
+				<div class="flex items-center gap-6">
+					<h1 class="text-xl font-bold text-heading">Aaron Howard</h1>
+					<button type="button" class="btn btn-ghost text-sm" on:click={toggleTheme} aria-label="Toggle theme">
+						{theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+					</button>
 				</div>
 				<div class="hidden md:block">
-					<div class="ml-10 flex items-baseline space-x-4">
+					<div class="ml-10 flex items-baseline space-x-4 text-sm">
 						<a
 							href="/"
-							class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900"
+							class="rounded-md px-3 py-2 font-medium text-body hover:text-heading hover:bg-primary-200/50"
 							>Home</a
 						>
 						<a
 							href="/bio"
-							class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900"
+							class="rounded-md px-3 py-2 font-medium text-body hover:text-heading hover:bg-primary-200/50"
 							>Bio</a
 						>
 						<a
 							href="/projects"
-							class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900"
+							class="rounded-md px-3 py-2 font-medium text-body hover:text-heading hover:bg-primary-200/50"
 							>Projects</a
 						>
 						<a
 							href="/blog"
-							class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900"
+							class="rounded-md px-3 py-2 font-medium text-body hover:text-heading hover:bg-primary-200/50"
 							>Blog</a
 						>
 						<a
 							href="/contact"
-							class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900"
+							class="rounded-md px-3 py-2 font-medium text-body hover:text-heading hover:bg-primary-200/50"
 							>Contact</a
 						>
 					</div>
@@ -63,14 +81,14 @@
 	</header>
 
 	<!-- Main Content -->
-	<main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-		{@render children()}
+	<main id="main" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+		<slot />
 	</main>
 
 	<!-- Footer -->
-	<footer class="mt-16 border-t border-slate-200 bg-white">
+	<footer class="mt-16 border-t border-base bg-surface">
 		<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-			<div class="text-center text-slate-600">
+			<div class="text-center text-muted">
 				<p>&copy; 2025 Aaron Howard. All rights reserved.</p>
 			</div>
 		</div>

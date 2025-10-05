@@ -20,23 +20,23 @@
 		<div class="mb-8">
 			<!-- Avatar placeholder - replace with your actual image -->
 			<div
-				class="mx-auto mb-6 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-4xl font-bold text-white"
+				class="mx-auto mb-6 flex h-32 w-32 items-center justify-center rounded-full bg-accent-gradient text-4xl font-bold text-inverse shadow-md"
 			>
 				{profileData.name
 					.split(' ')
 					.map((n) => n[0])
 					.join('')}
 			</div>
-			<h1 class="mb-4 text-5xl font-bold text-slate-900">{profileData.name}</h1>
-			<h2 class="mb-4 text-2xl font-semibold text-blue-600">{profileData.title}</h2>
-			<p class="mx-auto max-w-2xl text-xl text-slate-600">{profileData.tagline}</p>
+			<h1 class="mb-4 text-5xl font-bold text-heading">{profileData.name}</h1>
+			<h2 class="mb-4 text-2xl font-semibold text-accent">{profileData.title}</h2>
+			<p class="mx-auto max-w-2xl text-xl text-body">{profileData.tagline}</p>
 		</div>
 
 		<!-- Social Links -->
 		<div class="mb-12 flex justify-center space-x-6">
 			<a
 				href={profileData.socialLinks.github}
-				class="text-slate-600 transition-colors hover:text-slate-900"
+				class="text-body transition-colors hover:text-heading"
 				aria-label="GitHub Profile"
 			>
 				<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
 			</a>
 			<a
 				href={profileData.socialLinks.linkedin}
-				class="text-slate-600 transition-colors hover:text-slate-900"
+				class="text-body transition-colors hover:text-heading"
 				aria-label="LinkedIn Profile"
 			>
 				<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -58,7 +58,7 @@
 			</a>
 			<a
 				href={profileData.socialLinks.bluesky}
-				class="text-slate-600 transition-colors hover:text-slate-900"
+				class="text-body transition-colors hover:text-heading"
 				aria-label="Bluesky Profile"
 			>
 				<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@
 			</a>
 			<a
 				href="mailto:{profileData.socialLinks.email}"
-				class="text-slate-600 transition-colors hover:text-slate-900"
+				class="text-body transition-colors hover:text-heading"
 				aria-label="Send Email"
 			>
 				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,9 +93,9 @@
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
 			<!-- Bio Section -->
 			<a href="/bio" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+				<div class="card p-6 transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 transition-colors group-hover:bg-blue-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-accent-100 transition-colors group-hover:bg-accent-200"
 					>
 						<svg
 							class="h-6 w-6 text-blue-600"
@@ -111,8 +111,8 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">About Me</h3>
-					<p class="text-slate-600">
+					<h3 class="mb-2 text-xl font-semibold text-heading">About Me</h3>
+					<p class="text-body">
 						Learn about my background, skills, and what drives me as a developer.
 					</p>
 				</div>
@@ -120,9 +120,9 @@
 
 			<!-- Projects Section -->
 			<a href="/projects" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+				<div class="card p-6 transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-100 transition-colors group-hover:bg-green-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary-200 transition-colors group-hover:bg-primary-300"
 					>
 						<svg
 							class="h-6 w-6 text-green-600"
@@ -138,8 +138,8 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">Projects</h3>
-					<p class="text-slate-600">
+					<h3 class="mb-2 text-xl font-semibold text-heading">Projects</h3>
+					<p class="text-body">
 						Explore my development projects and see what I've been working on.
 					</p>
 				</div>
@@ -147,9 +147,9 @@
 
 			<!-- Blog Section -->
 			<a href="/blog" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+				<div class="card p-6 transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 transition-colors group-hover:bg-purple-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-secondary-200 transition-colors group-hover:bg-secondary-300"
 					>
 						<svg
 							class="h-6 w-6 text-purple-600"
@@ -165,8 +165,8 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">Blog</h3>
-					<p class="text-slate-600">
+					<h3 class="mb-2 text-xl font-semibold text-heading">Blog</h3>
+					<p class="text-body">
 						Read my thoughts on technology, development, and industry insights.
 					</p>
 				</div>
@@ -174,9 +174,9 @@
 
 			<!-- Contact Section -->
 			<a href="/contact" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
+				<div class="card p-6 transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100 transition-colors group-hover:bg-orange-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-accent-100 transition-colors group-hover:bg-accent-200"
 					>
 						<svg
 							class="h-6 w-6 text-orange-600"
@@ -192,8 +192,8 @@
 							/>
 						</svg>
 					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">Contact</h3>
-					<p class="text-slate-600">
+					<h3 class="mb-2 text-xl font-semibold text-heading">Contact</h3>
+					<p class="text-body">
 						Get in touch with me for collaborations, opportunities, or just to say hello.
 					</p>
 				</div>
