@@ -1,7 +1,8 @@
 <script lang="ts">
-	import '../app.css';
-
-	let { children } = $props();
+    import '../app.css';
+    import type { LayoutData } from './$types';
+    let { children, data } = $props<{ children: any; data: LayoutData }>();
+    const isLoggedIn = !!data?.session;
 </script>
 
 <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
@@ -12,7 +13,7 @@
 				<div class="flex items-center">
 					<h1 class="text-xl font-bold text-slate-900">Aaron Howard</h1>
 				</div>
-				<div class="hidden md:block">
+                <div class="hidden md:block">
 					<div class="ml-10 flex items-baseline space-x-4">
 						<a
 							href="/"
@@ -34,11 +35,16 @@
 							class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900"
 							>Blog</a
 						>
-						<a
+                        <a
 							href="/contact"
 							class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900"
 							>Contact</a
 						>
+                        {#if isLoggedIn}
+                            <a href="/logout" class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">Logout</a>
+                        {:else}
+                            <a href="/login" class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">Login</a>
+                        {/if}
 					</div>
 				</div>
 				<!-- Mobile menu button -->
