@@ -1,5 +1,6 @@
 <script lang="ts">
-	import projects from '$lib/content/projects.json';
+    export let data: { projects: Array<any> };
+    const projects = data.projects;
 
 	const categories = [
 		{ id: 'all', name: 'All Projects' },
@@ -61,12 +62,12 @@
 							class="flex h-48 items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600"
 						>
 							<!-- Project image placeholder -->
-							<div class="text-4xl font-bold text-white">
-								{project.title
-									.split(' ')
-									.map((word) => word[0])
-									.join('')}
-							</div>
+                            <div class="text-4xl font-bold text-white">
+                                {project.title
+                                    .split(' ')
+                                    .map((word: string) => word[0])
+                                    .join('')}
+                            </div>
 						</div>
 						<div class="p-6">
 							<h3 class="mb-3 text-xl font-semibold text-slate-900">{project.title}</h3>
@@ -110,12 +111,12 @@
 					class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600"
 				>
 					<!-- Project image placeholder -->
-					<div class="text-2xl font-bold text-white">
-						{project.title
-							.split(' ')
-							.map((word) => word[0])
-							.join('')}
-					</div>
+                    <div class="text-2xl font-bold text-white">
+                        {project.title
+                            .split(' ')
+                            .map((word: string) => word[0])
+                            .join('')}
+                    </div>
 				</div>
 				<div class="p-6">
 					<h3 class="mb-2 text-lg font-semibold text-slate-900">{project.title}</h3>

@@ -13,8 +13,12 @@ export const actions: Actions = {
   default: async (event) => {
     const { request } = event;
     const formData = await request.formData();
-    const token = String(formData.get('token') ?? '');
-    const adminToken = env.ADMIN_TOKEN ?? '';
+    const tokenRaw = String(formData.get('token') ?? '');
+    const adminTokenRaw = env.ADMIN_TOKEN ?? '';
+
+    const normalize = (s: string) => s.trim().replace(/^"([\s\S]*)"$/, '$1').replace(/^'([\s\S]*)'$/, '$1');
+    const token = normalize(tokenRaw);
+    const adminToken = normalize(adminTokenRaw);
 
     if (!adminToken) {
       return fail(500, { error: 'Admin login not configured' });

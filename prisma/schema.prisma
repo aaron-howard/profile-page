@@ -27,3 +27,32 @@ model Session {
 
   @@map("session")
 }
+
+model BlogPost {
+  id        Int       @id @default(autoincrement())
+  title     String
+  excerpt   String?
+  content   String
+  author    String
+  date      DateTime
+  category  String
+  readTime  String?
+  featured  Boolean   @default(false)
+  tags      String[]
+
+  @@map("blog_post")
+}
+
+model Project {
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String
+  image        String?
+  technologies String[]
+  category     String
+  github       String?
+  live         String?
+  featured     Boolean   @default(false)
+
+  @@map("project")
+}

@@ -1,7 +1,8 @@
 <script lang="ts">
-	import blogPosts from '$lib/content/blog.json';
+    export let data: { posts: Array<any> };
+    const blogPosts = data.posts;
 
-	const categories = [
+    const categories = [
 		{ id: 'all', name: 'All Posts' },
 		{ id: 'Development', name: 'Development' },
 		{ id: 'Technology', name: 'Technology' },
@@ -69,12 +70,12 @@
 						<div
 							class="flex h-48 items-center justify-center bg-gradient-to-br from-purple-500 to-pink-600"
 						>
-							<div class="text-4xl font-bold text-white">
-								{post.title
-									.split(' ')
-									.map((word) => word[0])
-									.join('')}
-							</div>
+                            <div class="text-4xl font-bold text-white">
+                                {post.title
+                                    .split(' ')
+                                    .map((word: string) => word[0])
+                                    .join('')}
+                            </div>
 						</div>
 						<div class="p-6">
 							<div class="mb-4 flex items-center gap-4">
@@ -99,10 +100,10 @@
 									<div
 										class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white"
 									>
-										{post.author
-											.split(' ')
-											.map((n) => n[0])
-											.join('')}
+                                        {post.author
+                                            .split(' ')
+                                            .map((n: string) => n[0])
+                                            .join('')}
 									</div>
 									<span class="text-sm text-slate-600">{post.author}</span>
 								</div>
@@ -124,12 +125,12 @@
 				<div
 					class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600"
 				>
-					<div class="text-2xl font-bold text-white">
-						{post.title
-							.split(' ')
-							.map((word) => word[0])
-							.join('')}
-					</div>
+                    <div class="text-2xl font-bold text-white">
+                        {post.title
+                            .split(' ')
+                            .map((word: string) => word[0])
+                            .join('')}
+                    </div>
 				</div>
 				<div class="p-6">
 					<div class="mb-3 flex items-center gap-3">
@@ -159,10 +160,10 @@
 							<div
 								class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-xs font-bold text-white"
 							>
-								{post.author
-									.split(' ')
-									.map((n) => n[0])
-									.join('')}
+                                {post.author
+                                    .split(' ')
+                                    .map((n: string) => n[0])
+                                    .join('')}
 							</div>
 							<span class="text-xs text-slate-600">{post.author}</span>
 						</div>
