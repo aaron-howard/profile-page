@@ -25,6 +25,26 @@ export const actions: Actions = {
     });
     throw redirect(303, '/admin/projects');
   },
+  update: async ({ request }) => {
+    const data = await request.formData();
+    const id = Number(data.get('id'));
+    if (!id) return fail(400, { error: 'Invalid id' });
+    const title = String(data.get('title') ?? '').trim();
+    const description = String(data.get('description') ?? '').trim();
+    if (!title || !description) return fail(400, { error: 'Title and description are required' });
+    const image = String(data.get('image') ?? '').trim() || null;
+    const category = String(data.get('category') ?? 'frontend');
+    const github = String(data.get('github') ?? '').trim() || null;
+    const live = String(data.get('live') ?? '').trim() || null;
+    const featured = data.get('featured') === 'on';
+    const techRaw = String(data.get('technologies') ?? '').trim();
+    const technologies = techRaw ? techRaw.split(',').map((t) => t.trim()).filter(Boolean) : [];
+    await db.project.update({
+      where: { id },
+      data: { title, description, image, category, github, live, featured, technologies }
+    });
+    throw redirect(303, '/admin/projects');
+  },
   delete: async ({ request }) => {
     const data = await request.formData();
     const id = Number(data.get('id'));
