@@ -64,7 +64,7 @@
 						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
 					>
 						<div
-							class="flex h-48 items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600"
+							class="flex h-48 items-center justify-center bg-gradient-to-br from-indigo-500 to-cyan-600"
 						>
 							<!-- Project image placeholder -->
                             <div class="text-4xl font-bold text-white">
@@ -117,7 +117,7 @@
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{#each frontendProjects as project}
 						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
-							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
+							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-rose-500 to-orange-600">
 								<div class="text-2xl font-bold text-white">
 									{project.title.split(' ').map((word: string) => word[0]).join('')}
 								</div>
@@ -151,7 +151,7 @@
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{#each backendProjects as project}
 						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
-							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
+							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-rose-500 to-orange-600">
 								<div class="text-2xl font-bold text-white">
 									{project.title.split(' ').map((word: string) => word[0]).join('')}
 								</div>
@@ -185,7 +185,7 @@
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{#each fullstackProjects as project}
 						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
-							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
+							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-rose-500 to-orange-600">
 								<div class="text-2xl font-bold text-white">
 									{project.title.split(' ').map((word: string) => word[0]).join('')}
 								</div>

@@ -68,7 +68,7 @@
 						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
 					>
 						<div
-							class="flex h-48 items-center justify-center bg-gradient-to-br from-purple-500 to-pink-600"
+							class="flex h-48 items-center justify-center bg-gradient-to-br from-violet-500 to-fuchsia-600"
 						>
                             <div class="text-4xl font-bold text-white">
                                 {post.title
@@ -98,7 +98,7 @@
 							<div class="flex items-center justify-between">
 								<div class="flex items-center gap-2">
 									<div
-										class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-sm font-bold text-white"
+										class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-gray-600 text-sm font-bold text-white"
 									>
                                         {post.author
                                             .split(' ')
@@ -123,7 +123,7 @@
 				class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
 			>
 				<div
-					class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600"
+					class="flex h-40 items-center justify-center bg-gradient-to-br from-amber-500 to-red-600"
 				>
                     <div class="text-2xl font-bold text-white">
                         {post.title
@@ -158,7 +158,7 @@
 					<div class="flex items-center justify-between">
 						<div class="flex items-center gap-2">
 							<div
-								class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-xs font-bold text-white"
+								class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-gray-600 text-xs font-bold text-white"
 							>
                                 {post.author
                                     .split(' ')

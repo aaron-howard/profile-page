@@ -20,7 +20,7 @@
 		<div class="mb-8">
 			<!-- Avatar placeholder - replace with your actual image -->
 			<div
-				class="mx-auto mb-6 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-4xl font-bold text-white"
+				class="mx-auto mb-6 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-4xl font-bold text-white"
 			>
 				{profileData.name
 					.split(' ')

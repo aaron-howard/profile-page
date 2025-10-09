@@ -226,7 +226,7 @@
 			</div>
 
 			<!-- Availability -->
-			<div class="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 p-8 text-white">
+			<div class="rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600 p-8 text-white">
 				<h2 class="mb-4 text-2xl font-semibold">Current Availability</h2>
 				<p class="mb-4">{contactData.availability}</p>
 				<p class="text-blue-100">{contactData.responseTime}</p>
