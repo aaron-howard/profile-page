@@ -115,7 +115,7 @@
 			<div class="mb-10">
 				<h2 class="mb-4 text-2xl font-semibold text-slate-900">Frontend</h2>
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-					{#each frontendProjects.filter((p) => !p.featured) as project}
+					{#each frontendProjects as project}
 						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
 							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
 								<div class="text-2xl font-bold text-white">
@@ -149,7 +149,7 @@
 			<div class="mb-10">
 				<h2 class="mb-4 text-2xl font-semibold text-slate-900">Backend</h2>
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-					{#each backendProjects.filter((p) => !p.featured) as project}
+					{#each backendProjects as project}
 						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
 							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
 								<div class="text-2xl font-bold text-white">
@@ -183,7 +183,7 @@
 			<div class="mb-10">
 				<h2 class="mb-4 text-2xl font-semibold text-slate-900">Full Stack</h2>
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-					{#each fullstackProjects.filter((p) => !p.featured) as project}
+					{#each fullstackProjects as project}
 						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
 							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
 								<div class="text-2xl font-bold text-white">
@@ -216,7 +216,7 @@
 	{#if selectedCategory !== 'all'}
 		<!-- When a specific category is selected, show a single grid (non-featured) -->
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-			{#each filteredProjects.filter((p) => !p.featured) as project}
+			{#each filteredProjects as project}
 				<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
 					<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
 						<div class="text-2xl font-bold text-white">
