@@ -16,7 +16,11 @@
       </div>
       <div>
         <label for="pcategory" class="mb-1 block text-sm">Category</label>
-        <input id="pcategory" name="category" class="w-full rounded border p-2" />
+        <select id="pcategory" name="category" class="w-full rounded border p-2">
+          <option value="frontend">Frontend</option>
+          <option value="backend">Backend</option>
+          <option value="fullstack">Full Stack</option>
+        </select>
       </div>
       <div class="sm:col-span-2">
         <label for="pdescription" class="mb-1 block text-sm">Description</label>

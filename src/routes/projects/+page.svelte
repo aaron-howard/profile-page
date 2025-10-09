@@ -12,6 +12,11 @@
 	let selectedCategory = 'all';
 	let filteredProjects = projects;
 
+	// Derived groups for display by category
+	$: frontendProjects = filteredProjects.filter((p) => p.category === 'frontend');
+	$: backendProjects = filteredProjects.filter((p) => p.category === 'backend');
+	$: fullstackProjects = filteredProjects.filter((p) => p.category === 'fullstack');
+
 	function filterProjects(category: string) {
 		selectedCategory = category;
 		if (category === 'all') {
@@ -103,56 +108,141 @@
 		</div>
 	{/if}
 
-	<!-- All Projects Grid -->
-	<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-		{#each filteredProjects.filter((p) => !p.featured || selectedCategory !== 'all') as project}
-			<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
-				<div
-					class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600"
-				>
-					<!-- Project image placeholder -->
-                    <div class="text-2xl font-bold text-white">
-                        {project.title
-                            .split(' ')
-                            .map((word: string) => word[0])
-                            .join('')}
-                    </div>
-				</div>
-				<div class="p-6">
-					<h3 class="mb-2 text-lg font-semibold text-slate-900">{project.title}</h3>
-					<p class="mb-4 line-clamp-3 text-sm text-slate-600">{project.description}</p>
-
-					<div class="mb-4 flex flex-wrap gap-1">
-						{#each project.technologies.slice(0, 3) as tech}
-							<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
-								>{tech}</span
-							>
-						{/each}
-						{#if project.technologies.length > 3}
-							<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700"
-								>+{project.technologies.length - 3}</span
-							>
-						{/if}
-					</div>
-
-					<div class="flex gap-2">
-						<a
-							href={project.github}
-							class="flex-1 rounded bg-slate-900 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-slate-800"
-						>
-							Code
-						</a>
-						<a
-							href={project.live}
-							class="flex-1 rounded bg-blue-600 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-blue-700"
-						>
-							Demo
-						</a>
-					</div>
+	<!-- Grouped Projects by Category -->
+	{#if selectedCategory === 'all'}
+		<!-- Frontend Section -->
+		{#if frontendProjects.length}
+			<div class="mb-10">
+				<h2 class="mb-4 text-2xl font-semibold text-slate-900">Frontend</h2>
+				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					{#each frontendProjects.filter((p) => !p.featured) as project}
+						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
+							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
+								<div class="text-2xl font-bold text-white">
+									{project.title.split(' ').map((word: string) => word[0]).join('')}
+								</div>
+							</div>
+							<div class="p-6">
+								<h3 class="mb-2 text-lg font-semibold text-slate-900">{project.title}</h3>
+								<p class="mb-4 line-clamp-3 text-sm text-slate-600">{project.description}</p>
+								<div class="mb-4 flex flex-wrap gap-1">
+									{#each project.technologies.slice(0, 3) as tech}
+										<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">{tech}</span>
+									{/each}
+									{#if project.technologies.length > 3}
+										<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">+{project.technologies.length - 3}</span>
+									{/if}
+								</div>
+								<div class="flex gap-2">
+									<a href={project.github} class="flex-1 rounded bg-slate-900 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-slate-800">Code</a>
+									<a href={project.live} class="flex-1 rounded bg-blue-600 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-blue-700">Demo</a>
+								</div>
+							</div>
+						</div>
+					{/each}
 				</div>
 			</div>
-		{/each}
-	</div>
+		{/if}
+
+		<!-- Backend Section -->
+		{#if backendProjects.length}
+			<div class="mb-10">
+				<h2 class="mb-4 text-2xl font-semibold text-slate-900">Backend</h2>
+				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					{#each backendProjects.filter((p) => !p.featured) as project}
+						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
+							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
+								<div class="text-2xl font-bold text-white">
+									{project.title.split(' ').map((word: string) => word[0]).join('')}
+								</div>
+							</div>
+							<div class="p-6">
+								<h3 class="mb-2 text-lg font-semibold text-slate-900">{project.title}</h3>
+								<p class="mb-4 line-clamp-3 text-sm text-slate-600">{project.description}</p>
+								<div class="mb-4 flex flex-wrap gap-1">
+									{#each project.technologies.slice(0, 3) as tech}
+										<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">{tech}</span>
+									{/each}
+									{#if project.technologies.length > 3}
+										<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">+{project.technologies.length - 3}</span>
+									{/if}
+								</div>
+								<div class="flex gap-2">
+									<a href={project.github} class="flex-1 rounded bg-slate-900 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-slate-800">Code</a>
+									<a href={project.live} class="flex-1 rounded bg-blue-600 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-blue-700">Demo</a>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
+		<!-- Full Stack Section -->
+		{#if fullstackProjects.length}
+			<div class="mb-10">
+				<h2 class="mb-4 text-2xl font-semibold text-slate-900">Full Stack</h2>
+				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					{#each fullstackProjects.filter((p) => !p.featured) as project}
+						<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
+							<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
+								<div class="text-2xl font-bold text-white">
+									{project.title.split(' ').map((word: string) => word[0]).join('')}
+								</div>
+							</div>
+							<div class="p-6">
+								<h3 class="mb-2 text-lg font-semibold text-slate-900">{project.title}</h3>
+								<p class="mb-4 line-clamp-3 text-sm text-slate-600">{project.description}</p>
+								<div class="mb-4 flex flex-wrap gap-1">
+									{#each project.technologies.slice(0, 3) as tech}
+										<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">{tech}</span>
+									{/each}
+									{#if project.technologies.length > 3}
+										<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">+{project.technologies.length - 3}</span>
+									{/if}
+								</div>
+								<div class="flex gap-2">
+									<a href={project.github} class="flex-1 rounded bg-slate-900 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-slate-800">Code</a>
+									<a href={project.live} class="flex-1 rounded bg-blue-600 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-blue-700">Demo</a>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+	{/if}
+
+	{#if selectedCategory !== 'all'}
+		<!-- When a specific category is selected, show a single grid (non-featured) -->
+		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+			{#each filteredProjects.filter((p) => !p.featured) as project}
+				<div class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg">
+					<div class="flex h-40 items-center justify-center bg-gradient-to-br from-green-500 to-blue-600">
+						<div class="text-2xl font-bold text-white">
+							{project.title.split(' ').map((word: string) => word[0]).join('')}
+						</div>
+					</div>
+					<div class="p-6">
+						<h3 class="mb-2 text-lg font-semibold text-slate-900">{project.title}</h3>
+						<p class="mb-4 line-clamp-3 text-sm text-slate-600">{project.description}</p>
+						<div class="mb-4 flex flex-wrap gap-1">
+							{#each project.technologies.slice(0, 3) as tech}
+								<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">{tech}</span>
+							{/each}
+							{#if project.technologies.length > 3}
+								<span class="rounded bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700">+{project.technologies.length - 3}</span>
+							{/if}
+						</div>
+						<div class="flex gap-2">
+							<a href={project.github} class="flex-1 rounded bg-slate-900 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-slate-800">Code</a>
+							<a href={project.live} class="flex-1 rounded bg-blue-600 px-3 py-2 text-center text-sm text-white transition-colors hover:bg-blue-700">Demo</a>
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
 
 	<!-- Empty State -->
 	{#if filteredProjects.length === 0}
