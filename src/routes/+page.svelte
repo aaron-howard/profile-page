@@ -8,7 +8,7 @@
 		socialLinks: {
 			github: 'https://github.com/aaron-howard',
 			linkedin: 'https://www.linkedin.com/in/aaronjhoward/',
-			bluesky: 'https://bsky.app/profile/aaronjhoward.bsky.social',
+			bluesky: 'https://bsky.app/profile/aaron-howard.bsky.social',
 			email: 'mr.aaronjhoward@outlook.com'
 		}
 	};

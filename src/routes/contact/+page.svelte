@@ -8,9 +8,8 @@
 		socialLinks: {
 			github: 'https://github.com/aaron-howard',
 			linkedin: 'https://linkedin.com/in/aaronjhoward/',
-			bluesky: 'https://bsky.app/profile/aaronjhoward.bsky.social',
-			twitter: 'https://twitter.com/aaronjhoward',
-			instagram: 'https://instagram.com/aaronjhoward'
+			bluesky: 'https://bsky.app/profile/aaron-howard.bsky.social',
+			email: 'mailto:mr.aaronjhoward@outlook.com'
 		},
 		availability: "I'm currently available for freelance work opportunities.",
 		responseTime: 'I typically respond within 24 hours.'
@@ -198,27 +197,30 @@
 					</a>
 
 					<a
-						href={contactData.socialLinks.twitter}
+						href={contactData.socialLinks.bluesky}
 						class="flex items-center gap-3 rounded-lg bg-slate-50 p-4 transition-colors hover:bg-slate-100"
 					>
 						<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
 							<path
-								d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+								d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.22-.257.427-.352.62-1.2 2.445-1.03 4.267.39 5.006.813.426 1.925.27 3.04-.456 1.115-.726 2.07-1.89 2.7-3.163.63-1.273.95-2.54.95-3.72 0-.69-.378-5.65-.624-6.479-.815-2.736-3.713-3.66-6.383-3.364-.136.02-.275.039-.415.056.138-.22.257-.427.352-.62 1.2-2.445 1.03-4.267-.39-5.006-.813-.426-1.925-.27-3.04.456z"
 							/>
 						</svg>
-						<span class="font-medium text-slate-900">Twitter</span>
+						<span class="font-medium text-slate-900">BlueSky</span>
 					</a>
 
 					<a
-						href={contactData.socialLinks.instagram}
+						href={contactData.socialLinks.email}
 						class="flex items-center gap-3 rounded-lg bg-slate-50 p-4 transition-colors hover:bg-slate-100"
 					>
-						<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path
-								d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.418-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.928.875 1.418 2.026 1.418 3.323s-.49 2.448-1.418 3.244c-.875.807-2.026 1.297-3.323 1.297zm7.83-9.781c-.49 0-.928-.175-1.297-.49-.368-.315-.49-.753-.49-1.243 0-.49.122-.928.49-1.243.369-.315.807-.49 1.297-.49s.928.175 1.297.49c.368.315.49.753.49 1.243 0 .49-.122.928-.49 1.243-.369.315-.807.49-1.297.49z"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
 							/>
 						</svg>
-						<span class="font-medium text-slate-900">Instagram</span>
+						<span class="font-medium text-slate-900">Email</span>
 					</a>
 				</div>
 			</div>
