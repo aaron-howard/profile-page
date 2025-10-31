@@ -23,13 +23,35 @@
 		}
 	}
 
-	function formatDate(dateString: string) {
-		return new Date(dateString).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric'
-		});
+	function formatDate(date: string | Date) {
+		try {
+			const dateObj = typeof date === 'string' ? new Date(date) : date;
+			if (isNaN(dateObj.getTime())) {
+				return 'Invalid date';
+			}
+			return dateObj.toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric'
+			});
+		} catch {
+			return 'Invalid date';
+		}
 	}
+
+	function getAuthorInitials(author: string | null | undefined): string {
+		if (!author || typeof author !== 'string') return '?';
+		const parts = author.trim().split(' ').filter(Boolean);
+		if (parts.length === 0) return '?';
+		return parts.map(part => part[0]?.toUpperCase() || '').join('').slice(0, 2);
+	}
+
+	// Computed values for featured posts
+	$: featuredPosts = selectedCategory === 'all' 
+		? filteredPosts.filter((p) => p.featured)
+		: filteredPosts.filter((p) => p.featured);
+	
+	$: nonFeaturedPosts = filteredPosts.filter((p) => !p.featured || selectedCategory !== 'all');
 </script>
 
 <div class="mx-auto max-w-6xl">
@@ -59,11 +81,11 @@
 	</div>
 
 	<!-- Featured Posts -->
-	{#if selectedCategory === 'all' || filteredPosts.some((p) => p.featured)}
+	{#if featuredPosts.length > 0}
 		<div class="mb-16">
 			<h2 class="mb-8 text-2xl font-semibold text-slate-900">Featured Posts</h2>
 			<div class="grid gap-8 lg:grid-cols-2">
-				{#each filteredPosts.filter((p) => p.featured) as post}
+				{#each featuredPosts as post}
 					<article
 						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
 					>
@@ -82,10 +104,14 @@
 								<span class="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
 									>{post.category}</span
 								>
-								<span class="text-sm text-slate-500">{post.readTime}</span>
+								{#if post.readTime}
+									<span class="text-sm text-slate-500">{post.readTime}</span>
+								{/if}
 							</div>
 							<h3 class="mb-3 text-xl font-semibold text-slate-900">{post.title}</h3>
-							<p class="mb-4 text-slate-600">{post.excerpt}</p>
+							{#if post.excerpt}
+								<p class="mb-4 text-slate-600">{post.excerpt}</p>
+							{/if}
 
 							<div class="mb-6 flex flex-wrap gap-2">
 								{#each post.tags as tag}
@@ -100,12 +126,9 @@
 									<div
 										class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-gray-600 text-sm font-bold text-white"
 									>
-                                        {post.author
-                                            .split(' ')
-                                            .map((n: string) => n[0])
-                                            .join('')}
+                                        {getAuthorInitials(post.author)}
 									</div>
-									<span class="text-sm text-slate-600">{post.author}</span>
+									<span class="text-sm text-slate-600">{post.author || 'Unknown'}</span>
 								</div>
 								<span class="text-sm text-slate-500">{formatDate(post.date)}</span>
 							</div>
@@ -118,7 +141,7 @@
 
 	<!-- All Posts Grid -->
 	<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-		{#each filteredPosts.filter((p) => !p.featured || selectedCategory !== 'all') as post}
+		{#each nonFeaturedPosts as post}
 			<article
 				class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
 			>
@@ -140,7 +163,9 @@
 						<span class="text-xs text-slate-500">{post.readTime}</span>
 					</div>
 					<h3 class="mb-2 text-lg font-semibold text-slate-900">{post.title}</h3>
-					<p class="mb-4 line-clamp-3 text-sm text-slate-600">{post.excerpt}</p>
+					{#if post.excerpt}
+						<p class="mb-4 line-clamp-3 text-sm text-slate-600">{post.excerpt}</p>
+					{/if}
 
 					<div class="mb-4 flex flex-wrap gap-1">
 						{#each post.tags.slice(0, 2) as tag}
@@ -160,12 +185,9 @@
 							<div
 								class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-gray-600 text-xs font-bold text-white"
 							>
-                                {post.author
-                                    .split(' ')
-                                    .map((n: string) => n[0])
-                                    .join('')}
+                                {getAuthorInitials(post.author)}
 							</div>
-							<span class="text-xs text-slate-600">{post.author}</span>
+							<span class="text-xs text-slate-600">{post.author || 'Unknown'}</span>
 						</div>
 						<span class="text-xs text-slate-500">{formatDate(post.date)}</span>
 					</div>

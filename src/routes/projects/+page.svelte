@@ -55,7 +55,7 @@
 	</div>
 
 	<!-- Featured Projects -->
-	{#if selectedCategory === 'all' || filteredProjects.some((p) => p.featured)}
+	{#if selectedCategory === 'all' && filteredProjects.filter((p) => p.featured).length > 0}
 		<div class="mb-16">
 			<h2 class="mb-8 text-2xl font-semibold text-slate-900">Featured Projects</h2>
 			<div class="grid gap-8 lg:grid-cols-2">
@@ -88,18 +88,31 @@
 							</div>
 
 							<div class="flex gap-4">
-								<a
-									href={project.github}
-									class="flex-1 rounded-lg bg-slate-900 px-4 py-2 text-center text-white transition-colors hover:bg-slate-800"
-								>
-									View Code
-								</a>
-								<a
-									href={project.live}
-									class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-center text-white transition-colors hover:bg-blue-700"
-								>
-									Live Demo
-								</a>
+								{#if project.github}
+									<a
+										href={project.github}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="flex-1 rounded-lg bg-slate-900 px-4 py-2 text-center text-white transition-colors hover:bg-slate-800"
+									>
+										View Code
+									</a>
+								{/if}
+								{#if project.live}
+									<a
+										href={project.live}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-center text-white transition-colors hover:bg-blue-700"
+									>
+										Live Demo
+									</a>
+								{/if}
+								{#if !project.github && !project.live}
+									<span class="flex-1 rounded-lg bg-slate-300 px-4 py-2 text-center text-slate-600">
+										No links available
+									</span>
+								{/if}
 							</div>
 						</div>
 					</div>

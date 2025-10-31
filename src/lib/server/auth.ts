@@ -26,33 +26,47 @@ export async function createSession(token: string, userId: string) {
 }
 
 export async function validateSessionToken(token: string) {
-	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-	const result = await db.session.findUnique({
-		where: { id: sessionId },
-		include: { user: true }
-	});
-
-	if (!result) {
-		return { session: null, user: null };
-	}
-	const { user, ...session } = result;
-
-	const sessionExpired = Date.now() >= session.expiresAt.getTime();
-	if (sessionExpired) {
-		await db.session.delete({ where: { id: session.id } });
-		return { session: null, user: null };
-	}
-
-	const renewSession = Date.now() >= session.expiresAt.getTime() - DAY_IN_MS * 15;
-	if (renewSession) {
-		session.expiresAt = new Date(Date.now() + DAY_IN_MS * 30);
-		await db.session.update({
-			where: { id: session.id },
-			data: { expiresAt: session.expiresAt }
+	try {
+		const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+		const result = await db.session.findUnique({
+			where: { id: sessionId },
+			include: { user: true }
 		});
-	}
 
-	return { session, user };
+		if (!result) {
+			return { session: null, user: null };
+		}
+		const { user, ...session } = result;
+
+		const sessionExpired = Date.now() >= session.expiresAt.getTime();
+		if (sessionExpired) {
+			try {
+				await db.session.delete({ where: { id: session.id } });
+			} catch (error) {
+				console.error('Error deleting expired session:', error);
+			}
+			return { session: null, user: null };
+		}
+
+		const renewSession = Date.now() >= session.expiresAt.getTime() - DAY_IN_MS * 15;
+		if (renewSession) {
+			try {
+				session.expiresAt = new Date(Date.now() + DAY_IN_MS * 30);
+				await db.session.update({
+					where: { id: session.id },
+					data: { expiresAt: session.expiresAt }
+				});
+			} catch (error) {
+				console.error('Error renewing session:', error);
+				// Continue with existing session even if renewal fails
+			}
+		}
+
+		return { session, user };
+	} catch (error) {
+		console.error('Error validating session token:', error);
+		return { session: null, user: null };
+	}
 }
 
 export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;
@@ -64,12 +78,18 @@ export async function invalidateSession(sessionId: string) {
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date) {
 	event.cookies.set(sessionCookieName, token, {
 		expires: expiresAt,
-		path: '/'
+		path: '/',
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'lax'
 	});
 }
 
 export function deleteSessionTokenCookie(event: RequestEvent) {
 	event.cookies.delete(sessionCookieName, {
-		path: '/'
+		path: '/',
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'lax'
 	});
 }

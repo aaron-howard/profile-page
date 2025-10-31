@@ -1,4 +1,10 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import type { PageData, ActionData } from './$types';
+	
+	export let data: PageData;
+	export let form: ActionData;
+
 	// Customize this data with your information
 	const contactData = {
 		name: 'Aaron Howard',
@@ -22,8 +28,8 @@
 		message: ''
 	};
 
-	let isSubmitting = false;
-	let submitMessage = '';
+	let isSubmitting = $state(false);
+	let submitMessage = $state(form?.message || '');
 
 	function handleSubmit() {
 		isSubmitting = true;
@@ -237,7 +243,26 @@
 		<div class="rounded-lg bg-white p-8 shadow-md">
 			<h2 class="mb-6 text-2xl font-semibold text-slate-900">Send Me a Message</h2>
 
-			<form on:submit|preventDefault={handleSubmit} class="space-y-6">
+			{#if form?.error}
+				<div class="mb-6 rounded-lg border border-red-400 bg-red-100 p-4 text-red-700">
+					{form.error}
+				</div>
+			{/if}
+
+			<form method="POST" use:enhance={() => {
+				isSubmitting = true;
+				return async ({ update }) => {
+					await update();
+					isSubmitting = false;
+					if (form?.message) {
+						submitMessage = form.message;
+						formData = { name: '', email: '', subject: '', message: '' };
+						setTimeout(() => {
+							submitMessage = '';
+						}, 5000);
+					}
+				};
+			}} class="space-y-6">
 				<div>
 					<label for="name" class="mb-2 block text-sm font-medium text-slate-700">Name</label>
 					<input

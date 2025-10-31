@@ -68,17 +68,22 @@ const projects = [
 async function main() {
   console.log('Seeding projects...');
   
-  // Clear existing projects
-  await prisma.project.deleteMany();
-  
-  // Create new projects
-  for (const project of projects) {
-    await prisma.project.create({
-      data: project
-    });
+  try {
+    // Clear existing projects
+    await prisma.project.deleteMany();
+    
+    // Create new projects
+    for (const project of projects) {
+      await prisma.project.create({
+        data: project
+      });
+    }
+    
+    console.log('Projects seeded successfully!');
+  } catch (error) {
+    console.error('Error seeding projects:', error);
+    throw error;
   }
-  
-  console.log('Projects seeded successfully!');
 }
 
 main()
@@ -87,5 +92,9 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    try {
+      await prisma.$disconnect();
+    } catch (error) {
+      console.error('Error disconnecting Prisma:', error);
+    }
   });
