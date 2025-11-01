@@ -1,5 +1,7 @@
 <script lang="ts">
-  export let data: { posts: Array<any> };
+	import type { BlogPost } from '$lib/types';
+	
+	let { data } = $props<{ data: { posts: BlogPost[] } }>();
 </script>
 
 <div class="mx-auto max-w-5xl p-6">

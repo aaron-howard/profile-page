@@ -2,8 +2,10 @@
 	import { enhance } from '$app/forms';
 	import type { PageData, ActionData } from './$types';
 	
-	export let data: PageData;
-	export let form: ActionData;
+	let { data, form } = $props<{ 
+		data: PageData;
+		form: ActionData;
+	}>();
 
 	// Customize this data with your information
 	const contactData = {
@@ -21,12 +23,12 @@
 		responseTime: 'I typically respond within 24 hours.'
 	};
 
-	let formData = {
+	let formData = $state({
 		name: '',
 		email: '',
 		subject: '',
 		message: ''
-	};
+	});
 
 	let isSubmitting = $state(false);
 	let submitMessage = $state(form?.message || '');

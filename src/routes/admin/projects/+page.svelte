@@ -1,9 +1,11 @@
 <script lang="ts">
-  export let data: { projects: Array<any> };
+	import type { Project } from '$lib/types';
+	
+	let { data } = $props<{ data: { projects: Project[] } }>();
   
-  let editingProject: any = null;
+	let editingProject = $state<Project | null>(null);
   
-  function startEdit(project: any) {
+  function startEdit(project: Project) {
     editingProject = { ...project };
   }
   
@@ -111,7 +113,7 @@
               </div>
               <div class="flex gap-2">
                 <button type="submit" class="rounded bg-blue-600 px-4 py-2 text-white">Update</button>
-                <button type="button" on:click={cancelEdit} class="rounded border px-4 py-2">Cancel</button>
+                <button type="button" onclick={cancelEdit} class="rounded border px-4 py-2">Cancel</button>
               </div>
             </form>
           {:else}
@@ -126,7 +128,7 @@
                 {/if}
               </div>
               <div class="flex gap-2">
-                <button on:click={() => startEdit(project)} class="rounded border px-3 py-1 text-sm hover:bg-slate-50">Edit</button>
+                <button onclick={() => startEdit(project)} class="rounded border px-3 py-1 text-sm hover:bg-slate-50">Edit</button>
                 <form method="POST" action="?/delete" class="inline">
                   <input type="hidden" name="id" value={project.id} />
                   <button class="rounded border px-3 py-1 text-sm hover:bg-red-50 text-red-600">Delete</button>

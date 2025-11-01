@@ -1,6 +1,9 @@
 <script lang="ts">
-  import { enhance } from '$app/forms';
-  export let form: { error?: string } | undefined;
+	import { enhance } from '$app/forms';
+	
+	let { form } = $props<{ 
+		form: { error?: string } | undefined 
+	}>();
 </script>
 
 <div class="mx-auto max-w-sm p-6">

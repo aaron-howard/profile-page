@@ -1,6 +1,7 @@
 <script lang="ts">
-    export let data: { projects: Array<any> };
-    const projects = data.projects;
+	import type { Project } from '$lib/types';
+	
+	let { data } = $props<{ data: { projects: Project[] } }>();
 
 	const categories = [
 		{ id: 'all', name: 'All Projects' },
@@ -9,21 +10,29 @@
 		{ id: 'fullstack', name: 'Full Stack' }
 	];
 
-	let selectedCategory = 'all';
-	let filteredProjects = projects;
+	let selectedCategory = $state('all');
+	
+	const filteredProjects = $derived(
+		selectedCategory === 'all' 
+			? data.projects 
+			: data.projects.filter((project) => project.category === selectedCategory)
+	);
 
 	// Derived groups for display by category
-	$: frontendProjects = filteredProjects.filter((p) => p.category === 'frontend');
-	$: backendProjects = filteredProjects.filter((p) => p.category === 'backend');
-	$: fullstackProjects = filteredProjects.filter((p) => p.category === 'fullstack');
+	const frontendProjects = $derived(
+		filteredProjects.filter((p) => p.category === 'frontend')
+	);
+	
+	const backendProjects = $derived(
+		filteredProjects.filter((p) => p.category === 'backend')
+	);
+	
+	const fullstackProjects = $derived(
+		filteredProjects.filter((p) => p.category === 'fullstack')
+	);
 
 	function filterProjects(category: string) {
 		selectedCategory = category;
-		if (category === 'all') {
-			filteredProjects = projects;
-		} else {
-			filteredProjects = projects.filter((project) => project.category === category);
-		}
 	}
 </script>
 
@@ -42,7 +51,7 @@
 		<div class="flex flex-wrap gap-4">
 			{#each categories as category}
 				<button
-					on:click={() => filterProjects(category.id)}
+					onclick={() => filterProjects(category.id)}
 					class="rounded-lg px-6 py-2 font-medium transition-colors {selectedCategory ===
 					category.id
 						? 'bg-blue-600 text-white'

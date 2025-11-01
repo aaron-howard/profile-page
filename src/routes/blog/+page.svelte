@@ -1,6 +1,7 @@
 <script lang="ts">
-    export let data: { posts: Array<any> };
-    const blogPosts = data.posts;
+	import type { BlogPost } from '$lib/types';
+	
+	let { data } = $props<{ data: { posts: BlogPost[] } }>();
 
     const categories = [
 		{ id: 'all', name: 'All Posts' },
@@ -11,16 +12,24 @@
 		{ id: 'DevOps', name: 'DevOps' }
 	];
 
-	let selectedCategory = 'all';
-	let filteredPosts = blogPosts;
+	let selectedCategory = $state('all');
+	
+	const filteredPosts = $derived(
+		selectedCategory === 'all' 
+			? data.posts 
+			: data.posts.filter((post) => post.category === selectedCategory)
+	);
+
+	const featuredPosts = $derived(
+		filteredPosts.filter((p) => p.featured)
+	);
+	
+	const nonFeaturedPosts = $derived(
+		filteredPosts.filter((p) => !p.featured || selectedCategory !== 'all')
+	);
 
 	function filterPosts(category: string) {
 		selectedCategory = category;
-		if (category === 'all') {
-			filteredPosts = blogPosts;
-		} else {
-			filteredPosts = blogPosts.filter((post) => post.category === category);
-		}
 	}
 
 	function formatDate(date: string | Date) {
@@ -45,13 +54,6 @@
 		if (parts.length === 0) return '?';
 		return parts.map(part => part[0]?.toUpperCase() || '').join('').slice(0, 2);
 	}
-
-	// Computed values for featured posts
-	$: featuredPosts = selectedCategory === 'all' 
-		? filteredPosts.filter((p) => p.featured)
-		: filteredPosts.filter((p) => p.featured);
-	
-	$: nonFeaturedPosts = filteredPosts.filter((p) => !p.featured || selectedCategory !== 'all');
 </script>
 
 <div class="mx-auto max-w-6xl">
@@ -68,7 +70,7 @@
 		<div class="flex flex-wrap gap-4">
 			{#each categories as category}
 				<button
-					on:click={() => filterPosts(category.id)}
+					onclick={() => filterPosts(category.id)}
 					class="rounded-lg px-6 py-2 font-medium transition-colors {selectedCategory ===
 					category.id
 						? 'bg-blue-600 text-white'
