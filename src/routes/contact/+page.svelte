@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import type { PageData, ActionData } from './$types';
-	
-	let { data, form } = $props<{ 
-		data: PageData;
-		form: ActionData;
-	}>();
+	import { superForm } from 'sveltekit-superforms';
+	import type { PageData } from './$types';
+
+	let { data } = $props<{ data: PageData }>();
+
+	// Initialize form with Superforms
+	const { form, errors, submitting, message } = superForm(data.form);
 
 	// Customize this data with your information
 	const contactData = {
@@ -23,38 +23,15 @@
 		responseTime: 'I typically respond within 24 hours.'
 	};
 
-	let formData = $state({
-		name: '',
-		email: '',
-		subject: '',
-		message: ''
-	});
-
-	let isSubmitting = $state(false);
-	let submitMessage = $state(form?.message || '');
-
-	function handleSubmit() {
-		isSubmitting = true;
-
-		// Simulate form submission
-		setTimeout(() => {
-			isSubmitting = false;
-			submitMessage = "Thank you for your message! I'll get back to you soon.";
-
-			// Reset form
-			formData = {
-				name: '',
-				email: '',
-				subject: '',
-				message: ''
-			};
-
-			// Clear message after 5 seconds
-			setTimeout(() => {
-				submitMessage = '';
+	// Auto-clear success message after 5 seconds
+	$effect(() => {
+		if ($message) {
+			const timeout = setTimeout(() => {
+				$message = '';
 			}, 5000);
-		}, 2000);
-	}
+			return () => clearTimeout(timeout);
+		}
+	});
 </script>
 
 <div class="mx-auto max-w-6xl">
@@ -245,88 +222,98 @@
 		<div class="rounded-lg bg-white p-8 shadow-md">
 			<h2 class="mb-6 text-2xl font-semibold text-slate-900">Send Me a Message</h2>
 
-			{#if form?.error}
-				<div class="mb-6 rounded-lg border border-red-400 bg-red-100 p-4 text-red-700">
-					{form.error}
+			{#if $message}
+				<div class="mb-6 rounded-lg border border-green-400 bg-green-100 p-4 text-green-700">
+					{$message}
 				</div>
 			{/if}
 
-			<form method="POST" use:enhance={() => {
-				isSubmitting = true;
-				return async ({ update }) => {
-					await update();
-					isSubmitting = false;
-					if (form?.message) {
-						submitMessage = form.message;
-						formData = { name: '', email: '', subject: '', message: '' };
-						setTimeout(() => {
-							submitMessage = '';
-						}, 5000);
-					}
-				};
-			}} class="space-y-6">
+			<form method="POST" class="space-y-6">
+				<!-- Name Field -->
 				<div>
 					<label for="name" class="mb-2 block text-sm font-medium text-slate-700">Name</label>
 					<input
 						type="text"
 						id="name"
-						bind:value={formData.name}
-						required
-						class="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-blue-500"
+						name="name"
+						bind:value={$form.name}
+						aria-invalid={$errors.name ? 'true' : undefined}
+						class="w-full rounded-lg border px-4 py-3 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 {$errors.name
+							? 'border-red-400 bg-red-50'
+							: 'border-slate-300'}"
 						placeholder="Your name"
 					/>
+					{#if $errors.name}
+						<p class="mt-1 text-sm text-red-600">{$errors.name}</p>
+					{/if}
 				</div>
 
+				<!-- Email Field -->
 				<div>
 					<label for="email" class="mb-2 block text-sm font-medium text-slate-700">Email</label>
 					<input
 						type="email"
 						id="email"
-						bind:value={formData.email}
-						required
-						class="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-blue-500"
+						name="email"
+						bind:value={$form.email}
+						aria-invalid={$errors.email ? 'true' : undefined}
+						class="w-full rounded-lg border px-4 py-3 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 {$errors.email
+							? 'border-red-400 bg-red-50'
+							: 'border-slate-300'}"
 						placeholder="your.email@example.com"
 					/>
+					{#if $errors.email}
+						<p class="mt-1 text-sm text-red-600">{$errors.email}</p>
+					{/if}
 				</div>
 
+				<!-- Subject Field -->
 				<div>
 					<label for="subject" class="mb-2 block text-sm font-medium text-slate-700">Subject</label>
 					<input
 						type="text"
 						id="subject"
-						bind:value={formData.subject}
-						required
-						class="w-full rounded-lg border border-slate-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-blue-500"
+						name="subject"
+						bind:value={$form.subject}
+						aria-invalid={$errors.subject ? 'true' : undefined}
+						class="w-full rounded-lg border px-4 py-3 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 {$errors.subject
+							? 'border-red-400 bg-red-50'
+							: 'border-slate-300'}"
 						placeholder="What's this about?"
 					/>
+					{#if $errors.subject}
+						<p class="mt-1 text-sm text-red-600">{$errors.subject}</p>
+					{/if}
 				</div>
 
+				<!-- Message Field -->
 				<div>
 					<label for="message" class="mb-2 block text-sm font-medium text-slate-700">Message</label>
 					<textarea
 						id="message"
-						bind:value={formData.message}
-						required
+						name="message"
+						bind:value={$form.message}
+						aria-invalid={$errors.message ? 'true' : undefined}
 						rows="6"
-						class="w-full resize-none rounded-lg border border-slate-300 px-4 py-3 focus:border-transparent focus:ring-2 focus:ring-blue-500"
+						class="w-full resize-none rounded-lg border px-4 py-3 transition-colors focus:border-transparent focus:ring-2 focus:ring-blue-500 {$errors.message
+							? 'border-red-400 bg-red-50'
+							: 'border-slate-300'}"
 						placeholder="Tell me about your project, opportunity, or just say hello!"
 					></textarea>
+					{#if $errors.message}
+						<p class="mt-1 text-sm text-red-600">{$errors.message}</p>
+					{/if}
 				</div>
 
+				<!-- Submit Button -->
 				<button
 					type="submit"
-					disabled={isSubmitting}
+					disabled={$submitting}
 					class="w-full rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 				>
-					{isSubmitting ? 'Sending...' : 'Send Message'}
+					{$submitting ? 'Sending...' : 'Send Message'}
 				</button>
 			</form>
-
-			{#if submitMessage}
-				<div class="mt-6 rounded-lg border border-green-400 bg-green-100 p-4 text-green-700">
-					{submitMessage}
-				</div>
-			{/if}
 		</div>
 	</div>
 </div>

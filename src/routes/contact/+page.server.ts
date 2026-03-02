@@ -1,69 +1,54 @@
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
+import { superValidate, message } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
-import { sanitizeText } from '$lib/server/sanitize';
+import { contactFormSchema } from '$lib/schemas';
+
+export const load: PageServerLoad = async () => {
+	const form = await superValidate(zod(contactFormSchema));
+	return { form };
+};
 
 export const actions: Actions = {
-  default: async ({ request }) => {
-    try {
-      const data = await request.formData();
-      const name = sanitizeText(String(data.get('name') ?? '').trim());
-      const email = String(data.get('email') ?? '').trim();
-      const subject = sanitizeText(String(data.get('subject') ?? '').trim());
-      const message = sanitizeText(String(data.get('message') ?? '').trim());
+	default: async ({ request }) => {
+		const form = await superValidate(request, zod(contactFormSchema));
 
-      // Validation
-      if (!name || !email || !subject || !message) {
-        return fail(400, { error: 'All fields are required' });
-      }
+		if (!form.valid) {
+			return fail(400, { form });
+		}
 
-      if (name.length > 100) {
-        return fail(400, { error: 'Name must be 100 characters or less' });
-      }
+		try {
+			const { name, email, subject, message: messageText } = form.data;
 
-      if (email.length > 255) {
-        return fail(400, { error: 'Email must be 255 characters or less' });
-      }
+			// Send email
+			const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';
+			const emailContent = formatContactEmail({
+				name,
+				email,
+				subject,
+				message: messageText
+			});
 
-      // Basic email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        return fail(400, { error: 'Invalid email address' });
-      }
+			const emailResult = await sendEmail({
+				to: recipientEmail,
+				subject: `Contact Form: ${subject}`,
+				html: emailContent.html,
+				text: emailContent.text
+			});
 
-      if (subject.length > 200) {
-        return fail(400, { error: 'Subject must be 200 characters or less' });
-      }
+			if (!emailResult.success) {
+				console.error('Failed to send contact email:', emailResult.error);
+				return message(form, 'Email sent but delivery may have failed', { status: 200 });
+			}
 
-      if (message.length > 5000) {
-        return fail(400, { error: 'Message must be 5,000 characters or less' });
-      }
-
-      // Send email
-      const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';
-      const emailContent = formatContactEmail({ name, email, subject, message });
-
-      const emailResult = await sendEmail({
-        to: recipientEmail,
-        subject: `Contact Form: ${subject}`,
-        html: emailContent.html,
-        text: emailContent.text
-      });
-
-      if (!emailResult.success) {
-        console.error('Failed to send contact email:', emailResult.error);
-        // Still return success to user, but log the error
-        // In production, you might want to save to database as fallback
-      }
-
-      return { 
-        success: true, 
-        message: "Thank you for your message! I'll get back to you soon." 
-      };
-    } catch (error) {
-      console.error('Error processing contact form:', error);
-      return fail(500, { error: 'Failed to send message. Please try again later.' });
-    }
-  }
+			return message(form, "Thank you! I'll get back to you soon.", { status: 200 });
+		} catch (error) {
+			console.error('Error processing contact form:', error);
+			return message(form, 'Failed to send message. Please try again later.', {
+				status: 500
+			});
+		}
+	}
 };
