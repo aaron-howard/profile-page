@@ -45,48 +45,51 @@ This is a **SvelteKit 2.16.0 portfolio application** with a custom backend for b
 src/
 ├── routes/              # SvelteKit routes and pages
 │   ├── +layout.svelte   # Root layout
+│   ├── +layout.server.ts # Root layout server load
 │   ├── +page.svelte     # Home page
 │   ├── bio/             # About/Bio page
+│   │   ├── +page.svelte
+│   │   └── +page.server.ts
 │   ├── blog/            # Blog posts page
+│   │   ├── +page.svelte
+│   │   └── +page.server.ts
 │   ├── projects/        # Projects showcase
-│   ├── contact/         # Contact page
-│   ├── login/           # Auth login page
-│   └── admin/           # Admin section (blogs/projects management)
+│   │   ├── +page.svelte
+│   │   └── +page.server.ts
+│   └── contact/         # Contact form page
+│       ├── +page.svelte
+│       └── +page.server.ts
 ├── lib/
 │   ├── server/
-│   │   ├── auth.ts      # Session generation and validation
-│   │   ├── db/index.ts  # Prisma client singleton
-│   │   ├── email.ts     # Email utilities
-│   │   ├── rate-limit.ts # Rate limiting for forms
-│   │   └── sanitize.ts  # HTML/input sanitization
-│   ├── content/         # Static content JSON files
-│   │   ├── bio.json
-│   │   ├── blog.json
-│   │   └── projects.json
-│   ├── types.ts         # TypeScript interfaces
+│   │   ├── db/
+│   │   │   └── index.ts     # Prisma client singleton
+│   │   ├── email.ts         # Email utilities
+│   │   ├── rate-limit.ts    # Rate limiting for forms
+│   │   └── sanitize.ts      # HTML/input sanitization
+│   ├── types.ts         # TypeScript interfaces (BlogPost, Project)
 │   └── index.ts
-├── hooks.server.ts      # SvelteKit server hooks
+├── hooks.server.ts      # SvelteKit server hooks (security headers)
 ├── app.css              # Global Tailwind CSS
 └── app.html             # HTML template
 ```
 
 ### Database Schema
 **Models** (in `prisma/schema.prisma`):
-- **User**: id, age, sessions relationship
-- **Session**: id, userId, expiresAt
+- **Bio** (singleton): name, title, location, about, skills (frontend/backend/tools/languages), experience (JSON)
 - **BlogPost**: id, title, excerpt, content, author, date, category, readTime, featured, tags
 - **Project**: id, title, description, image, technologies, category, github, live, featured
 
-## Recent Changes & Svelte 5 Migration
+## Recent Changes
 
-**Latest Commit**: "Complete Svelte 5 migration and implement best practices"
+**Latest Work** (Session March 2, 2026):
+1. ✅ **Removed Authentication System** - Deleted auth module, login/logout/admin routes, User/Session database models
+2. ✅ **Consolidated Content Sources** - Migrated bio.json to database, all content now database-driven
+3. ✅ **Cleaned Up Admin Routes** - Replaced with Prisma Studio for content management
 
-The codebase has been migrated to **Svelte 5** with:
-- `$state()` rune for reactive variables
-- `$derived()` rune for computed values (instead of `$:` reactive statements)
-- `let { data } = $props()` for component props (instead of `export let`)
-
-Svelte 5 migration guide available in `SVELTE5_MIGRATION_GUIDE.md` if there are remaining components to update.
+**Previous**: Svelte 5 Migration
+- Uses `$state()` rune for reactive variables
+- Uses `$derived()` rune for computed values (instead of `$:` reactive statements)
+- Uses `let { data } = $props()` for component props (instead of `export let`)
 
 ## Content Editing Workflow
 
@@ -152,14 +155,15 @@ Optional: Connection pooling parameters in DATABASE_URL for serverless/productio
 Implemented in `src/lib/server/rate-limit.ts` using in-memory Map - **not production-ready for multiple instances**. For production, consider Redis or similar.
 
 ### Form Handling
-- Contact form and admin forms use SvelteKit form actions
-- Input sanitization in `src/lib/server/sanitize.ts`
-- Validation is manual (consider adding schema validation library for complex forms)
+- Contact form uses SvelteKit form actions in `src/routes/contact/+page.server.ts`
+- Input sanitization in `src/lib/server/sanitize.ts` (sanitizeText, sanitizeHtml)
+- Validation is manual (consider adding schema validation library for better UX)
+- Email sending via SendGrid, Resend, or SMTP (configured via EMAIL_SERVICE env var)
 
 ### Server Hooks
 `src/hooks.server.ts` handles:
-- Session validation on each request
-- Setting user context in locals
+- Security headers (CSP, X-Frame-Options, XSS-Protection, etc.)
+- No authentication (portfolio is public)
 
 ## Git & Workflow
 
