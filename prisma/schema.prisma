@@ -10,6 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Bio {
+  id       Int     @id @default(1)
+  name     String
+  title    String
+  location String
+  about    String
+
+  // Skills stored as JSON
+  skillsFrontend    String[]
+  skillsBackend     String[]
+  skillsTools       String[]
+  skillsLanguages   String[]
+
+  // Experience stored as JSON array
+  experience Json?
+
+  updatedAt DateTime @updatedAt
+
+  @@map("bio")
+}
+
 model BlogPost {
   id        Int       @id @default(autoincrement())
   title     String
