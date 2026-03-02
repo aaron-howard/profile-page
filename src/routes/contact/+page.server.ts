@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
+import { logError, handleFormError } from '$lib/server/error-handler';
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod(contactFormSchema));
@@ -45,10 +46,9 @@ export const actions: Actions = {
 
 			return message(form, "Thank you! I'll get back to you soon.", { status: 200 });
 		} catch (error) {
-			console.error('Error processing contact form:', error);
-			return message(form, 'Failed to send message. Please try again later.', {
-				status: 500
-			});
+			logError(error, 'contact form submission');
+			const errorMessage = handleFormError(error, 'contact').error;
+			return message(form, errorMessage, { status: 500 });
 		}
 	}
 };
