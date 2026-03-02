@@ -1,4 +1,5 @@
 import { env } from '$env/dynamic/private';
+import { escapeHtml } from './sanitize-utils';
 
 interface EmailData {
 	to: string;
@@ -175,13 +176,3 @@ ${data.message}
 	return { html, text };
 }
 
-function escapeHtml(text: string): string {
-	const map: Record<string, string> = {
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;',
-		'"': '&quot;',
-		"'": '&#039;'
-	};
-	return text.replace(/[&<>"']/g, (m) => map[m]);
-}
