@@ -60,6 +60,73 @@ build/
 
 ---
 
+## 🔌 Connection Pooling Configuration
+
+### Why Connection Pooling?
+
+Without pooling, serverless functions create new database connections on each request, causing:
+- **Connection overhead**: Slower requests (250ms+ per new connection)
+- **Connection limits**: Databases limit concurrent connections (usually 100-200)
+- **Resource waste**: Unused connections consume server memory
+
+Connection pooling reuses connections, improving performance and reliability.
+
+### Vercel Postgres (Recommended)
+
+✅ **No configuration needed** - Vercel Postgres includes built-in connection pooling automatically.
+
+Just copy the `POSTGRES_URL` from your Vercel dashboard and use it as `DATABASE_URL`.
+
+### Other Database Providers
+
+If using Neon, Supabase, Railway, or similar, add connection pooling parameters to your `DATABASE_URL`:
+
+```
+DATABASE_URL="postgresql://user:password@host:5432/database?connection_limit=20&statement_cache_size=20"
+```
+
+**Explanation:**
+- `connection_limit=20`: Maximum connections per pool (adjust based on your plan)
+- `statement_cache_size=20`: Cache prepared statements for performance
+
+**Provider-Specific Guides:**
+
+**Neon:**
+- Pooling is available (check Neon dashboard for pool connection string)
+- Add `?connection_limit=20` to your connection string
+
+**Supabase:**
+- Use the "Connection Pooling" connection string from Project Settings
+- Already configured with optimal pooling settings
+
+**Railway:**
+- Connection pooling is included in their PostgreSQL offering
+- Use the provided connection string as-is
+
+### Self-Hosted PostgreSQL with PgBouncer
+
+If you're self-hosting PostgreSQL (not recommended for serverless), use **PgBouncer** as an external connection pooler:
+
+**Setup Steps:**
+1. Install PgBouncer on your server
+2. Configure PgBouncer to forward connections to your PostgreSQL instance
+3. Point your `DATABASE_URL` to PgBouncer (usually `localhost:6432`)
+
+**Example PgBouncer config:**
+```ini
+[databases]
+portfolio = host=localhost port=5432 dbname=portfolio user=postgres password=password
+
+[pgbouncer]
+pool_mode = transaction
+max_client_conn = 1000
+default_pool_size = 25
+```
+
+**Note:** PgBouncer adds complexity. For most use cases, Vercel Postgres or a managed provider with built-in pooling is better.
+
+---
+
 ## 📁 Step 3: Push to GitHub
 
 ### 3.1 Create GitHub Repository
@@ -230,6 +297,30 @@ npm run db:generate
 **Environment Variables:**
 - Make sure `DATABASE_URL` is set in Vercel dashboard
 - Don't commit `.env` file to GitHub
+
+**Connection Pool Exhaustion:**
+```
+Error: too many connections for role "postgres"
+```
+- Your application is creating too many connections
+- **For Vercel Postgres**: Already pooled, shouldn't happen
+- **For other providers**: Add/increase connection pooling parameters in `DATABASE_URL`
+- **For self-hosted**: Configure PgBouncer with appropriate pool_size
+
+**Connection Timeouts:**
+```
+Error: connect ETIMEDOUT
+```
+- Database server is not responding
+- Check database is running and accessible
+- Verify firewall allows connections from Vercel (if self-hosted)
+- For self-hosted PostgreSQL: Check network connectivity
+
+**Slow Database Queries:**
+- Enable query logging in development: `npm run dev`
+- Check `.svelte-kit/logs/` for slow query information
+- Add indexes to frequently queried columns
+- Review Prisma query performance with `@prisma/client/debug`
 
 ---
 
