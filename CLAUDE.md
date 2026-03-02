@@ -88,18 +88,15 @@ The codebase has been migrated to **Svelte 5** with:
 
 Svelte 5 migration guide available in `SVELTE5_MIGRATION_GUIDE.md` if there are remaining components to update.
 
-## Authentication System
+## Content Editing Workflow
 
-**Location**: `src/lib/server/auth.ts`
-
-- Session-based authentication using custom token generation
-- Sessions stored in PostgreSQL via Prisma
-- Token generation: 18 random bytes encoded as base64url
-- Session ID: SHA256 hash of token encoded as hex
-- Session expiry: 30 days from creation
-- Cookie name: `auth-session`
-
-Admin routes (`/admin/*`) require valid session. Authentication currently available but portfolio is public.
+Since this is a public portfolio without authentication:
+1. Content is managed via **Prisma Studio** (`npm run db:studio`)
+2. No login required - internal tool only
+3. For production, you would:
+   - Use Prisma Studio locally and push changes to database
+   - Or add a headless CMS integration (Sanity, Contentful, etc.)
+   - Or implement proper authentication if adding admin functionality
 
 ## Styling & Components
 
@@ -111,14 +108,20 @@ Admin routes (`/admin/*`) require valid session. Authentication currently availa
 
 CSP (Content Security Policy) configured in `svelte.config.js` with `unsafe-inline` for styles (Tailwind requirement).
 
-## Static Content Management
+## Content Management
 
-Three JSON files in `src/lib/content/` store content used by pages:
-- `bio.json` - Used by `/bio` route
-- `blog.json` - Used by `/blog` route (can also load from database)
-- `projects.json` - Used by `/projects` route (can also load from database)
+All content is stored in PostgreSQL via Prisma and managed through **Prisma Studio**:
 
-These are fallbacks; the app can also fetch from the PostgreSQL database.
+```bash
+npm run db:studio
+```
+
+**Content Models:**
+- **Bio** (id=1): Personal profile, skills, and work experience
+- **BlogPost**: Blog posts with categories, tags, and featured status
+- **Project**: Portfolio projects with technologies and links
+
+To update content, use Prisma Studio's GUI instead of editing files. This provides a single source of truth and type-safe data management.
 
 ## Environment Variables
 

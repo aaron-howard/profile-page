@@ -28,35 +28,25 @@ This document outlines recommendations for improving the codebase. These are opp
 ---
 
 ### 1.2 Consolidate Content Sources
-**Status**: ⏳ Not Started
+**Status**: ✅ Completed
 **Effort**: 3-5 hours
 
 **Problem**: Content can come from JSON files (`src/lib/content/*.json`) *and* PostgreSQL. This creates confusion about source of truth.
 
-**Current State**:
-- `bio.json`, `blog.json`, `projects.json` in version control
-- Prisma models `BlogPost` and `Project` in database
-- Routes read from both or have fallbacks
+**Implementation**:
+- ✅ Added Bio model to Prisma schema
+- ✅ Migrated bio.json data to database
+- ✅ Created `src/routes/bio/+page.server.ts` to load from database
+- ✅ Updated bio page to use server-loaded data
+- ✅ Deleted all JSON content files (bio.json, blog.json, projects.json)
+- ✅ Blog and Projects already used database approach
+- ✅ All content now accessible via Prisma Studio
 
-**Recommendation**: **Database-only approach**
-- Use Prisma Studio (`npm run db:studio`) for content management
-- Remove JSON content files
-- Update all routes to fetch from database only
-- Delete fallback logic
-
-**Alternative**: If you want simpler, version-controlled content:
-- Delete BlogPost/Project tables from Prisma schema
-- Remove database reads from routes
-- Keep JSON files only
-- Delete admin routes (no longer needed)
-
-**Tasks**:
-- [ ] Decide: database-only or JSON-only
-- [ ] Update `src/routes/blog/+page.svelte` to use single content source
-- [ ] Update `src/routes/projects/+page.svelte` to use single content source
-- [ ] Remove unused content source files/code
-- [ ] Update `prisma/schema.prisma` if removing database models
-- [ ] Run migrations if needed
+**Result**: Database-only content management
+- Single source of truth
+- All content editable via `npm run db:studio`
+- Type-safe with Prisma
+- No version control noise from content files
 
 ---
 
