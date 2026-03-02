@@ -44,13 +44,16 @@ export async function sendEmail(data: EmailData): Promise<{ success: boolean; er
 	}
 }
 
-async function sendViaSMTP(data: EmailData) {
+async function sendViaSMTP(data: EmailData): Promise<{ success: boolean; error?: string }> {
 	// Implement SMTP sending using nodemailer or similar
 	// For now, return error suggesting configuration
-	throw new Error('SMTP email service not implemented. Please configure EMAIL_SERVICE environment variable.');
+	return {
+		success: false,
+		error: 'SMTP email service not implemented. Please configure EMAIL_SERVICE environment variable.'
+	};
 }
 
-async function sendViaResend(data: EmailData) {
+async function sendViaResend(data: EmailData): Promise<{ success: boolean; error?: string }> {
 	const apiKey = env.RESEND_API_KEY;
 	if (!apiKey) {
 		throw new Error('RESEND_API_KEY environment variable is not set');
@@ -79,7 +82,7 @@ async function sendViaResend(data: EmailData) {
 	return { success: true };
 }
 
-async function sendViaSendGrid(data: EmailData) {
+async function sendViaSendGrid(data: EmailData): Promise<{ success: boolean; error?: string }> {
 	const apiKey = env.SENDGRID_API_KEY;
 	if (!apiKey) {
 		throw new Error('SENDGRID_API_KEY environment variable is not set');
