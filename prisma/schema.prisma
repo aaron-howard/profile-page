@@ -10,24 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String    @id
-  age      Int?
-  sessions Session[]
-
-  @@map("user")
-}
-
-model Session {
-  id        String   @id
-  userId    String   @map("user_id")
-  expiresAt DateTime @map("expires_at") @db.Timestamptz
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@map("session")
-}
-
 model BlogPost {
   id        Int       @id @default(autoincrement())
   title     String
