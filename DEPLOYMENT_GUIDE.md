@@ -269,12 +269,37 @@ vercel logs             # View deployment logs
 
 ---
 
+## ⚠️ Rate Limiting
+
+**Note**: This application does not include rate limiting by default. Rate limiting was intentionally removed because:
+
+1. **Single-instance limitation**: The original in-memory implementation only worked for single server instances
+2. **Serverless incompatibility**: In-memory rate limiting doesn't work with serverless or distributed deployments
+3. **Not required for this use case**: The contact form uses Zod validation instead
+
+### If You Need Rate Limiting
+
+For production applications that need rate limiting, consider:
+
+- **Vercel Rate Limiting**: Vercel's built-in rate limiting through Edge Functions
+- **Redis-based solution**: Use a Redis instance with libraries like `redis` or `ioredis`
+- **Third-party service**: Use services like Cloudflare Rate Limiting or API Gateway rate limiting
+- **Middleware**: Implement custom rate limiting middleware based on your needs
+
+Example setup with Redis would require:
+1. Setting up a Redis instance (e.g., via Vercel KV or separate Redis service)
+2. Installing `redis` package
+3. Adding rate limiting middleware to your SvelteKit hooks
+
+---
+
 ## 🔗 Helpful Links
 
 - [Vercel Documentation](https://vercel.com/docs)
 - [SvelteKit Deployment Guide](https://kit.svelte.dev/docs/adapters)
 - [Prisma Deployment Guide](https://www.prisma.io/docs/guides/deployment)
 - [GitHub Actions for CI/CD](https://docs.github.com/en/actions)
+- [Redis Rate Limiting](https://redis.io/commands/incr/) (for custom implementation)
 
 ---
 
