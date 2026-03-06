@@ -1,9 +1,5 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(rm:*)",
-      "Bash(npm run:*)",
-      "Bash(xargs grep:*)"
-    ]
-  }
+	"permissions": {
+		"allow": ["Bash(rm:*)", "Bash(npm run:*)", "Bash(xargs grep:*)"]
+	}
 }

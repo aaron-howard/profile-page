@@ -26,4 +26,3 @@ export interface Project {
 	live?: string | null;
 	featured: boolean;
 }
-

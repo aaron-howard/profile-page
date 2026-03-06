@@ -45,12 +45,13 @@ export async function sendEmail(data: EmailData): Promise<{ success: boolean; er
 	}
 }
 
-async function sendViaSMTP(data: EmailData): Promise<{ success: boolean; error?: string }> {
+async function sendViaSMTP(_data: EmailData): Promise<{ success: boolean; error?: string }> {
 	// Implement SMTP sending using nodemailer or similar
 	// For now, return error suggesting configuration
 	return {
 		success: false,
-		error: 'SMTP email service not implemented. Please configure EMAIL_SERVICE environment variable.'
+		error:
+			'SMTP email service not implemented. Please configure EMAIL_SERVICE environment variable.'
 	};
 }
 
@@ -63,7 +64,7 @@ async function sendViaResend(data: EmailData): Promise<{ success: boolean; error
 	const response = await fetch('https://api.resend.com/emails', {
 		method: 'POST',
 		headers: {
-			'Authorization': `Bearer ${apiKey}`,
+			Authorization: `Bearer ${apiKey}`,
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
@@ -92,13 +93,15 @@ async function sendViaSendGrid(data: EmailData): Promise<{ success: boolean; err
 	const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
 		method: 'POST',
 		headers: {
-			'Authorization': `Bearer ${apiKey}`,
+			Authorization: `Bearer ${apiKey}`,
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			personalizations: [{
-				to: [{ email: data.to }]
-			}],
+			personalizations: [
+				{
+					to: [{ email: data.to }]
+				}
+			],
 			from: { email: env.EMAIL_FROM || 'noreply@example.com' },
 			subject: data.subject,
 			content: [
@@ -175,4 +178,3 @@ ${data.message}
 
 	return { html, text };
 }
-

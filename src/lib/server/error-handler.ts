@@ -29,8 +29,7 @@ export function logError(error: unknown, context: string): void {
 		console.error(`[${timestamp}] Error in ${context}:`, error);
 	} else {
 		// Production: log sanitized version
-		const errorMessage =
-			error instanceof Error ? error.message : String(error);
+		const errorMessage = error instanceof Error ? error.message : String(error);
 		console.error(`[${timestamp}] Error in ${context}: ${errorMessage}`);
 	}
 }
@@ -92,10 +91,7 @@ export function createAppError(
  * @param formName - Name of the form (for logging)
  * @returns Object with user-friendly error message
  */
-export function handleFormError(
-	error: unknown,
-	formName: string
-): { error: string } {
+export function handleFormError(error: unknown, formName: string): { error: string } {
 	logError(error, `form: ${formName}`);
 
 	const message =
@@ -114,10 +110,7 @@ export function handleFormError(
  * @param operation - What operation was being performed
  * @returns User-friendly error message
  */
-export function handleOperationError(
-	error: unknown,
-	operation: string
-): string {
+export function handleOperationError(error: unknown, operation: string): string {
 	logError(error, operation);
 
 	if (error instanceof Error) {

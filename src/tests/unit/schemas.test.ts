@@ -58,7 +58,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const nameError = result.error.issues.find(issue => issue.path[0] === 'name');
+				const nameError = result.error.issues.find((issue) => issue.path[0] === 'name');
 				expect(nameError?.message).toBe('Name is required');
 			}
 		});
@@ -73,7 +73,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const nameError = result.error.issues.find(issue => issue.path[0] === 'name');
+				const nameError = result.error.issues.find((issue) => issue.path[0] === 'name');
 				expect(nameError?.message).toBe('Name must be 100 characters or less');
 			}
 		});
@@ -101,7 +101,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const emailError = result.error.issues.find(issue => issue.path[0] === 'email');
+				const emailError = result.error.issues.find((issue) => issue.path[0] === 'email');
 				expect(emailError?.message).toBe('Email is required');
 			}
 		});
@@ -116,7 +116,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const emailError = result.error.issues.find(issue => issue.path[0] === 'email');
+				const emailError = result.error.issues.find((issue) => issue.path[0] === 'email');
 				expect(emailError?.message).toBe('Please enter a valid email address');
 			}
 		});
@@ -131,7 +131,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const emailError = result.error.issues.find(issue => issue.path[0] === 'email');
+				const emailError = result.error.issues.find((issue) => issue.path[0] === 'email');
 				expect(emailError?.message).toBe('Email must be 255 characters or less');
 			}
 		});
@@ -160,7 +160,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const subjectError = result.error.issues.find(issue => issue.path[0] === 'subject');
+				const subjectError = result.error.issues.find((issue) => issue.path[0] === 'subject');
 				expect(subjectError?.message).toBe('Subject is required');
 			}
 		});
@@ -175,7 +175,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const subjectError = result.error.issues.find(issue => issue.path[0] === 'subject');
+				const subjectError = result.error.issues.find((issue) => issue.path[0] === 'subject');
 				expect(subjectError?.message).toBe('Subject must be 200 characters or less');
 			}
 		});
@@ -203,7 +203,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const messageError = result.error.issues.find(issue => issue.path[0] === 'message');
+				const messageError = result.error.issues.find((issue) => issue.path[0] === 'message');
 				expect(messageError?.message).toBe('Message is required');
 			}
 		});
@@ -218,7 +218,7 @@ describe('contactFormSchema', () => {
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(false);
 			if (!result.success) {
-				const messageError = result.error.issues.find(issue => issue.path[0] === 'message');
+				const messageError = result.error.issues.find((issue) => issue.path[0] === 'message');
 				expect(messageError?.message).toBe('Message must be 5,000 characters or less');
 			}
 		});

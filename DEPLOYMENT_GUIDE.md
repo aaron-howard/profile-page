@@ -14,6 +14,7 @@ This guide will walk you through deploying your SvelteKit portfolio with Prisma 
 ## 📋 Step 1: Prepare Your Local Repository
 
 ### 1.1 Initialize Git Repository (if not already done)
+
 ```bash
 git init
 git add .
@@ -21,6 +22,7 @@ git commit -m "Initial commit: SvelteKit portfolio with Prisma"
 ```
 
 ### 1.2 Create .gitignore (verify it includes)
+
 ```
 node_modules/
 .env
@@ -54,6 +56,7 @@ build/
    - Copy the `POSTGRES_URL` (this is your `DATABASE_URL`)
 
 ### Option B: Other PostgreSQL Providers
+
 - **Neon** (free tier): [neon.tech](https://neon.tech)
 - **Supabase** (free tier): [supabase.com](https://supabase.com)
 - **Railway** (free tier): [railway.app](https://railway.app)
@@ -65,6 +68,7 @@ build/
 ### Why Connection Pooling?
 
 Without pooling, serverless functions create new database connections on each request, causing:
+
 - **Connection overhead**: Slower requests (250ms+ per new connection)
 - **Connection limits**: Databases limit concurrent connections (usually 100-200)
 - **Resource waste**: Unused connections consume server memory
@@ -86,20 +90,24 @@ DATABASE_URL="postgresql://user:password@host:5432/database?connection_limit=20&
 ```
 
 **Explanation:**
+
 - `connection_limit=20`: Maximum connections per pool (adjust based on your plan)
 - `statement_cache_size=20`: Cache prepared statements for performance
 
 **Provider-Specific Guides:**
 
 **Neon:**
+
 - Pooling is available (check Neon dashboard for pool connection string)
 - Add `?connection_limit=20` to your connection string
 
 **Supabase:**
+
 - Use the "Connection Pooling" connection string from Project Settings
 - Already configured with optimal pooling settings
 
 **Railway:**
+
 - Connection pooling is included in their PostgreSQL offering
 - Use the provided connection string as-is
 
@@ -108,11 +116,13 @@ DATABASE_URL="postgresql://user:password@host:5432/database?connection_limit=20&
 If you're self-hosting PostgreSQL (not recommended for serverless), use **PgBouncer** as an external connection pooler:
 
 **Setup Steps:**
+
 1. Install PgBouncer on your server
 2. Configure PgBouncer to forward connections to your PostgreSQL instance
 3. Point your `DATABASE_URL` to PgBouncer (usually `localhost:6432`)
 
 **Example PgBouncer config:**
+
 ```ini
 [databases]
 portfolio = host=localhost port=5432 dbname=portfolio user=postgres password=password
@@ -130,6 +140,7 @@ default_pool_size = 25
 ## 📁 Step 3: Push to GitHub
 
 ### 3.1 Create GitHub Repository
+
 1. Go to [github.com](https://github.com)
 2. Click "New repository" (green button)
 3. Repository name: `portfolio-website` (or your choice)
@@ -138,6 +149,7 @@ default_pool_size = 25
 6. Click "Create repository"
 
 ### 3.2 Connect Local Repository to GitHub
+
 ```bash
 # Add GitHub remote (replace with your username/repo)
 git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
@@ -152,6 +164,7 @@ git push -u origin main
 ## 🌐 Step 4: Deploy to Vercel
 
 ### 4.1 Connect GitHub to Vercel
+
 1. **Go to Vercel Dashboard**
    - Visit [vercel.com/dashboard](https://vercel.com/dashboard)
    - Click "Add New..." → "Project"
@@ -163,6 +176,7 @@ git push -u origin main
    - Click "Import"
 
 ### 4.2 Configure Project Settings
+
 1. **Project Settings**
    - Project Name: `portfolio-website` (or your choice)
    - Framework Preset: Should auto-detect "SvelteKit"
@@ -174,6 +188,7 @@ git push -u origin main
    - Install Command: `npm install`
 
 ### 4.3 Add Environment Variables
+
 1. **In the deployment configuration**
    - Expand "Environment Variables" section
    - Add variable:
@@ -188,6 +203,7 @@ git push -u origin main
 ## 🔧 Step 5: Post-Deployment Setup
 
 ### 5.1 Initialize Database Schema
+
 After your first deployment:
 
 1. **Go to Vercel Dashboard**
@@ -197,12 +213,14 @@ After your first deployment:
 
 2. **Run Database Migration**
    - In your local terminal:
+
    ```bash
    # Set your production DATABASE_URL locally for this command
    DATABASE_URL="your_production_database_url" npm run db:push
    ```
 
    **OR** use Vercel CLI:
+
    ```bash
    # Install Vercel CLI
    npm i -g vercel
@@ -219,6 +237,7 @@ After your first deployment:
    ```
 
 ### 5.2 Verify Deployment
+
 1. **Check your live site**
    - Vercel will provide a URL like: `https://your-project.vercel.app`
    - Test all pages and functionality
@@ -232,10 +251,12 @@ After your first deployment:
 ## 🔄 Step 6: Set Up Continuous Deployment
 
 ### 6.1 Automatic Deployments
+
 - **Already configured!** Every push to `main` branch will auto-deploy
 - Pull requests create preview deployments
 
 ### 6.2 Branch Protection (Optional but Recommended)
+
 1. **In GitHub Repository**
    - Go to Settings → Branches
    - Add rule for `main` branch
@@ -246,6 +267,7 @@ After your first deployment:
 ## 🛠️ Step 7: Custom Domain (Optional)
 
 ### 7.1 Add Custom Domain
+
 1. **In Vercel Dashboard**
    - Go to your project
    - Click "Settings" → "Domains"
@@ -253,6 +275,7 @@ After your first deployment:
    - Follow DNS configuration instructions
 
 ### 7.2 SSL Certificate
+
 - Vercel automatically provides SSL certificates
 - Your site will be available via HTTPS
 
@@ -261,12 +284,14 @@ After your first deployment:
 ## 📊 Step 8: Monitoring & Analytics
 
 ### 8.1 Vercel Analytics (Optional)
+
 1. **Enable Analytics**
    - In project settings
    - Go to "Analytics" tab
    - Enable Web Analytics (free tier available)
 
 ### 8.2 Function Logs
+
 - Monitor database connections and errors
 - Access via Vercel Dashboard → Functions → View Logs
 
@@ -277,6 +302,7 @@ After your first deployment:
 ### Common Issues:
 
 **Build Fails:**
+
 ```bash
 # Check build locally first
 npm run build
@@ -284,39 +310,47 @@ npm run check
 ```
 
 **Database Connection Issues:**
+
 - Verify `DATABASE_URL` is correctly set in Vercel
 - Check database is accessible from external connections
 - Ensure connection string includes SSL parameters if required
 
 **Prisma Issues:**
+
 ```bash
 # Regenerate Prisma client
 npm run db:generate
 ```
 
 **Environment Variables:**
+
 - Make sure `DATABASE_URL` is set in Vercel dashboard
 - Don't commit `.env` file to GitHub
 
 **Connection Pool Exhaustion:**
+
 ```
 Error: too many connections for role "postgres"
 ```
+
 - Your application is creating too many connections
 - **For Vercel Postgres**: Already pooled, shouldn't happen
 - **For other providers**: Add/increase connection pooling parameters in `DATABASE_URL`
 - **For self-hosted**: Configure PgBouncer with appropriate pool_size
 
 **Connection Timeouts:**
+
 ```
 Error: connect ETIMEDOUT
 ```
+
 - Database server is not responding
 - Check database is running and accessible
 - Verify firewall allows connections from Vercel (if self-hosted)
 - For self-hosted PostgreSQL: Check network connectivity
 
 **Slow Database Queries:**
+
 - Enable query logging in development: `npm run dev`
 - Check `.svelte-kit/logs/` for slow query information
 - Add indexes to frequently queried columns
@@ -378,6 +412,7 @@ For production applications that need rate limiting, consider:
 - **Middleware**: Implement custom rate limiting middleware based on your needs
 
 Example setup with Redis would require:
+
 1. Setting up a Redis instance (e.g., via Vercel KV or separate Redis service)
 2. Installing `redis` package
 3. Adding rate limiting middleware to your SvelteKit hooks

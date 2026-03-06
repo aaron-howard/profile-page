@@ -86,7 +86,10 @@ export function sanitizeHtml(html: string): string {
  */
 export function sanitizeEmail(email: string): string {
 	// Remove any HTML tags and trim
-	const cleaned = email.replace(/<[^>]*>/g, '').trim().toLowerCase();
+	const cleaned = email
+		.replace(/<[^>]*>/g, '')
+		.trim()
+		.toLowerCase();
 
 	// Basic email validation pattern (RFC 5322 simplified)
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

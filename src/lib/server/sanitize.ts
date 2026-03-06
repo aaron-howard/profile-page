@@ -4,4 +4,10 @@
  */
 
 // Sanitization exports
-export { escapeHtml, sanitizeText, sanitizeHtml, sanitizeEmail, sanitizeUrl } from './sanitize-utils';
+export {
+	escapeHtml,
+	sanitizeText,
+	sanitizeHtml,
+	sanitizeEmail,
+	sanitizeUrl
+} from './sanitize-utils';

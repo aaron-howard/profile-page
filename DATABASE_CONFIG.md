@@ -4,13 +4,13 @@ This document explains database setup, connection pooling strategies, and best p
 
 ## Quick Reference
 
-| Provider | Built-in Pooling | Configuration | Effort |
-|----------|------------------|---------------|--------|
-| **Vercel Postgres** | ✅ Yes (automatic) | Copy URL | 5 min |
-| **Neon** | ✅ Yes (separate URL) | Use pool connection string | 5 min |
-| **Supabase** | ✅ Yes (separate URL) | Use pool connection string | 5 min |
-| **Railway** | ✅ Yes (automatic) | Copy URL | 5 min |
-| **Self-hosted + PgBouncer** | ⚠️ Manual setup | Configure PgBouncer | 30 min |
+| Provider                    | Built-in Pooling      | Configuration              | Effort |
+| --------------------------- | --------------------- | -------------------------- | ------ |
+| **Vercel Postgres**         | ✅ Yes (automatic)    | Copy URL                   | 5 min  |
+| **Neon**                    | ✅ Yes (separate URL) | Use pool connection string | 5 min  |
+| **Supabase**                | ✅ Yes (separate URL) | Use pool connection string | 5 min  |
+| **Railway**                 | ✅ Yes (automatic)    | Copy URL                   | 5 min  |
+| **Self-hosted + PgBouncer** | ⚠️ Manual setup       | Configure PgBouncer        | 30 min |
 
 ---
 
@@ -27,6 +27,7 @@ Request 3 → New Connection → Query → Close Connection (250ms overhead)
 ```
 
 This causes:
+
 - **Slow responses** (250ms+ per request just for connection)
 - **Connection limit exceeded** errors (databases limit to ~100-200 connections)
 - **Resource waste** (unused connections consume memory)
@@ -41,6 +42,7 @@ Request 3 → Borrow Connection → Query → Return to Pool (5ms overhead)
 ```
 
 This provides:
+
 - **Fast responses** (reuse connections, minimal overhead)
 - **Reliability** (pool manages connection limits gracefully)
 - **Efficiency** (connections serve multiple requests)
@@ -52,6 +54,7 @@ This provides:
 ### 1. Vercel Postgres (Recommended for Vercel Deployments)
 
 **Advantages:**
+
 - ✅ Built-in connection pooling (automatic)
 - ✅ Free tier available (2 GB storage)
 - ✅ No configuration needed
@@ -59,6 +62,7 @@ This provides:
 - ✅ Automatic backups
 
 **Setup:**
+
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
 2. Click "Storage" → "Create Database" → "Postgres"
 3. Choose "Hobby" tier (free)
@@ -66,12 +70,14 @@ This provides:
 5. Add to your `.env` as `DATABASE_URL`
 
 **Connection String Example:**
+
 ```
 postgresql://default:password@ep-calm-lake.us-east-1.postgres.vercel-storage.com:5432/verceldb?sslmode=require
 ```
 
 **Configuration:**
 No additional configuration needed! Vercel Postgres automatically handles:
+
 - Connection pooling
 - SSL/TLS encryption
 - Automatic backups
@@ -82,23 +88,27 @@ No additional configuration needed! Vercel Postgres automatically handles:
 ### 2. Neon (PostgreSQL as a Service)
 
 **Advantages:**
+
 - ✅ Generous free tier (3GB storage, 50 GB data transfer)
 - ✅ Serverless PostgreSQL (scales to 0)
 - ✅ Built-in connection pooling
 - ✅ Git integration for schema management
 
 **Setup:**
+
 1. Go to [neon.tech](https://neon.tech)
 2. Create account and project
 3. Get connection string from console
 4. Use the **pooling connection string** (important!)
 
 **Connection String Format:**
+
 ```
 postgresql://user:password@[project].us-east-1.neon.tech:5432/neondb?sslmode=require
 ```
 
 **For Pooling, Use This URL:**
+
 ```
 postgresql://user:password@[project]-pooler.us-east-1.neon.tech:6432/neondb?sslmode=require
 ```
@@ -110,12 +120,14 @@ postgresql://user:password@[project]-pooler.us-east-1.neon.tech:6432/neondb?sslm
 ### 3. Supabase (Firebase Alternative)
 
 **Advantages:**
+
 - ✅ Generous free tier
 - ✅ Built-in authentication and storage
 - ✅ Connection pooling included
 - ✅ Dashboard GUI for management
 
 **Setup:**
+
 1. Go to [supabase.com](https://supabase.com)
 2. Create project
 3. Go to Project Settings → Database
@@ -123,6 +135,7 @@ postgresql://user:password@[project]-pooler.us-east-1.neon.tech:6432/neondb?sslm
 5. Use as `DATABASE_URL`
 
 **Connection String Example:**
+
 ```
 postgresql://postgres:password@db.project-ref.supabase.co:6543/postgres
 ```
@@ -134,12 +147,14 @@ postgresql://postgres:password@db.project-ref.supabase.co:6543/postgres
 ### 4. Railway (All-in-One Platform)
 
 **Advantages:**
+
 - ✅ Simple deployment
 - ✅ Built-in connection pooling
 - ✅ Pay-as-you-go pricing ($5 free credit/month)
 - ✅ PostgreSQL preconfigured
 
 **Setup:**
+
 1. Go to [railway.app](https://railway.app)
 2. Create project
 3. Add PostgreSQL
@@ -154,11 +169,13 @@ Railway automatically handles pooling. No additional configuration needed.
 ### 5. Self-Hosted PostgreSQL with PgBouncer
 
 **Use When:**
+
 - You want full control over the database
 - You're running on your own servers
 - You need custom PostgreSQL configuration
 
 **Challenges:**
+
 - You maintain the database
 - You handle backups
 - You manage scaling
@@ -167,6 +184,7 @@ Railway automatically handles pooling. No additional configuration needed.
 **PgBouncer Setup:**
 
 1. **Install PgBouncer on your server:**
+
    ```bash
    # Ubuntu/Debian
    sudo apt-get install pgbouncer
@@ -176,6 +194,7 @@ Railway automatically handles pooling. No additional configuration needed.
    ```
 
 2. **Configure PgBouncer** (`/etc/pgbouncer/pgbouncer.ini`):
+
    ```ini
    [databases]
    portfolio = host=localhost port=5432 dbname=portfolio user=postgres password=yourpassword
@@ -201,6 +220,7 @@ Railway automatically handles pooling. No additional configuration needed.
    ```
 
 3. **Point your `DATABASE_URL` to PgBouncer:**
+
    ```
    DATABASE_URL="postgresql://postgres:password@localhost:6432/portfolio"
    ```
@@ -212,6 +232,7 @@ Railway automatically handles pooling. No additional configuration needed.
    ```
 
 **Pool Mode Explanation:**
+
 - **Transaction**: Connection released after each transaction (recommended for serverless)
 - **Session**: Connection released after client disconnects
 - **Statement**: Connection released after each SQL statement
@@ -228,23 +249,25 @@ postgresql://user:password@host:5432/database?connection_limit=20&statement_cach
 
 **Common Parameters:**
 
-| Parameter | Default | Example | Purpose |
-|-----------|---------|---------|---------|
-| `connection_limit` | 10 | 20 | Max connections per pool |
-| `statement_cache_size` | 15 | 20 | Cache prepared statements |
-| `sslmode` | prefer | require | Enforce SSL encryption |
-| `pool_timeout` | 3 | 10 | Timeout waiting for connection |
+| Parameter              | Default | Example | Purpose                        |
+| ---------------------- | ------- | ------- | ------------------------------ |
+| `connection_limit`     | 10      | 20      | Max connections per pool       |
+| `statement_cache_size` | 15      | 20      | Cache prepared statements      |
+| `sslmode`              | prefer  | require | Enforce SSL encryption         |
+| `pool_timeout`         | 3       | 10      | Timeout waiting for connection |
 
 ---
 
 ## Performance Tips
 
 ### 1. Use Connection Pooling
+
 - Always enable connection pooling for serverless
 - Managed providers (Vercel, Neon, Supabase) are recommended
 - Reduces latency by 200-250ms per request
 
 ### 2. Optimize Pool Size
+
 ```
 # Formula: connections_needed = (workers * queries_per_second) + buffer
 # Example: (50 workers * 10 queries/sec) + 10 = 510 connections
@@ -255,20 +278,21 @@ postgresql://user:password@host:5432/database?connection_limit=20&statement_cach
 ```
 
 ### 3. Use Prisma Efficiently
+
 ```typescript
 // ✅ Good: Reuse db instance
 import { db } from '$lib/server/db';
 
 // ✅ Use batch operations
 const posts = await db.post.findMany({
-  where: { published: true },
-  take: 10,
-  skip: 0
+	where: { published: true },
+	take: 10,
+	skip: 0
 });
 
 // ✅ Use select to fetch only needed fields
 const authors = await db.user.findMany({
-  select: { id: true, name: true }
+	select: { id: true, name: true }
 });
 
 // ❌ Avoid: Creating new PrismaClient instances
@@ -277,13 +301,14 @@ const newDb = new PrismaClient(); // Don't do this!
 // ❌ Avoid: N+1 queries
 const posts = await db.post.findMany();
 for (const post of posts) {
-  post.author = await db.user.findUnique({
-    where: { id: post.authorId }
-  });
+	post.author = await db.user.findUnique({
+		where: { id: post.authorId }
+	});
 }
 ```
 
 ### 4. Add Database Indexes
+
 ```sql
 -- Index frequently queried columns
 CREATE INDEX idx_posts_published ON posts(published);
@@ -291,6 +316,7 @@ CREATE INDEX idx_users_email ON users(email);
 ```
 
 ### 5. Monitor Connection Usage
+
 ```bash
 # Check active connections
 SELECT count(*) FROM pg_stat_activity;
@@ -308,11 +334,13 @@ SHOW max_connections;
 **Symptoms:** Requests start failing with connection limit errors
 
 **Causes:**
+
 - Connection pooling not enabled
 - Pool size too small for traffic
 - Connections not being released (idle connections)
 
 **Solutions:**
+
 1. Enable connection pooling
 2. Increase pool size
 3. Add connection timeout to close idle connections
@@ -323,11 +351,13 @@ SHOW max_connections;
 **Symptoms:** Requests hang or timeout when connecting to database
 
 **Causes:**
+
 - Database server is down/unreachable
 - Network connectivity issues
 - Firewall blocking connections
 
 **Solutions:**
+
 1. Verify database is running: `psql postgresql://...`
 2. Check network connectivity: `ping host`
 3. Verify firewall rules allow your IP
@@ -338,12 +368,14 @@ SHOW max_connections;
 **Symptoms:** Database queries taking 1+ seconds
 
 **Causes:**
+
 - Missing indexes
 - Inefficient queries
 - Connection latency
 - Database resource limits
 
 **Solutions:**
+
 1. Add indexes to frequently queried columns
 2. Use Prisma's `select` to fetch only needed data
 3. Enable query logging: `npm run dev` (shows queries)
@@ -354,11 +386,13 @@ SHOW max_connections;
 **Symptoms:** "Connection pool exhausted" errors
 
 **Causes:**
+
 - Too many simultaneous connections
 - Connections not being released properly
 - Pool size too small
 
 **Solutions:**
+
 ```typescript
 // ✅ Always close Prisma connections when done
 import { db } from '$lib/server/db';
@@ -402,6 +436,7 @@ DATABASE_URL="postgresql://postgres:password@localhost:6432/portfolio"
 If you're moving from self-hosted to a managed provider:
 
 1. **Dump your database:**
+
    ```bash
    pg_dump postgresql://user:password@localhost:5432/portfolio > backup.sql
    ```
@@ -409,6 +444,7 @@ If you're moving from self-hosted to a managed provider:
 2. **Create database in new provider**
 
 3. **Restore database:**
+
    ```bash
    psql postgresql://new-url < backup.sql
    ```
@@ -425,19 +461,25 @@ If you're moving from self-hosted to a managed provider:
 ## Recommended Setup by Scenario
 
 ### Scenario: Portfolio on Vercel
+
 **Best Choice:** Vercel Postgres
+
 - Copy connection string, done
 - No configuration needed
 - Optimal performance for Vercel
 
 ### Scenario: Using Vercel + Additional Services
+
 **Best Choice:** Supabase or Neon
+
 - Integrates well with external services
 - Good free tier
 - Built-in auth if needed
 
 ### Scenario: Self-Hosted Server
+
 **Best Choice:** Self-hosted PostgreSQL + PgBouncer
+
 - Full control
 - Save on database costs
 - More maintenance burden

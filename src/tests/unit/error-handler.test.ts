@@ -198,9 +198,8 @@ describe('error-handler - development mode (dev=true)', () => {
 			version: 'test'
 		}));
 
-		const { getUserFriendlyMessage: getUserFriendlyMessageDev } = await import(
-			'$lib/server/error-handler'
-		);
+		const { getUserFriendlyMessage: getUserFriendlyMessageDev } =
+			await import('$lib/server/error-handler');
 		const error = new Error('Sensitive database info');
 		const result = getUserFriendlyMessageDev(error);
 		expect(result).toBe('Sensitive database info');
@@ -214,9 +213,7 @@ describe('error-handler - development mode (dev=true)', () => {
 			version: 'test'
 		}));
 
-		const { createAppError: createAppErrorDev } = await import(
-			'$lib/server/error-handler'
-		);
+		const { createAppError: createAppErrorDev } = await import('$lib/server/error-handler');
 		const error = createAppErrorDev('TEST_ERROR', 'Test message', 400, { sensitive: 'data' });
 		expect(error).toHaveProperty('details');
 		expect(error.details).toEqual({ sensitive: 'data' });
@@ -230,9 +227,7 @@ describe('error-handler - development mode (dev=true)', () => {
 			version: 'test'
 		}));
 
-		const { handleFormError: handleFormErrorDev } = await import(
-			'$lib/server/error-handler'
-		);
+		const { handleFormError: handleFormErrorDev } = await import('$lib/server/error-handler');
 		const error = new Error('Database constraint violation');
 		const result = handleFormErrorDev(error, 'contactForm');
 		expect(result.error).toBe('Database constraint violation');
@@ -246,9 +241,8 @@ describe('error-handler - development mode (dev=true)', () => {
 			version: 'test'
 		}));
 
-		const { handleOperationError: handleOperationErrorDev } = await import(
-			'$lib/server/error-handler'
-		);
+		const { handleOperationError: handleOperationErrorDev } =
+			await import('$lib/server/error-handler');
 		const error = new Error('Some random error');
 		const result = handleOperationErrorDev(error, 'operation');
 		expect(result).toBe('Some random error');

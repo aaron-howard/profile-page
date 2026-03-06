@@ -11,14 +11,7 @@ async function main() {
 		about:
 			"I'm a passionate full-stack developer with a love for creating elegant, user-friendly applications. With several years of experience in web development, I specialize in modern JavaScript frameworks, cloud technologies, and building scalable solutions that solve real-world problems.",
 		skillsFrontend: ['React', 'Vue.js', 'Svelte', 'TypeScript', 'Tailwind CSS', 'Next.js'],
-		skillsBackend: [
-			'Node.js',
-			'Python',
-			'PostgreSQL',
-			'MongoDB',
-			'Express.js',
-			'FastAPI'
-		],
+		skillsBackend: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'Express.js', 'FastAPI'],
 		skillsTools: ['Git', 'Docker', 'Netlify', 'Vercel', 'Figma', 'Postman'],
 		skillsLanguages: ['JavaScript', 'TypeScript', 'Python', 'SQL', 'HTML/CSS'],
 		experience: [

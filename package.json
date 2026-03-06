@@ -7,7 +7,7 @@
 		"dev": "vite dev",
 		"build": "prisma generate && vite build",
 		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
+		"prepare": "svelte-kit sync || echo '' && husky",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
@@ -43,7 +43,8 @@
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
 		"happy-dom": "^17.4.4",
-		"mdsvex": "^0.12.3",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.3.2",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
@@ -58,11 +59,20 @@
 		"vitest": "^3.2.4"
 	},
 	"dependencies": {
-		"@oslojs/crypto": "^1.0.1",
-		"@oslojs/encoding": "^1.1.0",
 		"@prisma/client": "^6.1.0",
-		"superforms": "^0.0.1",
 		"sveltekit-superforms": "^2.30.0",
 		"zod": "^4.3.6"
+	},
+	"engines": {
+		"node": ">=22.0.0"
+	},
+	"lint-staged": {
+		"*.{ts,js,svelte}": [
+			"prettier --check",
+			"eslint --max-warnings 0"
+		],
+		"*.{css,json,md,yml}": [
+			"prettier --check"
+		]
 	}
 }

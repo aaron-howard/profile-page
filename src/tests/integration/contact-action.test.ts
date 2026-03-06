@@ -17,7 +17,7 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn(schema => schema)
+			zod: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
@@ -32,7 +32,8 @@ describe('contact form action', () => {
 			json: vi.fn().mockResolvedValue({})
 		};
 
-		const result = await actions.default({ request: mockRequest as any });
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const result = await actions.default({ request: mockRequest as any });
 
 		// Should return fail(400, { form })
 		expect(result).toBeDefined();
@@ -57,7 +58,7 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn(schema => schema)
+			zod: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
@@ -75,7 +76,8 @@ describe('contact form action', () => {
 			json: vi.fn().mockResolvedValue({})
 		};
 
-		const result = await actions.default({ request: mockRequest as any });
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const result = await actions.default({ request: mockRequest as any });
 
 		expect(mockSendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();
@@ -100,7 +102,7 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn(schema => schema)
+			zod: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
@@ -118,7 +120,8 @@ describe('contact form action', () => {
 			json: vi.fn().mockResolvedValue({})
 		};
 
-		const result = await actions.default({ request: mockRequest as any });
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const result = await actions.default({ request: mockRequest as any });
 
 		expect(mockSendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();
@@ -143,7 +146,7 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn(schema => schema)
+			zod: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
@@ -161,7 +164,8 @@ describe('contact form action', () => {
 			json: vi.fn().mockResolvedValue({})
 		};
 
-		const result = await actions.default({ request: mockRequest as any });
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const result = await actions.default({ request: mockRequest as any });
 
 		expect(mockSendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();

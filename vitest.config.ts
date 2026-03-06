@@ -32,7 +32,7 @@ export default defineConfig({
 			'$app/navigation': resolve('./src/tests/mocks/app-navigation.ts'),
 			'$env/dynamic/private': resolve('./src/tests/mocks/env-dynamic-private.ts'),
 			'$env/dynamic/public': resolve('./src/tests/mocks/env-dynamic-public.ts'),
-			'$lib': resolve('./src/lib'),
+			$lib: resolve('./src/lib'),
 			'$lib/server/db': resolve('./src/tests/mocks/db.ts')
 		}
 	}

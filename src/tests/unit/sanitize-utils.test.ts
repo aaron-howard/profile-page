@@ -29,8 +29,9 @@ describe('escapeHtml', () => {
 	});
 
 	it('escapes multiple special characters', () => {
-		expect(escapeHtml('<script src="x" data=\'y\'>'))
-			.toBe('&lt;script src=&quot;x&quot; data=&#039;y&#039;&gt;');
+		expect(escapeHtml('<script src="x" data=\'y\'>')).toBe(
+			'&lt;script src=&quot;x&quot; data=&#039;y&#039;&gt;'
+		);
 	});
 
 	it('returns empty string unchanged', () => {
@@ -78,49 +79,50 @@ describe('sanitizeText', () => {
 
 describe('sanitizeHtml', () => {
 	it('removes script tags with content', () => {
-		expect(sanitizeHtml('<p>Hello</p><script>alert("xss")</script>'))
-			.toBe('<p>Hello</p>');
+		expect(sanitizeHtml('<p>Hello</p><script>alert("xss")</script>')).toBe('<p>Hello</p>');
 	});
 
 	it('removes script tags case-insensitively', () => {
-		expect(sanitizeHtml('<SCRIPT>alert("xss")</SCRIPT>'))
-			.toBe('');
+		expect(sanitizeHtml('<SCRIPT>alert("xss")</SCRIPT>')).toBe('');
 	});
 
 	it('removes event handler attributes', () => {
-		expect(sanitizeHtml('<img onclick="alert(1)" src="x">'))
-			.toBe('<img  src="x">');
+		expect(sanitizeHtml('<img onclick="alert(1)" src="x">')).toBe('<img  src="x">');
 	});
 
 	it('removes multiple event handlers', () => {
-		expect(sanitizeHtml('<button onmouseover="x" onclick="y">Click</button>'))
-			.toBe('<button  >Click</button>');
+		expect(sanitizeHtml('<button onmouseover="x" onclick="y">Click</button>')).toBe(
+			'<button  >Click</button>'
+		);
 	});
 
 	it('removes javascript: URLs', () => {
-		expect(sanitizeHtml('<a href="javascript:alert(1)">click</a>'))
-			.toBe('<a href="alert(1)">click</a>');
+		expect(sanitizeHtml('<a href="javascript:alert(1)">click</a>')).toBe(
+			'<a href="alert(1)">click</a>'
+		);
 	});
 
 	it('removes data:text/html URLs after script tag removal', () => {
 		// Script tag is removed first, leaving data:text/html, then data: prefix is removed
-		expect(sanitizeHtml('<img src="data:text/html,<script>alert(1)</script>">'))
-			.toBe('<img src=",">');
+		expect(sanitizeHtml('<img src="data:text/html,<script>alert(1)</script>">')).toBe(
+			'<img src=",">'
+		);
 	});
 
 	it('removes iframe tags completely', () => {
-		expect(sanitizeHtml('<iframe src="evil.com"></iframe>'))
-			.toBe('');
+		expect(sanitizeHtml('<iframe src="evil.com"></iframe>')).toBe('');
 	});
 
 	it('preserves safe HTML tags', () => {
-		expect(sanitizeHtml('<p><b>Bold</b> and <i>italic</i></p>'))
-			.toBe('<p><b>Bold</b> and <i>italic</i></p>');
+		expect(sanitizeHtml('<p><b>Bold</b> and <i>italic</i></p>')).toBe(
+			'<p><b>Bold</b> and <i>italic</i></p>'
+		);
 	});
 
 	it('handles complex script tags with nested content', () => {
-		expect(sanitizeHtml('<div><script>var x = "<script>alert(1)</script>";</script></div>'))
-			.toBe('<div>";</script></div>');
+		expect(sanitizeHtml('<div><script>var x = "<script>alert(1)</script>";</script></div>')).toBe(
+			'<div>";</script></div>'
+		);
 	});
 
 	it('returns empty string when input is empty', () => {
