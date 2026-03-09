@@ -2,7 +2,6 @@
     import '../app.css';
     import type { LayoutData } from './$types';
     let { children, data } = $props<{ children: any; data: LayoutData }>();
-    const isLoggedIn = !!data?.session;
     let mobileMenuOpen = $state(false);
 </script>
 
@@ -46,11 +45,6 @@
 							style="color: #6b6460;"
 							>Contact</a
 						>
-                        {#if isLoggedIn}
-                            <a href="/logout" class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">Logout</a>
-                        {:else}
-                            <a href="/login" class="rounded-md px-3 py-2 text-sm font-medium text-slate-700 hover:text-slate-900">Login</a>
-                        {/if}
 					</div>
 				</div>
 				<!-- Mobile menu button -->
@@ -84,11 +78,6 @@
 						<a href="/projects" class="block rounded-md px-3 py-2 text-base font-medium transition-colors" style="color: #6b6460;">Projects</a>
 						<a href="/blog" class="block rounded-md px-3 py-2 text-base font-medium transition-colors" style="color: #6b6460;">Blog</a>
 						<a href="/contact" class="block rounded-md px-3 py-2 text-base font-medium transition-colors" style="color: #6b6460;">Contact</a>
-						{#if isLoggedIn}
-							<a href="/logout" class="block rounded-md px-3 py-2 text-base font-medium transition-colors" style="color: #6b6460;">Logout</a>
-						{:else}
-							<a href="/login" class="block rounded-md px-3 py-2 text-base font-medium transition-colors" style="color: #6b6460;">Login</a>
-						{/if}
 					</div>
 				</div>
 			{/if}

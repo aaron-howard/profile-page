@@ -37,8 +37,8 @@
 <div class="mx-auto max-w-6xl">
 	<!-- Header -->
 	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold text-slate-900">Get In Touch</h1>
-		<p class="mx-auto max-w-3xl text-xl text-slate-600">
+		<h1 class="mb-4 text-4xl font-bold" style="color: #2c2622;">Get In Touch</h1>
+		<p class="mx-auto max-w-3xl text-xl" style="color: #6b6460;">
 			I'm always interested in hearing about new opportunities, collaborations, or just having a
 			chat about technology and development.
 		</p>
@@ -49,7 +49,7 @@
 		<div class="space-y-8">
 			<!-- Personal Info -->
 			<div class="rounded-lg bg-white p-8 shadow-md">
-				<h2 class="mb-6 text-2xl font-semibold text-slate-900">Contact Information</h2>
+				<h2 class="mb-6 text-2xl font-semibold" style="color: #2c2622;">Contact Information</h2>
 
 				<div class="space-y-6">
 					<div class="flex items-center gap-4">
@@ -154,7 +154,7 @@
 
 			<!-- Social Links -->
 			<div class="rounded-lg bg-white p-8 shadow-md">
-				<h2 class="mb-6 text-2xl font-semibold text-slate-900">Follow Me</h2>
+				<h2 class="mb-6 text-2xl font-semibold" style="color: #2c2622;">Follow Me</h2>
 
 				<div class="grid grid-cols-2 gap-4">
 					<a
@@ -211,16 +211,16 @@
 			</div>
 
 			<!-- Availability -->
-			<div class="rounded-lg bg-gradient-to-br from-sky-500 to-indigo-600 p-8 text-white">
+			<div class="rounded-lg p-8 text-white" style="background: linear-gradient(135deg, #a85a4d 0%, #8b9c8a 100%);">
 				<h2 class="mb-4 text-2xl font-semibold">Current Availability</h2>
 				<p class="mb-4">{contactData.availability}</p>
-				<p class="text-blue-100">{contactData.responseTime}</p>
+				<p style="color: rgba(255, 255, 255, 0.85);">{contactData.responseTime}</p>
 			</div>
 		</div>
 
 		<!-- Contact Form -->
 		<div class="rounded-lg bg-white p-8 shadow-md">
-			<h2 class="mb-6 text-2xl font-semibold text-slate-900">Send Me a Message</h2>
+			<h2 class="mb-6 text-2xl font-semibold" style="color: #2c2622;">Send Me a Message</h2>
 
 			{#if $message}
 				<div class="mb-6 rounded-lg border border-green-400 bg-green-100 p-4 text-green-700">
@@ -231,7 +231,7 @@
 			<form method="POST" class="space-y-6">
 				<!-- Name Field -->
 				<div>
-					<label for="name" class="mb-2 block text-sm font-medium text-slate-700">Name</label>
+					<label for="name" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Name</label>
 					<input
 						type="text"
 						id="name"
@@ -250,7 +250,7 @@
 
 				<!-- Email Field -->
 				<div>
-					<label for="email" class="mb-2 block text-sm font-medium text-slate-700">Email</label>
+					<label for="email" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Email</label>
 					<input
 						type="email"
 						id="email"
@@ -269,7 +269,7 @@
 
 				<!-- Subject Field -->
 				<div>
-					<label for="subject" class="mb-2 block text-sm font-medium text-slate-700">Subject</label>
+					<label for="subject" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Subject</label>
 					<input
 						type="text"
 						id="subject"
@@ -288,7 +288,7 @@
 
 				<!-- Message Field -->
 				<div>
-					<label for="message" class="mb-2 block text-sm font-medium text-slate-700">Message</label>
+					<label for="message" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Message</label>
 					<textarea
 						id="message"
 						name="message"
@@ -309,7 +309,8 @@
 				<button
 					type="submit"
 					disabled={$submitting}
-					class="w-full rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+					class="w-full rounded-lg px-6 py-3 font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+					style="background: #a85a4d;"
 				>
 					{$submitting ? 'Sending...' : 'Send Message'}
 				</button>
