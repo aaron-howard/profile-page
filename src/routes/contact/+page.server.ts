@@ -41,14 +41,14 @@ export const actions: Actions = {
 
 			if (!emailResult.success) {
 				console.error('Failed to send contact email:', emailResult.error);
-				return message(form, 'Email sent but delivery may have failed', { status: 200 });
+				return message(form, 'Email sent but delivery may have failed');
 			}
 
-			return message(form, "Thank you! I'll get back to you soon.", { status: 200 });
+			return message(form, "Thank you! I'll get back to you soon.");
 		} catch (error) {
 			logError(error, 'contact form submission');
 			const errorMessage = handleFormError(error, 'contact').error;
-			return message(form, errorMessage, { status: 500 });
+			return fail(400, { form, message: errorMessage });
 		}
 	}
 };
