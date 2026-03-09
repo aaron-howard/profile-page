@@ -54,12 +54,16 @@
 
 				<div class="space-y-6">
 					<div class="flex items-center gap-4">
-						<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
+						<div
+							class="flex h-12 w-12 items-center justify-center rounded-lg"
+							style="background-color: var(--color-sage-blue-light);"
+						>
 							<svg
-								class="h-6 w-6 text-blue-600"
+								class="h-6 w-6"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
+								style="color: var(--color-sage-blue);"
 							>
 								<path
 									stroke-linecap="round"
@@ -76,12 +80,16 @@
 					</div>
 
 					<div class="flex items-center gap-4">
-						<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
+						<div
+							class="flex h-12 w-12 items-center justify-center rounded-lg"
+							style="background-color: var(--color-rust-clay-light);"
+						>
 							<svg
-								class="h-6 w-6 text-green-600"
+								class="h-6 w-6"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
+								style="color: var(--color-rust-clay);"
 							>
 								<path
 									stroke-linecap="round"
@@ -93,19 +101,25 @@
 						</div>
 						<div>
 							<h3 class="font-medium text-slate-900">Email</h3>
-							<a href="mailto:{contactData.email}" class="text-blue-600 hover:text-blue-800"
-								>{contactData.email}</a
+							<a
+								href="mailto:{contactData.email}"
+								style="color: var(--color-rust-clay);"
+								class="hover:opacity-80">{contactData.email}</a
 							>
 						</div>
 					</div>
 
 					<div class="flex items-center gap-4">
-						<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100">
+						<div
+							class="flex h-12 w-12 items-center justify-center rounded-lg"
+							style="background-color: var(--color-terracotta-light);"
+						>
 							<svg
-								class="h-6 w-6 text-purple-600"
+								class="h-6 w-6"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
+								style="color: var(--color-terracotta);"
 							>
 								<path
 									stroke-linecap="round"
@@ -128,12 +142,16 @@
 					</div>
 
 					<div class="flex items-center gap-4">
-						<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100">
+						<div
+							class="flex h-12 w-12 items-center justify-center rounded-lg"
+							style="background-color: var(--color-ochre-light);"
+						>
 							<svg
-								class="h-6 w-6 text-orange-600"
+								class="h-6 w-6"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
+								style="color: var(--color-ochre);"
 							>
 								<path
 									stroke-linecap="round"
@@ -145,8 +163,10 @@
 						</div>
 						<div>
 							<h3 class="font-medium text-slate-900">Phone</h3>
-							<a href="tel:{contactData.phone}" class="text-blue-600 hover:text-blue-800"
-								>{contactData.phone}</a
+							<a
+								href="tel:{contactData.phone}"
+								style="color: var(--color-ochre);"
+								class="hover:opacity-80">{contactData.phone}</a
 							>
 						</div>
 					</div>

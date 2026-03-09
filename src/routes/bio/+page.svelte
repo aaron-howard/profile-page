@@ -62,7 +62,9 @@
 				<h3 class="mb-4 text-lg font-medium text-slate-900">Frontend</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsFrontend as string[] as skill (skill)}
-						<span class="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
+						<span
+							class="rounded-full px-3 py-1 text-sm font-medium"
+							style="background-color: var(--color-sage-blue-light); color: var(--color-sage-blue);"
 							>{skill}</span
 						>
 					{/each}
@@ -73,7 +75,9 @@
 				<h3 class="mb-4 text-lg font-medium text-slate-900">Backend</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsBackend as string[] as skill (skill)}
-						<span class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
+						<span
+							class="rounded-full px-3 py-1 text-sm font-medium"
+							style="background-color: var(--color-rust-clay-light); color: var(--color-rust-clay);"
 							>{skill}</span
 						>
 					{/each}
@@ -84,7 +88,9 @@
 				<h3 class="mb-4 text-lg font-medium text-slate-900">Tools & Platforms</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsTools as string[] as tool (tool)}
-						<span class="rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-800"
+						<span
+							class="rounded-full px-3 py-1 text-sm font-medium"
+							style="background-color: var(--color-terracotta-light); color: var(--color-terracotta);"
 							>{tool}</span
 						>
 					{/each}
@@ -95,7 +101,9 @@
 				<h3 class="mb-4 text-lg font-medium text-slate-900">Programming Languages</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsLanguages as string[] as language (language)}
-						<span class="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-800"
+						<span
+							class="rounded-full px-3 py-1 text-sm font-medium"
+							style="background-color: var(--color-ochre-light); color: var(--color-ochre);"
 							>{language}</span
 						>
 					{/each}

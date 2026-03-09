@@ -95,13 +95,15 @@
 			<a href="/bio" class="group">
 				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 transition-colors group-hover:bg-blue-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
+						style="background-color: var(--color-sage-blue-light);"
 					>
 						<svg
-							class="h-6 w-6 text-blue-600"
+							class="h-6 w-6"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
+							style="color: var(--color-sage-blue);"
 						>
 							<path
 								stroke-linecap="round"
@@ -122,13 +124,15 @@
 			<a href="/projects" class="group">
 				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-100 transition-colors group-hover:bg-green-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
+						style="background-color: var(--color-rust-clay-light);"
 					>
 						<svg
-							class="h-6 w-6 text-green-600"
+							class="h-6 w-6"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
+							style="color: var(--color-rust-clay);"
 						>
 							<path
 								stroke-linecap="round"
@@ -149,13 +153,15 @@
 			<a href="/blog" class="group">
 				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100 transition-colors group-hover:bg-purple-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
+						style="background-color: var(--color-terracotta-light);"
 					>
 						<svg
-							class="h-6 w-6 text-purple-600"
+							class="h-6 w-6"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
+							style="color: var(--color-terracotta);"
 						>
 							<path
 								stroke-linecap="round"
@@ -176,13 +182,15 @@
 			<a href="/contact" class="group">
 				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
 					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-100 transition-colors group-hover:bg-orange-200"
+						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
+						style="background-color: var(--color-ochre-light);"
 					>
 						<svg
-							class="h-6 w-6 text-orange-600"
+							class="h-6 w-6"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
+							style="color: var(--color-ochre);"
 						>
 							<path
 								stroke-linecap="round"
