@@ -1,23 +1,20 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import { superValidate, message } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { zod4 } from 'sveltekit-superforms/adapters';
 import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
 import { logError, handleFormError } from '$lib/server/error-handler';
 
 export const load: PageServerLoad = async () => {
-	const form = await superValidate(zod(contactFormSchema as unknown as Parameters<typeof zod>[0]));
+	const form = await superValidate(zod4(contactFormSchema));
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const form = await superValidate(
-			request,
-			zod(contactFormSchema as unknown as Parameters<typeof zod>[0])
-		);
+		const form = await superValidate(request, zod4(contactFormSchema));
 
 		if (!form.valid) {
 			return fail(400, { form });
