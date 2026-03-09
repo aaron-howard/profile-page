@@ -12,7 +12,7 @@
 	const contactData = {
 		name: 'Aaron Howard',
 		email: 'mr.aaronjhoward@outlook.com',
-		location: 'Irving, TX, USA',
+		location: 'Fort Worth, TX, USA',
 		phone: '+1 (459) 964-2476',
 		socialLinks: {
 			github: 'https://github.com/aaron-howard',
