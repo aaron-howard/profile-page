@@ -7,7 +7,7 @@ async function main() {
 		id: 1,
 		name: 'Aaron Howard',
 		title: 'Full Stack Developer',
-		location: 'Irving, USA',
+		location: 'Fort Worth, TX, USA',
 		about:
 			"I'm a passionate full-stack developer with a love for creating elegant, user-friendly applications. With several years of experience in web development, I specialize in modern JavaScript frameworks, cloud technologies, and building scalable solutions that solve real-world problems.",
 		skillsFrontend: ['React', 'Vue.js', 'Svelte', 'TypeScript', 'Tailwind CSS', 'Next.js'],
