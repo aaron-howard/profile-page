@@ -3,9 +3,10 @@
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
+	const formData = $derived(data.form);
 
 	// Initialize form with Superforms
-	const { form, errors, submitting, message } = superForm(data.form);
+	const { form, errors, submitting, message } = superForm(formData);
 
 	// Customize this data with your information
 	const contactData = {
@@ -211,7 +212,10 @@
 			</div>
 
 			<!-- Availability -->
-			<div class="rounded-lg p-8 text-white" style="background: linear-gradient(135deg, #a85a4d 0%, #8b9c8a 100%);">
+			<div
+				class="rounded-lg p-8 text-white"
+				style="background: linear-gradient(135deg, #a85a4d 0%, #8b9c8a 100%);"
+			>
 				<h2 class="mb-4 text-2xl font-semibold">Current Availability</h2>
 				<p class="mb-4">{contactData.availability}</p>
 				<p style="color: rgba(255, 255, 255, 0.85);">{contactData.responseTime}</p>
@@ -231,7 +235,9 @@
 			<form method="POST" class="space-y-6">
 				<!-- Name Field -->
 				<div>
-					<label for="name" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Name</label>
+					<label for="name" class="mb-2 block text-sm font-medium" style="color: #6b6460;"
+						>Name</label
+					>
 					<input
 						type="text"
 						id="name"
@@ -250,7 +256,9 @@
 
 				<!-- Email Field -->
 				<div>
-					<label for="email" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Email</label>
+					<label for="email" class="mb-2 block text-sm font-medium" style="color: #6b6460;"
+						>Email</label
+					>
 					<input
 						type="email"
 						id="email"
@@ -269,7 +277,9 @@
 
 				<!-- Subject Field -->
 				<div>
-					<label for="subject" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Subject</label>
+					<label for="subject" class="mb-2 block text-sm font-medium" style="color: #6b6460;"
+						>Subject</label
+					>
 					<input
 						type="text"
 						id="subject"
@@ -288,7 +298,9 @@
 
 				<!-- Message Field -->
 				<div>
-					<label for="message" class="mb-2 block text-sm font-medium" style="color: #6b6460;">Message</label>
+					<label for="message" class="mb-2 block text-sm font-medium" style="color: #6b6460;"
+						>Message</label
+					>
 					<textarea
 						id="message"
 						name="message"

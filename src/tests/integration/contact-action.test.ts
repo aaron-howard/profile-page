@@ -33,7 +33,7 @@ describe('contact form action', () => {
 		};
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const result = await actions.default({ request: mockRequest as any });
+		const result = await actions.default({ request: mockRequest } as any);
 
 		// Should return fail(400, { form })
 		expect(result).toBeDefined();
@@ -77,7 +77,7 @@ describe('contact form action', () => {
 		};
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const result = await actions.default({ request: mockRequest as any });
+		const result = await actions.default({ request: mockRequest } as any);
 
 		expect(mockSendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();
@@ -121,7 +121,7 @@ describe('contact form action', () => {
 		};
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const result = await actions.default({ request: mockRequest as any });
+		const result = await actions.default({ request: mockRequest } as any);
 
 		expect(mockSendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();
@@ -165,7 +165,7 @@ describe('contact form action', () => {
 		};
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const result = await actions.default({ request: mockRequest as any });
+		const result = await actions.default({ request: mockRequest } as any);
 
 		expect(mockSendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();

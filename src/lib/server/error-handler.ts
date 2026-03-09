@@ -74,13 +74,16 @@ export function createAppError(
 	statusCode: number = 500,
 	details?: unknown
 ): AppError {
-	return {
+	const base: AppError = {
 		code,
 		message,
 		statusCode,
-		...(dev && details && { details }),
 		timestamp: new Date().toISOString()
 	};
+	if (dev && details !== undefined) {
+		base.details = details;
+	}
+	return base;
 }
 
 /**

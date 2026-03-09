@@ -8,20 +8,33 @@ import { contactFormSchema } from '$lib/schemas';
 import { logError, handleFormError } from '$lib/server/error-handler';
 
 export const load: PageServerLoad = async () => {
-	const form = await superValidate(zod(contactFormSchema));
+	const form = await superValidate(zod(contactFormSchema as unknown as Parameters<typeof zod>[0]));
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-		const form = await superValidate(request, zod(contactFormSchema));
+		const form = await superValidate(
+			request,
+			zod(contactFormSchema as unknown as Parameters<typeof zod>[0])
+		);
 
 		if (!form.valid) {
 			return fail(400, { form });
 		}
 
 		try {
-			const { name, email, subject, message: messageText } = form.data;
+			const {
+				name,
+				email,
+				subject,
+				message: messageText
+			} = form.data as {
+				name: string;
+				email: string;
+				subject: string;
+				message: string;
+			};
 
 			// Send email
 			const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';

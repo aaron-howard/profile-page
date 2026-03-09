@@ -45,6 +45,7 @@ export async function sendEmail(data: EmailData): Promise<{ success: boolean; er
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- stub implementation
 async function sendViaSMTP(_data: EmailData): Promise<{ success: boolean; error?: string }> {
 	// Implement SMTP sending using nodemailer or similar
 	// For now, return error suggesting configuration

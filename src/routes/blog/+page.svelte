@@ -17,15 +17,13 @@
 	const filteredPosts = $derived(
 		selectedCategory === 'all'
 			? data.posts
-			: data.posts.filter((post) => post.category === selectedCategory)
+			: data.posts.filter((post: BlogPost) => post.category === selectedCategory)
 	);
 
-	const featuredPosts = $derived(
-		filteredPosts.filter((p) => p.featured)
-	);
+	const featuredPosts = $derived(filteredPosts.filter((p: BlogPost) => p.featured));
 
 	const nonFeaturedPosts = $derived(
-		filteredPosts.filter((p) => !p.featured || selectedCategory !== 'all')
+		filteredPosts.filter((p: BlogPost) => !p.featured || selectedCategory !== 'all')
 	);
 
 	function filterPosts(category: string) {
@@ -52,7 +50,10 @@
 		if (!author || typeof author !== 'string') return '?';
 		const parts = author.trim().split(' ').filter(Boolean);
 		if (parts.length === 0) return '?';
-		return parts.map(part => part[0]?.toUpperCase() || '').join('').slice(0, 2);
+		return parts
+			.map((part) => part[0]?.toUpperCase() || '')
+			.join('')
+			.slice(0, 2);
 	}
 
 	function getCategoryColor(category: string): string {
@@ -90,7 +91,7 @@
 	<!-- Filter Buttons -->
 	<div class="mb-12 flex justify-center">
 		<div class="flex flex-wrap gap-4">
-			{#each categories as category}
+			{#each categories as category (category.id)}
 				<button
 					onclick={() => filterPosts(category.id)}
 					class="rounded-lg px-6 py-2 font-medium transition-colors"
@@ -109,36 +110,95 @@
 		<div class="mb-16">
 			<h2 class="mb-8 text-2xl font-semibold" style="color: #2c2622;">Featured Posts</h2>
 			<div class="grid gap-8 lg:grid-cols-2">
-				{#each featuredPosts as post}
+				{#each featuredPosts as post (post.id)}
 					<article
 						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
 					>
 						<div
 							class="flex h-48 items-center justify-center"
-							style="background: linear-gradient(135deg, {getCategoryColor(post.category)}20 0%, {getCategoryColor(post.category)}40 100%);"
+							style="background: linear-gradient(135deg, {getCategoryColor(
+								post.category
+							)}20 0%, {getCategoryColor(post.category)}40 100%);"
 						>
 							<!-- Minimal icon based on category -->
 							<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
 								{#if getCategoryIcon(post.category) === 'code'}
 									<!-- Code brackets icon -->
-									<path d="M 25 20 L 15 40 L 25 60" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" stroke-linecap="round" />
-									<path d="M 55 20 L 65 40 L 55 60" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" stroke-linecap="round" />
-									<line x1="35" y1="15" x2="45" y2="65" stroke={getCategoryColor(post.category)} stroke-width="3" stroke-linecap="round" />
+									<path
+										d="M 25 20 L 15 40 L 25 60"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										fill="none"
+										stroke-linecap="round"
+									/>
+									<path
+										d="M 55 20 L 65 40 L 55 60"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										fill="none"
+										stroke-linecap="round"
+									/>
+									<line
+										x1="35"
+										y1="15"
+										x2="45"
+										y2="65"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										stroke-linecap="round"
+									/>
 								{:else if getCategoryIcon(post.category) === 'chip'}
 									<!-- Technology/Chip icon -->
-									<rect x="20" y="20" width="40" height="40" rx="4" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
+									<rect
+										x="20"
+										y="20"
+										width="40"
+										height="40"
+										rx="4"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										fill="none"
+									/>
 									<circle cx="30" cy="30" r="3" fill={getCategoryColor(post.category)} />
 									<circle cx="50" cy="30" r="3" fill={getCategoryColor(post.category)} />
 									<circle cx="30" cy="50" r="3" fill={getCategoryColor(post.category)} />
 									<circle cx="50" cy="50" r="3" fill={getCategoryColor(post.category)} />
 								{:else if getCategoryIcon(post.category) === 'database'}
 									<!-- Database icon -->
-									<ellipse cx="40" cy="20" rx="16" ry="8" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
-									<path d="M 24 20 L 24 60 Q 24 68 40 68 Q 56 68 56 60 L 56 20" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
-									<ellipse cx="40" cy="60" rx="16" ry="8" stroke={getCategoryColor(post.category)} stroke-width="2" fill="none" />
+									<ellipse
+										cx="40"
+										cy="20"
+										rx="16"
+										ry="8"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										fill="none"
+									/>
+									<path
+										d="M 24 20 L 24 60 Q 24 68 40 68 Q 56 68 56 60 L 56 20"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										fill="none"
+									/>
+									<ellipse
+										cx="40"
+										cy="60"
+										rx="16"
+										ry="8"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="2"
+										fill="none"
+									/>
 								{:else if getCategoryIcon(post.category) === 'palette'}
 									<!-- Palette/CSS icon -->
-									<circle cx="40" cy="40" r="20" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
+									<circle
+										cx="40"
+										cy="40"
+										r="20"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										fill="none"
+									/>
 									<circle cx="28" cy="28" r="3" fill={getCategoryColor(post.category)} />
 									<circle cx="52" cy="28" r="3" fill={getCategoryColor(post.category)} />
 									<circle cx="28" cy="52" r="3" fill={getCategoryColor(post.category)} />
@@ -146,21 +206,88 @@
 									<circle cx="40" cy="40" r="2" fill={getCategoryColor(post.category)} />
 								{:else if getCategoryIcon(post.category) === 'deploy'}
 									<!-- Deploy/DevOps icon -->
-									<rect x="15" y="25" width="25" height="25" rx="2" stroke={getCategoryColor(post.category)} stroke-width="2" fill="none" />
-									<rect x="40" y="30" width="25" height="25" rx="2" stroke={getCategoryColor(post.category)} stroke-width="2" fill="none" />
-									<line x1="40" y1="42" x2="40" y2="42" stroke={getCategoryColor(post.category)} stroke-width="3" stroke-linecap="round" />
+									<rect
+										x="15"
+										y="25"
+										width="25"
+										height="25"
+										rx="2"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="2"
+										fill="none"
+									/>
+									<rect
+										x="40"
+										y="30"
+										width="25"
+										height="25"
+										rx="2"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="2"
+										fill="none"
+									/>
+									<line
+										x1="40"
+										y1="42"
+										x2="40"
+										y2="42"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										stroke-linecap="round"
+									/>
 								{:else}
 									<!-- Default document icon -->
-									<rect x="20" y="12" width="40" height="56" rx="4" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
-									<line x1="26" y1="24" x2="54" y2="24" stroke={getCategoryColor(post.category)} stroke-width="2" />
-									<line x1="26" y1="34" x2="54" y2="34" stroke={getCategoryColor(post.category)} stroke-width="2" />
-									<line x1="26" y1="44" x2="54" y2="44" stroke={getCategoryColor(post.category)} stroke-width="2" />
+									<rect
+										x="20"
+										y="12"
+										width="40"
+										height="56"
+										rx="4"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="3"
+										fill="none"
+									/>
+									<line
+										x1="26"
+										y1="24"
+										x2="54"
+										y2="24"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="2"
+									/>
+									<line
+										x1="26"
+										y1="34"
+										x2="54"
+										y2="34"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="2"
+									/>
+									<line
+										x1="26"
+										y1="44"
+										x2="54"
+										y2="44"
+										stroke={getCategoryColor(post.category)}
+										stroke-width="2"
+									/>
 								{/if}
 							</svg>
 						</div>
 						<div class="p-6">
 							<div class="mb-4 flex items-center gap-4">
-								<span class="rounded-full px-3 py-1 text-sm font-medium" style="background: rgba({post.category === 'Development' ? '168, 90, 77' : post.category === 'Technology' ? '139, 156, 138' : post.category === 'Backend' ? '196, 165, 98' : post.category === 'CSS' ? '155, 139, 126' : '122, 141, 130'}, 0.15); color: {getCategoryColor(post.category)};">
+								<span
+									class="rounded-full px-3 py-1 text-sm font-medium"
+									style="background: rgba({post.category === 'Development'
+										? '168, 90, 77'
+										: post.category === 'Technology'
+											? '139, 156, 138'
+											: post.category === 'Backend'
+												? '196, 165, 98'
+												: post.category === 'CSS'
+													? '155, 139, 126'
+													: '122, 141, 130'}, 0.15); color: {getCategoryColor(post.category)};"
+								>
 									{post.category}
 								</span>
 								{#if post.readTime}
@@ -173,9 +300,10 @@
 							{/if}
 
 							<div class="mb-6 flex flex-wrap gap-2">
-								{#each post.tags as tag}
-									<span class="rounded px-2 py-1 text-xs font-medium" style="background: rgba(232, 230, 227, 1); color: #9b8b7e;"
-										>{tag}</span
+								{#each post.tags as tag (tag)}
+									<span
+										class="rounded px-2 py-1 text-xs font-medium"
+										style="background: rgba(232, 230, 227, 1); color: #9b8b7e;">{tag}</span
 									>
 								{/each}
 							</div>
@@ -201,36 +329,95 @@
 
 	<!-- All Posts Grid -->
 	<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-		{#each nonFeaturedPosts as post}
+		{#each nonFeaturedPosts as post (post.id)}
 			<article
 				class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
 			>
 				<div
 					class="flex h-40 items-center justify-center"
-					style="background: linear-gradient(135deg, {getCategoryColor(post.category)}20 0%, {getCategoryColor(post.category)}40 100%);"
+					style="background: linear-gradient(135deg, {getCategoryColor(
+						post.category
+					)}20 0%, {getCategoryColor(post.category)}40 100%);"
 				>
 					<!-- Minimal icon based on category -->
 					<svg width="50" height="50" viewBox="0 0 80 80" fill="none">
 						{#if getCategoryIcon(post.category) === 'code'}
 							<!-- Code brackets icon -->
-							<path d="M 25 20 L 15 40 L 25 60" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" stroke-linecap="round" />
-							<path d="M 55 20 L 65 40 L 55 60" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" stroke-linecap="round" />
-							<line x1="35" y1="15" x2="45" y2="65" stroke={getCategoryColor(post.category)} stroke-width="3" stroke-linecap="round" />
+							<path
+								d="M 25 20 L 15 40 L 25 60"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								fill="none"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M 55 20 L 65 40 L 55 60"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								fill="none"
+								stroke-linecap="round"
+							/>
+							<line
+								x1="35"
+								y1="15"
+								x2="45"
+								y2="65"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								stroke-linecap="round"
+							/>
 						{:else if getCategoryIcon(post.category) === 'chip'}
 							<!-- Technology/Chip icon -->
-							<rect x="20" y="20" width="40" height="40" rx="4" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
+							<rect
+								x="20"
+								y="20"
+								width="40"
+								height="40"
+								rx="4"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								fill="none"
+							/>
 							<circle cx="30" cy="30" r="3" fill={getCategoryColor(post.category)} />
 							<circle cx="50" cy="30" r="3" fill={getCategoryColor(post.category)} />
 							<circle cx="30" cy="50" r="3" fill={getCategoryColor(post.category)} />
 							<circle cx="50" cy="50" r="3" fill={getCategoryColor(post.category)} />
 						{:else if getCategoryIcon(post.category) === 'database'}
 							<!-- Database icon -->
-							<ellipse cx="40" cy="20" rx="16" ry="8" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
-							<path d="M 24 20 L 24 60 Q 24 68 40 68 Q 56 68 56 60 L 56 20" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
-							<ellipse cx="40" cy="60" rx="16" ry="8" stroke={getCategoryColor(post.category)} stroke-width="2" fill="none" />
+							<ellipse
+								cx="40"
+								cy="20"
+								rx="16"
+								ry="8"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								fill="none"
+							/>
+							<path
+								d="M 24 20 L 24 60 Q 24 68 40 68 Q 56 68 56 60 L 56 20"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								fill="none"
+							/>
+							<ellipse
+								cx="40"
+								cy="60"
+								rx="16"
+								ry="8"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="2"
+								fill="none"
+							/>
 						{:else if getCategoryIcon(post.category) === 'palette'}
 							<!-- Palette/CSS icon -->
-							<circle cx="40" cy="40" r="20" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
+							<circle
+								cx="40"
+								cy="40"
+								r="20"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								fill="none"
+							/>
 							<circle cx="28" cy="28" r="3" fill={getCategoryColor(post.category)} />
 							<circle cx="52" cy="28" r="3" fill={getCategoryColor(post.category)} />
 							<circle cx="28" cy="52" r="3" fill={getCategoryColor(post.category)} />
@@ -238,21 +425,87 @@
 							<circle cx="40" cy="40" r="2" fill={getCategoryColor(post.category)} />
 						{:else if getCategoryIcon(post.category) === 'deploy'}
 							<!-- Deploy/DevOps icon -->
-							<rect x="15" y="25" width="25" height="25" rx="2" stroke={getCategoryColor(post.category)} stroke-width="2" fill="none" />
-							<rect x="40" y="30" width="25" height="25" rx="2" stroke={getCategoryColor(post.category)} stroke-width="2" fill="none" />
-							<line x1="40" y1="42" x2="40" y2="42" stroke={getCategoryColor(post.category)} stroke-width="3" stroke-linecap="round" />
+							<rect
+								x="15"
+								y="25"
+								width="25"
+								height="25"
+								rx="2"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="2"
+								fill="none"
+							/>
+							<rect
+								x="40"
+								y="30"
+								width="25"
+								height="25"
+								rx="2"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="2"
+								fill="none"
+							/>
+							<line
+								x1="40"
+								y1="42"
+								x2="40"
+								y2="42"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								stroke-linecap="round"
+							/>
 						{:else}
 							<!-- Default document icon -->
-							<rect x="20" y="12" width="40" height="56" rx="4" stroke={getCategoryColor(post.category)} stroke-width="3" fill="none" />
-							<line x1="26" y1="24" x2="54" y2="24" stroke={getCategoryColor(post.category)} stroke-width="2" />
-							<line x1="26" y1="34" x2="54" y2="34" stroke={getCategoryColor(post.category)} stroke-width="2" />
-							<line x1="26" y1="44" x2="54" y2="44" stroke={getCategoryColor(post.category)} stroke-width="2" />
+							<rect
+								x="20"
+								y="12"
+								width="40"
+								height="56"
+								rx="4"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="3"
+								fill="none"
+							/>
+							<line
+								x1="26"
+								y1="24"
+								x2="54"
+								y2="24"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="2"
+							/>
+							<line
+								x1="26"
+								y1="34"
+								x2="54"
+								y2="34"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="2"
+							/>
+							<line
+								x1="26"
+								y1="44"
+								x2="54"
+								y2="44"
+								stroke={getCategoryColor(post.category)}
+								stroke-width="2"
+							/>
 						{/if}
 					</svg>
 				</div>
 				<div class="p-6">
 					<div class="mb-3 flex items-center gap-3">
-						<span class="rounded px-2 py-1 text-xs font-medium" style="background: rgba({post.category === 'Development' ? '168, 90, 77' : post.category === 'Technology' ? '139, 156, 138' : post.category === 'Backend' ? '196, 165, 98' : post.category === 'CSS' ? '155, 139, 126' : '122, 141, 130'}, 0.15); color: {getCategoryColor(post.category)};"
+						<span
+							class="rounded px-2 py-1 text-xs font-medium"
+							style="background: rgba({post.category === 'Development'
+								? '168, 90, 77'
+								: post.category === 'Technology'
+									? '139, 156, 138'
+									: post.category === 'Backend'
+										? '196, 165, 98'
+										: post.category === 'CSS'
+											? '155, 139, 126'
+											: '122, 141, 130'}, 0.15); color: {getCategoryColor(post.category)};"
 							>{post.category}</span
 						>
 						<span class="text-xs" style="color: #9b8b7e;">{post.readTime}</span>
@@ -263,14 +516,16 @@
 					{/if}
 
 					<div class="mb-4 flex flex-wrap gap-1">
-						{#each post.tags.slice(0, 2) as tag}
-							<span class="rounded px-2 py-1 text-xs font-medium" style="background: #e8e6e3; color: #9b8b7e;"
-								>{tag}</span
+						{#each post.tags.slice(0, 2) as tag (tag)}
+							<span
+								class="rounded px-2 py-1 text-xs font-medium"
+								style="background: #e8e6e3; color: #9b8b7e;">{tag}</span
 							>
 						{/each}
 						{#if post.tags.length > 2}
-							<span class="rounded px-2 py-1 text-xs font-medium" style="background: #e8e6e3; color: #9b8b7e;"
-								>+{post.tags.length - 2}</span
+							<span
+								class="rounded px-2 py-1 text-xs font-medium"
+								style="background: #e8e6e3; color: #9b8b7e;">+{post.tags.length - 2}</span
 							>
 						{/if}
 					</div>
@@ -299,7 +554,13 @@
 				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full"
 				style="background: rgba(168, 90, 77, 0.1);"
 			>
-				<svg class="h-12 w-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #a85a4d;">
+				<svg
+					class="h-12 w-12"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+					style="color: #a85a4d;"
+				>
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
