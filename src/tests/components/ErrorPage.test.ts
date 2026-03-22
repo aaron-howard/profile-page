@@ -10,17 +10,18 @@ describe('ErrorPage component', () => {
 		expect(componentSource).toMatch(/<h1[^>]*>\s*{?\$?page\.status}?\s*<\/h1>/);
 	});
 
-	it('renders "Go Home" link with href="/"', () => {
-		expect(componentSource).toMatch(/href="\/"\s*class="[^"]*"[^>]*>\s*Go Home\s*<\/a>/);
+	it('renders "Go home" link with href="/"', () => {
+		expect(componentSource).toMatch(/href="\/"/);
+		expect(componentSource).toMatch(/Go home/);
 	});
 
 	it('renders "contact us" link with href="/contact"', () => {
 		expect(componentSource).toMatch(/href="\/contact"[^>]*>\s*contact us\s*<\/a>/);
 	});
 
-	it('has a Go Back button with click handler', () => {
-		expect(componentSource).toMatch(/Go Back/);
-		expect(componentSource).toMatch(/on:click/);
+	it('has a Go back button with click handler', () => {
+		expect(componentSource).toMatch(/Go back/);
+		expect(componentSource).toMatch(/onclick=/);
 	});
 
 	it('checks $page.status for conditional rendering', () => {

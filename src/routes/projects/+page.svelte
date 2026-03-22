@@ -37,11 +37,11 @@
 
 	function getCategoryColor(category: string): string {
 		const colors: Record<string, string> = {
-			frontend: '#a85a4d', // Warm terracotta
-			backend: '#8b9c8a', // Sage green
-			fullstack: '#c4a562' // Warm gold
+			frontend: '#00694b',
+			backend: '#3d5c52',
+			fullstack: '#0a8060'
 		};
-		return colors[category] || '#9b8b7e';
+		return colors[category] || '#655d58';
 	}
 
 	function getCategoryIcon(category: string): string {
@@ -57,8 +57,17 @@
 <div class="mx-auto max-w-6xl">
 	<!-- Header -->
 	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold" style="color: #2c2622;">My Projects</h1>
-		<p class="mx-auto max-w-3xl text-xl" style="color: #6b6460;">
+		<span
+			class="mb-4 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
+		>
+			Portfolio
+		</span>
+		<h1
+			class="mb-4 font-headline text-4xl font-extrabold tracking-tight text-on-surface md:text-5xl"
+		>
+			My Projects
+		</h1>
+		<p class="mx-auto max-w-3xl text-xl text-secondary">
 			Here are some of the projects I've worked on. Each one represents a unique challenge and
 			learning experience.
 		</p>
@@ -70,10 +79,13 @@
 			{#each categories as category (category.id)}
 				<button
 					onclick={() => filterProjects(category.id)}
-					class="rounded-lg px-6 py-2 font-medium transition-colors"
-					style={selectedCategory === category.id
-						? 'background: #a85a4d; color: white;'
-						: 'border: 1px solid #e8e6e3; background: white; color: #6b6460;'}
+					type="button"
+					class="rounded-md px-6 py-2 font-headline font-semibold transition-colors"
+					class:bg-primary={selectedCategory === category.id}
+					class:text-on-primary={selectedCategory === category.id}
+					class:bg-surface-container-high={selectedCategory !== category.id}
+					class:text-secondary={selectedCategory !== category.id}
+					class:hover:bg-surface-container={selectedCategory !== category.id}
 				>
 					{category.name}
 				</button>
@@ -84,12 +96,10 @@
 	<!-- Featured Projects -->
 	{#if selectedCategory === 'all' && filteredProjects.filter((p: Project) => p.featured).length > 0}
 		<div class="mb-16">
-			<h2 class="mb-8 text-2xl font-semibold" style="color: #2c2622;">Featured Projects</h2>
+			<h2 class="mb-8 font-headline text-2xl font-bold text-on-surface">Featured Projects</h2>
 			<div class="grid gap-8 lg:grid-cols-2">
 				{#each filteredProjects.filter((p: Project) => p.featured) as project (project.id)}
-					<div
-						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
-					>
+					<div class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 						<div
 							class="flex h-48 items-center justify-center"
 							style="background: linear-gradient(135deg, {getCategoryColor(
@@ -197,14 +207,14 @@
 							</svg>
 						</div>
 						<div class="p-6">
-							<h3 class="mb-3 text-xl font-semibold" style="color: #2c2622;">{project.title}</h3>
-							<p class="mb-4" style="color: #6b6460;">{project.description}</p>
+							<h3 class="mb-3 font-headline text-xl font-bold text-on-surface">{project.title}</h3>
+							<p class="mb-4 text-secondary">{project.description}</p>
 
 							<div class="mb-6 flex flex-wrap gap-2">
 								{#each project.technologies as tech (tech)}
 									<span
-										class="rounded-full px-3 py-1 text-sm font-medium"
-										style="background: rgba(165, 90, 77, 0.1); color: #a85a4d;">{tech}</span
+										class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+										>{tech}</span
 									>
 								{/each}
 							</div>
@@ -215,8 +225,7 @@
 										href={project.github}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="flex-1 rounded-lg px-4 py-2 text-center text-white transition-colors font-medium"
-										style="background: #a85a4d;"
+										class="scale-102 flex-1 rounded-md bg-primary px-4 py-2 text-center font-headline font-semibold text-on-primary"
 									>
 										View Code
 									</a>
@@ -226,16 +235,14 @@
 										href={project.live}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="flex-1 rounded-lg px-4 py-2 text-center text-white transition-colors font-medium"
-										style="background: #8b9c8a;"
+										class="scale-102 flex-1 rounded-md bg-surface-container-high px-4 py-2 text-center font-headline font-semibold text-on-surface"
 									>
 										Live Demo
 									</a>
 								{/if}
 								{#if !project.github && !project.live}
 									<span
-										class="flex-1 rounded-lg px-4 py-2 text-center font-medium"
-										style="background: #e8e6e3; color: #9b8b7e;"
+										class="flex-1 rounded-md bg-surface-container-high px-4 py-2 text-center font-medium text-secondary"
 									>
 										No links available
 									</span>
@@ -253,15 +260,12 @@
 		<!-- Frontend Section -->
 		{#if frontendProjects.length}
 			<div class="mb-10">
-				<h2 class="mb-4 text-2xl font-semibold" style="color: #2c2622;">Frontend</h2>
+				<h2 class="mb-4 font-headline text-2xl font-bold text-on-surface">Frontend</h2>
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{#each frontendProjects as project (project.id)}
-						<div
-							class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
-						>
+						<div class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 							<div
-								class="flex h-40 items-center justify-center"
-								style="background: linear-gradient(135deg, #a85a4d20 0%, #a85a4d40 100%);"
+								class="flex h-40 items-center justify-center bg-gradient-to-br from-primary/10 to-primary/25"
 							>
 								<!-- Window icon for frontend -->
 								<svg width="60" height="60" viewBox="0 0 80 80" fill="none">
@@ -271,37 +275,38 @@
 										width="56"
 										height="56"
 										rx="4"
-										stroke="#a85a4d"
+										stroke="#00694b"
 										stroke-width="3"
 									/>
-									<line x1="12" y1="28" x2="68" y2="28" stroke="#a85a4d" stroke-width="2" />
+									<line x1="12" y1="28" x2="68" y2="28" stroke="#00694b" stroke-width="2" />
 									<line
 										x1="40"
 										y1="12"
 										x2="40"
 										y2="68"
-										stroke="#a85a4d"
+										stroke="#00694b"
 										stroke-width="2"
 										stroke-dasharray="4,4"
 									/>
 								</svg>
 							</div>
 							<div class="p-6">
-								<h3 class="mb-2 text-lg font-semibold" style="color: #2c2622;">{project.title}</h3>
-								<p class="mb-4 line-clamp-3 text-sm" style="color: #6b6460;">
+								<h3 class="mb-2 font-headline text-lg font-bold text-on-surface">
+									{project.title}
+								</h3>
+								<p class="mb-4 line-clamp-3 text-sm text-secondary">
 									{project.description}
 								</p>
 								<div class="mb-4 flex flex-wrap gap-1">
 									{#each project.technologies.slice(0, 3) as tech (tech)}
 										<span
-											class="rounded px-2 py-1 text-xs font-medium"
-											style="background: rgba(165, 90, 77, 0.1); color: #a85a4d;">{tech}</span
+											class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+											>{tech}</span
 										>
 									{/each}
 									{#if project.technologies.length > 3}
 										<span
-											class="rounded px-2 py-1 text-xs font-medium"
-											style="background: rgba(165, 90, 77, 0.1); color: #a85a4d;"
+											class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 											>+{project.technologies.length - 3}</span
 										>
 									{/if}
@@ -309,13 +314,13 @@
 								<div class="flex gap-2">
 									<a
 										href={project.github}
-										class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-										style="background: #a85a4d;">Code</a
+										class="scale-102 flex-1 rounded-md bg-primary px-3 py-2 text-center font-headline text-sm font-semibold text-on-primary"
+										>Code</a
 									>
 									<a
 										href={project.live}
-										class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-										style="background: #8b9c8a;">Demo</a
+										class="scale-102 flex-1 rounded-md bg-surface-container-high px-3 py-2 text-center font-headline text-sm font-semibold text-on-surface"
+										>Demo</a
 									>
 								</div>
 							</div>
@@ -328,15 +333,12 @@
 		<!-- Backend Section -->
 		{#if backendProjects.length}
 			<div class="mb-10">
-				<h2 class="mb-4 text-2xl font-semibold" style="color: #2c2622;">Backend</h2>
+				<h2 class="mb-4 font-headline text-2xl font-bold text-on-surface">Backend</h2>
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{#each backendProjects as project (project.id)}
-						<div
-							class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
-						>
+						<div class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 							<div
-								class="flex h-40 items-center justify-center"
-								style="background: linear-gradient(135deg, #8b9c8a20 0%, #8b9c8a40 100%);"
+								class="flex h-40 items-center justify-center bg-gradient-to-br from-[#3d5c52]/15 to-[#3d5c52]/30"
 							>
 								<!-- Database icon for backend -->
 								<svg width="60" height="60" viewBox="0 0 80 80" fill="none">
@@ -345,13 +347,13 @@
 										cy="20"
 										rx="16"
 										ry="8"
-										stroke="#8b9c8a"
+										stroke="#3d5c52"
 										stroke-width="3"
 										fill="none"
 									/>
 									<path
 										d="M 24 20 L 24 60 Q 24 68 40 68 Q 56 68 56 60 L 56 20"
-										stroke="#8b9c8a"
+										stroke="#3d5c52"
 										stroke-width="3"
 										fill="none"
 									/>
@@ -360,7 +362,7 @@
 										cy="60"
 										rx="16"
 										ry="8"
-										stroke="#8b9c8a"
+										stroke="#3d5c52"
 										stroke-width="2"
 										fill="none"
 									/>
@@ -369,28 +371,29 @@
 										y1="40"
 										x2="56"
 										y2="40"
-										stroke="#8b9c8a"
+										stroke="#3d5c52"
 										stroke-width="2"
 										stroke-dasharray="2,2"
 									/>
 								</svg>
 							</div>
 							<div class="p-6">
-								<h3 class="mb-2 text-lg font-semibold" style="color: #2c2622;">{project.title}</h3>
-								<p class="mb-4 line-clamp-3 text-sm" style="color: #6b6460;">
+								<h3 class="mb-2 font-headline text-lg font-bold text-on-surface">
+									{project.title}
+								</h3>
+								<p class="mb-4 line-clamp-3 text-sm text-secondary">
 									{project.description}
 								</p>
 								<div class="mb-4 flex flex-wrap gap-1">
 									{#each project.technologies.slice(0, 3) as tech (tech)}
 										<span
-											class="rounded px-2 py-1 text-xs font-medium"
-											style="background: rgba(139, 156, 138, 0.1); color: #8b9c8a;">{tech}</span
+											class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+											>{tech}</span
 										>
 									{/each}
 									{#if project.technologies.length > 3}
 										<span
-											class="rounded px-2 py-1 text-xs font-medium"
-											style="background: rgba(139, 156, 138, 0.1); color: #8b9c8a;"
+											class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 											>+{project.technologies.length - 3}</span
 										>
 									{/if}
@@ -398,13 +401,13 @@
 								<div class="flex gap-2">
 									<a
 										href={project.github}
-										class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-										style="background: #8b9c8a;">Code</a
+										class="scale-102 flex-1 rounded-md bg-primary px-3 py-2 text-center font-headline text-sm font-semibold text-on-primary"
+										>Code</a
 									>
 									<a
 										href={project.live}
-										class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-										style="background: #a85a4d;">Demo</a
+										class="scale-102 flex-1 rounded-md bg-surface-container-high px-3 py-2 text-center font-headline text-sm font-semibold text-on-surface"
+										>Demo</a
 									>
 								</div>
 							</div>
@@ -417,15 +420,12 @@
 		<!-- Full Stack Section -->
 		{#if fullstackProjects.length}
 			<div class="mb-10">
-				<h2 class="mb-4 text-2xl font-semibold" style="color: #2c2622;">Full Stack</h2>
+				<h2 class="mb-4 font-headline text-2xl font-bold text-on-surface">Full Stack</h2>
 				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{#each fullstackProjects as project (project.id)}
-						<div
-							class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
-						>
+						<div class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 							<div
-								class="flex h-40 items-center justify-center"
-								style="background: linear-gradient(135deg, #c4a56220 0%, #c4a56240 100%);"
+								class="flex h-40 items-center justify-center bg-gradient-to-br from-[#0a8060]/15 to-[#0a8060]/30"
 							>
 								<!-- Layers icon for full stack -->
 								<svg width="60" height="60" viewBox="0 0 80 80" fill="none">
@@ -435,7 +435,7 @@
 										width="60"
 										height="16"
 										rx="2"
-										stroke="#c4a562"
+										stroke="#0a8060"
 										stroke-width="3"
 										fill="none"
 									/>
@@ -445,7 +445,7 @@
 										width="60"
 										height="16"
 										rx="2"
-										stroke="#c4a562"
+										stroke="#0a8060"
 										stroke-width="3"
 										fill="none"
 									/>
@@ -455,28 +455,29 @@
 										width="60"
 										height="16"
 										rx="2"
-										stroke="#c4a562"
+										stroke="#0a8060"
 										stroke-width="3"
 										fill="none"
 									/>
 								</svg>
 							</div>
 							<div class="p-6">
-								<h3 class="mb-2 text-lg font-semibold" style="color: #2c2622;">{project.title}</h3>
-								<p class="mb-4 line-clamp-3 text-sm" style="color: #6b6460;">
+								<h3 class="mb-2 font-headline text-lg font-bold text-on-surface">
+									{project.title}
+								</h3>
+								<p class="mb-4 line-clamp-3 text-sm text-secondary">
 									{project.description}
 								</p>
 								<div class="mb-4 flex flex-wrap gap-1">
 									{#each project.technologies.slice(0, 3) as tech (tech)}
 										<span
-											class="rounded px-2 py-1 text-xs font-medium"
-											style="background: rgba(196, 165, 98, 0.1); color: #c4a562;">{tech}</span
+											class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+											>{tech}</span
 										>
 									{/each}
 									{#if project.technologies.length > 3}
 										<span
-											class="rounded px-2 py-1 text-xs font-medium"
-											style="background: rgba(196, 165, 98, 0.1); color: #c4a562;"
+											class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 											>+{project.technologies.length - 3}</span
 										>
 									{/if}
@@ -484,13 +485,13 @@
 								<div class="flex gap-2">
 									<a
 										href={project.github}
-										class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-										style="background: #c4a562;">Code</a
+										class="scale-102 flex-1 rounded-md bg-primary px-3 py-2 text-center font-headline text-sm font-semibold text-on-primary"
+										>Code</a
 									>
 									<a
 										href={project.live}
-										class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-										style="background: #a85a4d;">Demo</a
+										class="scale-102 flex-1 rounded-md bg-surface-container-high px-3 py-2 text-center font-headline text-sm font-semibold text-on-surface"
+										>Demo</a
 									>
 								</div>
 							</div>
@@ -505,14 +506,12 @@
 		<!-- When a specific category is selected, show a single grid (non-featured) -->
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{#each filteredProjects as project (project.id)}
-				<div
-					class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
-				>
+				<div class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 					<div
 						class="flex h-40 items-center justify-center"
 						style="background: linear-gradient(135deg, {getCategoryColor(
 							project.category
-						)}20 0%, {getCategoryColor(project.category)}40 100%);"
+						)}29 0%, {getCategoryColor(project.category)}52 100%);"
 					>
 						<!-- Minimal icon based on category -->
 						<svg width="60" height="60" viewBox="0 0 80 80" fill="none">
@@ -612,28 +611,18 @@
 						</svg>
 					</div>
 					<div class="p-6">
-						<h3 class="mb-2 text-lg font-semibold" style="color: #2c2622;">{project.title}</h3>
-						<p class="mb-4 line-clamp-3 text-sm" style="color: #6b6460;">{project.description}</p>
+						<h3 class="mb-2 font-headline text-lg font-bold text-on-surface">{project.title}</h3>
+						<p class="mb-4 line-clamp-3 text-sm text-secondary">{project.description}</p>
 						<div class="mb-4 flex flex-wrap gap-1">
 							{#each project.technologies.slice(0, 3) as tech (tech)}
 								<span
-									class="rounded px-2 py-1 text-xs font-medium"
-									style="background: rgba({project.category === 'frontend'
-										? '165, 90, 77'
-										: project.category === 'backend'
-											? '139, 156, 138'
-											: '196, 165, 98'}, 0.1); color: {getCategoryColor(project.category)};"
+									class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 									>{tech}</span
 								>
 							{/each}
 							{#if project.technologies.length > 3}
 								<span
-									class="rounded px-2 py-1 text-xs font-medium"
-									style="background: rgba({project.category === 'frontend'
-										? '165, 90, 77'
-										: project.category === 'backend'
-											? '139, 156, 138'
-											: '196, 165, 98'}, 0.1); color: {getCategoryColor(project.category)};"
+									class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 									>+{project.technologies.length - 3}</span
 								>
 							{/if}
@@ -641,17 +630,13 @@
 						<div class="flex gap-2">
 							<a
 								href={project.github}
-								class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-								style="background: {getCategoryColor(project.category)};">Code</a
+								class="scale-102 flex-1 rounded-md bg-primary px-3 py-2 text-center font-headline text-sm font-semibold text-on-primary"
+								>Code</a
 							>
 							<a
 								href={project.live}
-								class="flex-1 rounded px-3 py-2 text-center text-sm text-white transition-colors font-medium"
-								style="background: {project.category === 'frontend'
-									? '#8b9c8a'
-									: project.category === 'backend'
-										? '#c4a562'
-										: '#a85a4d'};">Demo</a
+								class="scale-102 flex-1 rounded-md bg-surface-container-high px-3 py-2 text-center font-headline text-sm font-semibold text-on-surface"
+								>Demo</a
 							>
 						</div>
 					</div>
@@ -664,16 +649,9 @@
 	{#if filteredProjects.length === 0}
 		<div class="py-16 text-center">
 			<div
-				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full"
-				style="background: rgba(165, 90, 77, 0.1);"
+				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10"
 			>
-				<svg
-					class="h-12 w-12"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-					style="color: #a85a4d;"
-				>
+				<svg class="h-12 w-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -682,8 +660,8 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-xl font-semibold" style="color: #2c2622;">No projects found</h3>
-			<p style="color: #6b6460;">Try selecting a different category to see more projects.</p>
+			<h3 class="mb-2 font-headline text-xl font-bold text-on-surface">No projects found</h3>
+			<p class="text-secondary">Try selecting a different category to see more projects.</p>
 		</div>
 	{/if}
 </div>

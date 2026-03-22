@@ -2,27 +2,77 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-/* Unified Earth-Tone Color System */
+/* Emerald Studio — design tokens (stitch_profile / DESIGN.md) */
+@theme {
+	--color-primary: #00694b;
+	--color-primary-container: #008560;
+	--color-on-primary: #ffffff;
+	--color-on-primary-container: #f5fff7;
+	--color-primary-fixed-dim: #61dcab;
+	--color-primary-fixed: #7ff9c6;
+
+	--color-background: #fbf9f4;
+	--color-surface: #fbf9f4;
+	--color-on-surface: #1b1c19;
+	--color-secondary: #655d58;
+	--color-on-surface-variant: #3d4a43;
+
+	--color-surface-container-lowest: #ffffff;
+	--color-surface-container-low: #f5f3ee;
+	--color-surface-container: #f0eee9;
+	--color-surface-container-high: #eae8e3;
+	--color-surface-container-highest: #e4e2dd;
+	--color-surface-variant: #e4e2dd;
+
+	--color-secondary-container: #e9ddd7;
+	--color-outline-variant: #bccac1;
+	--color-outline: #6d7a72;
+
+	--font-headline: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+	--font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+	--radius-card: 0.75rem;
+}
+
+/* Legacy earth-tone vars → map to new palette for gradual migration */
 :root {
-	/* Primary Palette - Icon Colors */
-	--color-sage-blue: #7eb3a0;
-	--color-sage-blue-light: #e8f4f1;
-	--color-rust-clay: #c17a69;
-	--color-rust-clay-light: #f5e5e0;
-	--color-terracotta: #d4956e;
-	--color-terracotta-light: #fbe8dd;
-	--color-ochre: #a88a5f;
-	--color-ochre-light: #f5ede0;
+	--color-sage-blue: #00694b;
+	--color-sage-blue-light: #e4f4ee;
+	--color-rust-clay: #00694b;
+	--color-rust-clay-light: #e9ddd7;
+	--color-terracotta: #655d58;
+	--color-terracotta-light: #f0eee9;
+	--color-ochre: #3d4a43;
+	--color-ochre-light: #eae8e3;
 
-	/* Contact Page Theme */
-	--color-contact-primary: #a85a4d;
-	--color-contact-secondary: #8b9c8a;
-	--color-contact-dark: #2c2622;
-	--color-contact-text: #6b6460;
+	--color-contact-primary: #00694b;
+	--color-contact-secondary: #655d58;
+	--color-contact-dark: #1b1c19;
+	--color-contact-text: #655d58;
 
-	/* Accent/Hover States */
-	--color-sage-blue-hover: #6a9988;
-	--color-rust-clay-hover: #a86855;
-	--color-terracotta-hover: #c17f57;
-	--color-ochre-hover: #957548;
+	--color-sage-blue-hover: #005a40;
+	--color-rust-clay-hover: #005a40;
+	--color-terracotta-hover: #554e49;
+	--color-ochre-hover: #2d3832;
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+.scale-102 {
+	transition:
+		transform 200ms ease,
+		color 200ms ease,
+		background-color 200ms ease;
+}
+
+.scale-102:hover {
+	transform: scale(1.02);
+}
+
+.shadow-ambient {
+	box-shadow: 0 20px 40px rgba(27, 28, 25, 0.05);
 }

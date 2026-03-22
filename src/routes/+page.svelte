@@ -1,10 +1,10 @@
 <script lang="ts">
-	// You can customize these values
+	import type { PageData } from './$types';
+	import type { BlogPost, Project } from '$lib/types';
+
+	let { data } = $props<{ data: PageData }>();
+
 	const profileData = {
-		name: 'Aaron Howard',
-		title: 'Full Stack Developer',
-		tagline: 'Building modern web applications with passion and precision',
-		avatar: '/avatar.jpg', // Add your avatar image to static folder
 		socialLinks: {
 			github: 'https://github.com/aaron-howard',
 			linkedin: 'https://www.linkedin.com/in/aaronjhoward/',
@@ -12,200 +12,388 @@
 			email: 'mr.aaronjhoward@outlook.com'
 		}
 	};
+
+	const bio = $derived(data.bio);
+	const headline = $derived(bio?.title ?? 'Full Stack Developer');
+	const tagline = $derived(
+		bio?.about?.slice(0, 160) ??
+			'I specialize in crafting high-performance web applications where architectural integrity meets exceptional user experience.'
+	);
+
+	const featuredProjects = $derived((data.featuredProjects ?? []) as Project[]);
+	const latestPosts = $derived((data.latestPosts ?? []) as BlogPost[]);
+
+	function formatPostDate(date: string | Date) {
+		const d = typeof date === 'string' ? new Date(date) : date;
+		if (Number.isNaN(d.getTime())) return '';
+		return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+	}
+
+	function projectGridClass(index: number): string {
+		const layouts = [
+			'md:col-span-8',
+			'md:col-span-4',
+			'md:col-span-4 md:mt-12',
+			'md:col-span-8 md:-mt-24 lg:-mt-32'
+		];
+		return layouts[index] ?? 'md:col-span-6';
+	}
+
+	function aspectClass(index: number): string {
+		if (index === 0 || index === 3) return 'aspect-[16/10]';
+		return 'aspect-square';
+	}
 </script>
 
-<!-- Hero Section -->
-<section class="py-20 text-center">
-	<div class="mx-auto max-w-4xl">
-		<div class="mb-8">
-			<!-- Avatar placeholder - replace with your actual image -->
-			<div
-				class="mx-auto mb-6 flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 text-4xl font-bold text-white"
-			>
-				{profileData.name
-					.split(' ')
-					.map((n) => n[0])
-					.join('')}
+<!-- Hero -->
+<section class="pb-16 pt-8 md:pb-24 md:pt-12">
+	<div class="mx-auto max-w-7xl">
+		<div class="grid grid-cols-1 items-end gap-12 lg:grid-cols-12">
+			<div class="lg:col-span-8">
+				<span
+					class="mb-6 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
+				>
+					{headline} &amp; digital craft
+				</span>
+				<h1
+					class="font-headline text-5xl font-extrabold leading-[0.95] tracking-tighter text-on-surface md:text-7xl lg:text-8xl"
+				>
+					Building digital <br class="hidden sm:block" /> experiences <br class="hidden sm:block" />
+					with <span class="text-primary italic">precision</span>.
+				</h1>
 			</div>
-			<h1 class="mb-4 text-5xl font-bold text-slate-900">{profileData.name}</h1>
-			<h2 class="mb-4 text-2xl font-semibold text-blue-600">{profileData.title}</h2>
-			<p class="mx-auto max-w-2xl text-xl text-slate-600">{profileData.tagline}</p>
+			<div class="flex flex-col gap-8 pb-2 lg:col-span-4">
+				<p class="max-w-sm text-lg leading-relaxed text-secondary">
+					{tagline}{#if bio?.about && bio.about.length > 160}…{/if}
+				</p>
+				<div class="flex flex-wrap items-center gap-6">
+					<a
+						href="/projects"
+						class="scale-102 inline-flex items-center gap-2 rounded-md bg-primary px-8 py-4 font-headline font-bold text-on-primary"
+					>
+						View Work
+						<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M14 5l7 7m0 0l-7 7m7-7H3"
+							/>
+						</svg>
+					</a>
+					<div class="flex gap-4">
+						<a
+							href={profileData.socialLinks.github}
+							class="text-secondary transition-colors hover:text-primary"
+							aria-label="GitHub"
+						>
+							<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+								<path
+									d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+								/>
+							</svg>
+						</a>
+						<a
+							href={profileData.socialLinks.linkedin}
+							class="text-secondary transition-colors hover:text-primary"
+							aria-label="LinkedIn"
+						>
+							<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+								<path
+									d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+								/>
+							</svg>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Explore -->
+<section class="bg-surface-container-low py-20 md:py-28 -mx-6 px-6 md:-mx-8 md:px-8">
+	<div class="mx-auto max-w-7xl">
+		<div class="mb-14 flex flex-col gap-4 md:mb-20 md:flex-row md:items-end md:justify-between">
+			<div>
+				<span
+					class="mb-3 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
+				>
+					Navigate
+				</span>
+				<h2
+					class="font-headline text-4xl font-extrabold tracking-tight text-on-surface md:text-5xl"
+				>
+					Explore the <span class="text-primary">studio</span>
+				</h2>
+			</div>
+			<p class="max-w-md text-secondary md:text-right">
+				About, projects, writing, and contact — same story, different rooms.
+			</p>
 		</div>
 
-		<!-- Social Links -->
-		<div class="mb-12 flex justify-center space-x-6">
+		<div class="grid gap-10 md:grid-cols-2">
 			<a
-				href={profileData.socialLinks.github}
-				class="text-slate-600 transition-colors hover:text-slate-900"
-				aria-label="GitHub Profile"
+				href="/bio"
+				class="group block rounded-xl bg-surface-container-lowest p-8 shadow-ambient md:p-10"
 			>
-				<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-					<path
-						d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-					/>
-				</svg>
+				<span class="text-xs font-medium uppercase tracking-widest text-primary">01</span>
+				<h3
+					class="mt-4 font-headline text-2xl font-bold text-on-surface group-hover:text-primary md:text-3xl"
+				>
+					About
+				</h3>
+				<p class="mt-3 text-secondary">Background, skills, and how I work.</p>
+				<span
+					class="mt-6 inline-block font-headline font-bold text-on-surface underline decoration-primary-fixed-dim decoration-2 underline-offset-4 transition-colors group-hover:decoration-primary"
+				>
+					Read more
+				</span>
 			</a>
 			<a
-				href={profileData.socialLinks.linkedin}
-				class="text-slate-600 transition-colors hover:text-slate-900"
-				aria-label="LinkedIn Profile"
+				href="/projects"
+				class="group block rounded-xl bg-surface-container-lowest p-8 shadow-ambient md:p-10"
 			>
-				<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-					<path
-						d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-					/>
-				</svg>
+				<span class="text-xs font-medium uppercase tracking-widest text-primary">02</span>
+				<h3
+					class="mt-4 font-headline text-2xl font-bold text-on-surface group-hover:text-primary md:text-3xl"
+				>
+					Projects
+				</h3>
+				<p class="mt-3 text-secondary">Selected builds and technical snapshots.</p>
+				<span
+					class="mt-6 inline-block font-headline font-bold text-on-surface underline decoration-primary-fixed-dim decoration-2 underline-offset-4 transition-colors group-hover:decoration-primary"
+				>
+					View work
+				</span>
 			</a>
 			<a
-				href={profileData.socialLinks.bluesky}
-				class="text-slate-600 transition-colors hover:text-slate-900"
-				aria-label="Bluesky Profile"
+				href="/blog"
+				class="group block rounded-xl bg-surface-container-lowest p-8 shadow-ambient md:p-10"
 			>
-				<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-					<path
-						d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.22-.257.427-.352.62-1.2 2.445-1.03 4.267.39 5.006.813.426 1.925.27 3.04-.456 1.115-.726 2.07-1.89 2.7-3.163.63-1.273.95-2.54.95-3.72 0-.69-.378-5.65-.624-6.479-.815-2.736-3.713-3.66-6.383-3.364-.136.02-.275.039-.415.056.138-.22.257-.427.352-.62 1.2-2.445 1.03-4.267-.39-5.006-.813-.426-1.925-.27-3.04.456z"
-					/>
-				</svg>
+				<span class="text-xs font-medium uppercase tracking-widest text-primary">03</span>
+				<h3
+					class="mt-4 font-headline text-2xl font-bold text-on-surface group-hover:text-primary md:text-3xl"
+				>
+					Blog
+				</h3>
+				<p class="mt-3 text-secondary">Notes on development and delivery.</p>
+				<span
+					class="mt-6 inline-block font-headline font-bold text-on-surface underline decoration-primary-fixed-dim decoration-2 underline-offset-4 transition-colors group-hover:decoration-primary"
+				>
+					Open journal
+				</span>
 			</a>
 			<a
-				href="mailto:{profileData.socialLinks.email}"
-				class="text-slate-600 transition-colors hover:text-slate-900"
-				aria-label="Send Email"
+				href="/contact"
+				class="group block rounded-xl bg-surface-container-lowest p-8 shadow-ambient md:p-10"
 			>
-				<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-					/>
-				</svg>
+				<span class="text-xs font-medium uppercase tracking-widest text-primary">04</span>
+				<h3
+					class="mt-4 font-headline text-2xl font-bold text-on-surface group-hover:text-primary md:text-3xl"
+				>
+					Contact
+				</h3>
+				<p class="mt-3 text-secondary">Collaborations, opportunities, or a quick hello.</p>
+				<span
+					class="mt-6 inline-block font-headline font-bold text-on-surface underline decoration-primary-fixed-dim decoration-2 underline-offset-4 transition-colors group-hover:decoration-primary"
+				>
+					Get in touch
+				</span>
 			</a>
 		</div>
 	</div>
 </section>
 
-<!-- Sections Overview -->
-<section class="py-16">
-	<div class="mx-auto max-w-6xl">
-		<h2 class="mb-12 text-center text-3xl font-bold text-slate-900">Explore My Work</h2>
-
-		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-			<!-- Bio Section -->
-			<a href="/bio" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
-					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
-						style="background-color: var(--color-sage-blue-light);"
+<!-- Featured projects -->
+{#if featuredProjects.length > 0}
+	<section class="py-20 md:py-28" id="projects">
+		<div class="mx-auto max-w-7xl">
+			<div class="mb-14 flex flex-col justify-between gap-6 md:mb-20 md:flex-row md:items-end">
+				<div class="max-w-xl">
+					<span
+						class="mb-4 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
 					>
-						<svg
-							class="h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							style="color: var(--color-sage-blue);"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-							/>
-						</svg>
-					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">About Me</h3>
-					<p class="text-slate-600">
-						Learn about my background, skills, and what drives me as a developer.
-					</p>
+						Selected works
+					</span>
+					<h2 class="font-headline text-4xl font-extrabold tracking-tight md:text-5xl">
+						Curation of <span class="text-primary">impact</span>
+					</h2>
 				</div>
-			</a>
+				<a
+					href="/projects"
+					class="hidden rounded-md bg-surface-container-high px-6 py-3 font-headline font-semibold text-secondary transition-colors hover:bg-surface-container md:inline-block"
+				>
+					Explore all
+				</a>
+			</div>
 
-			<!-- Projects Section -->
-			<a href="/projects" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
-					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
-						style="background-color: var(--color-rust-clay-light);"
-					>
-						<svg
-							class="h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							style="color: var(--color-rust-clay);"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-							/>
-						</svg>
-					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">Projects</h3>
-					<p class="text-slate-600">
-						Explore my development projects and see what I've been working on.
-					</p>
-				</div>
-			</a>
+			<div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+				{#each featuredProjects.slice(0, 4) as project, i (project.id)}
+					<article class="group cursor-pointer {projectGridClass(i)}">
+						<a href="/projects" class="block">
+							<div
+								class="relative mb-6 overflow-hidden rounded-xl bg-surface-container-low {aspectClass(
+									i
+								)}"
+							>
+								{#if project.image}
+									<img
+										src={project.image}
+										alt=""
+										class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+									/>
+								{:else}
+									<div
+										class="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/10 to-primary-fixed-dim/20"
+									>
+										<span class="font-headline text-4xl font-extrabold text-primary/40"
+											>{project.title.slice(0, 1)}</span
+										>
+									</div>
+								{/if}
+								<div
+									class="absolute inset-0 flex items-center justify-center bg-on-surface/10 opacity-0 transition-opacity group-hover:opacity-100"
+								>
+									<span class="font-body text-sm font-semibold text-white">View projects →</span>
+								</div>
+							</div>
+							<div class="flex items-start justify-between gap-4">
+								<div>
+									<h3 class="mb-2 font-headline text-xl font-bold text-on-surface md:text-2xl">
+										{project.title}
+									</h3>
+									<div class="flex flex-wrap gap-2">
+										{#each project.technologies.slice(0, 3) as tech (tech)}
+											<span
+												class="rounded px-2 py-1 text-[10px] font-medium uppercase tracking-widest text-secondary bg-secondary-container/10"
+												>{tech}</span
+											>
+										{/each}
+									</div>
+								</div>
+							</div>
+						</a>
+					</article>
+				{/each}
+			</div>
 
-			<!-- Blog Section -->
-			<a href="/blog" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
-					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
-						style="background-color: var(--color-terracotta-light);"
-					>
-						<svg
-							class="h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							style="color: var(--color-terracotta);"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-							/>
-						</svg>
-					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">Blog</h3>
-					<p class="text-slate-600">
-						Read my thoughts on technology, development, and industry insights.
-					</p>
-				</div>
-			</a>
+			<div class="mt-10 md:hidden">
+				<a
+					href="/projects"
+					class="block w-full rounded-md bg-surface-container-high py-3 text-center font-headline font-semibold text-secondary"
+				>
+					Explore all
+				</a>
+			</div>
+		</div>
+	</section>
+{/if}
 
-			<!-- Contact Section -->
-			<a href="/contact" class="group">
-				<div class="rounded-lg bg-white p-6 shadow-md transition-shadow hover:shadow-lg">
-					<div
-						class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg transition-colors group-hover:shadow-md"
-						style="background-color: var(--color-ochre-light);"
+<!-- Blog teaser -->
+{#if latestPosts.length > 0}
+	<section
+		class="bg-surface-container-highest py-20 md:py-28 -mx-6 px-6 md:-mx-8 md:px-8"
+		id="blog"
+	>
+		<div class="mx-auto flex max-w-7xl flex-col gap-16 md:flex-row md:gap-20">
+			<div class="md:w-1/3">
+				<span
+					class="mb-4 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
+				>
+					Reflections
+				</span>
+				<h2 class="mb-8 font-headline text-4xl font-extrabold tracking-tight text-on-surface">
+					Thoughts on <br /> technical design.
+				</h2>
+				<p class="mb-8 text-secondary">
+					Deep dives into delivery, accessibility, and front-end architecture.
+				</p>
+				<a href="/blog" class="inline-flex items-center gap-2 font-headline font-bold text-primary">
+					View archive
+					<svg
+						class="h-4 w-4 transition-transform group-hover:translate-x-1"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
 					>
-						<svg
-							class="h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							style="color: var(--color-ochre);"
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M14 5l7 7m0 0l-7 7m7-7H3"
+						/>
+					</svg>
+				</a>
+			</div>
+			<div class="flex flex-col gap-10 md:w-2/3">
+				{#each latestPosts as post (post.id)}
+					<a
+						href="/blog"
+						class="group flex flex-col justify-between gap-4 border-b border-outline-variant/30 pb-8 sm:flex-row sm:items-end"
+					>
+						<div>
+							<span
+								class="mb-3 block text-[10px] font-medium uppercase tracking-widest text-primary"
+								>{post.category}</span
+							>
+							<h3
+								class="font-headline text-2xl font-bold text-on-surface transition-colors group-hover:text-primary md:text-3xl"
+							>
+								{post.title}
+							</h3>
+						</div>
+						<span class="shrink-0 font-body text-sm text-secondary sm:ml-4"
+							>{formatPostDate(post.date)}</span
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-							/>
-						</svg>
-					</div>
-					<h3 class="mb-2 text-xl font-semibold text-slate-900">Contact</h3>
-					<p class="text-slate-600">
-						Get in touch with me for collaborations, opportunities, or just to say hello.
-					</p>
+					</a>
+				{/each}
+			</div>
+		</div>
+	</section>
+{/if}
+
+<!-- Contact CTA -->
+<section class="py-20 md:py-28">
+	<div class="mx-auto max-w-7xl">
+		<div
+			class="relative flex flex-col items-center gap-12 overflow-hidden rounded-xl bg-primary-container p-10 md:flex-row md:gap-16 md:p-20"
+		>
+			<div
+				class="pointer-events-none absolute right-0 top-0 h-96 w-96 translate-x-1/4 -translate-y-1/2 rounded-full bg-primary-fixed-dim/20 blur-3xl"
+			></div>
+			<div class="relative z-10 md:w-1/2">
+				<h2
+					class="mb-8 font-headline text-4xl font-extrabold tracking-tighter text-on-primary-container md:text-6xl"
+				>
+					Let's start <br /> a conversation.
+				</h2>
+				<p class="mb-10 text-xl leading-relaxed text-on-primary-container/80">
+					Have a project in mind or want to collaborate? Reach out — I typically respond within a
+					day.
+				</p>
+				<div class="flex flex-col gap-3 font-headline text-xl font-bold text-on-primary-container">
+					<a
+						href={`mailto:${profileData.socialLinks.email}`}
+						class="transition-colors hover:text-primary-fixed-dim"
+					>
+						{profileData.socialLinks.email}
+					</a>
 				</div>
-			</a>
+			</div>
+			<div class="relative z-10 w-full md:w-1/2">
+				<div class="rounded-lg bg-surface-container-lowest p-8 shadow-ambient md:p-10">
+					<p class="mb-6 text-secondary">
+						Prefer a form? Send a message from the contact page — same inbox, structured fields.
+					</p>
+					<a
+						href="/contact"
+						class="scale-102 inline-flex w-full items-center justify-center rounded-md bg-primary py-4 font-headline font-bold text-on-primary"
+					>
+						Open contact
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>

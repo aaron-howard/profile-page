@@ -58,13 +58,13 @@
 
 	function getCategoryColor(category: string): string {
 		const colors: Record<string, string> = {
-			Development: '#a85a4d',
-			Technology: '#8b9c8a',
-			Backend: '#c4a562',
-			CSS: '#9b8b7e',
-			DevOps: '#7a8d82'
+			Development: '#00694b',
+			Technology: '#3d5c52',
+			Backend: '#0a8060',
+			CSS: '#655d58',
+			DevOps: '#3d5c52'
 		};
-		return colors[category] || '#9b8b7e';
+		return colors[category] || '#655d58';
 	}
 
 	function getCategoryIcon(category: string): string {
@@ -82,8 +82,17 @@
 <div class="mx-auto max-w-6xl">
 	<!-- Header -->
 	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold" style="color: #2c2622;">Blog</h1>
-		<p class="mx-auto max-w-3xl text-xl" style="color: #6b6460;">
+		<span
+			class="mb-4 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
+		>
+			Journal
+		</span>
+		<h1
+			class="mb-4 font-headline text-4xl font-extrabold tracking-tight text-on-surface md:text-5xl"
+		>
+			Blog
+		</h1>
+		<p class="mx-auto max-w-3xl text-xl text-secondary">
 			Thoughts, tutorials, and insights about web development, technology, and the industry.
 		</p>
 	</div>
@@ -94,10 +103,13 @@
 			{#each categories as category (category.id)}
 				<button
 					onclick={() => filterPosts(category.id)}
-					class="rounded-lg px-6 py-2 font-medium transition-colors"
-					style={selectedCategory === category.id
-						? 'background: #a85a4d; color: white;'
-						: 'border: 1px solid #e8e6e3; background: white; color: #6b6460;'}
+					type="button"
+					class="rounded-md px-6 py-2 font-headline font-semibold transition-colors"
+					class:bg-primary={selectedCategory === category.id}
+					class:text-on-primary={selectedCategory === category.id}
+					class:bg-surface-container-high={selectedCategory !== category.id}
+					class:text-secondary={selectedCategory !== category.id}
+					class:hover:bg-surface-container={selectedCategory !== category.id}
 				>
 					{category.name}
 				</button>
@@ -108,17 +120,15 @@
 	<!-- Featured Posts -->
 	{#if featuredPosts.length > 0}
 		<div class="mb-16">
-			<h2 class="mb-8 text-2xl font-semibold" style="color: #2c2622;">Featured Posts</h2>
+			<h2 class="mb-8 font-headline text-2xl font-bold text-on-surface">Featured Posts</h2>
 			<div class="grid gap-8 lg:grid-cols-2">
 				{#each featuredPosts as post (post.id)}
-					<article
-						class="overflow-hidden rounded-lg bg-white shadow-lg transition-shadow hover:shadow-xl"
-					>
+					<article class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 						<div
 							class="flex h-48 items-center justify-center"
 							style="background: linear-gradient(135deg, {getCategoryColor(
 								post.category
-							)}20 0%, {getCategoryColor(post.category)}40 100%);"
+							)}29 0%, {getCategoryColor(post.category)}52 100%);"
 						>
 							<!-- Minimal icon based on category -->
 							<svg width="80" height="80" viewBox="0 0 80 80" fill="none">
@@ -277,33 +287,24 @@
 						<div class="p-6">
 							<div class="mb-4 flex items-center gap-4">
 								<span
-									class="rounded-full px-3 py-1 text-sm font-medium"
-									style="background: rgba({post.category === 'Development'
-										? '168, 90, 77'
-										: post.category === 'Technology'
-											? '139, 156, 138'
-											: post.category === 'Backend'
-												? '196, 165, 98'
-												: post.category === 'CSS'
-													? '155, 139, 126'
-													: '122, 141, 130'}, 0.15); color: {getCategoryColor(post.category)};"
+									class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-primary bg-secondary-container/10"
 								>
 									{post.category}
 								</span>
 								{#if post.readTime}
-									<span class="text-sm" style="color: #9b8b7e;">{post.readTime}</span>
+									<span class="text-sm text-secondary">{post.readTime}</span>
 								{/if}
 							</div>
-							<h3 class="mb-3 text-xl font-semibold" style="color: #2c2622;">{post.title}</h3>
+							<h3 class="mb-3 font-headline text-xl font-bold text-on-surface">{post.title}</h3>
 							{#if post.excerpt}
-								<p class="mb-4" style="color: #6b6460;">{post.excerpt}</p>
+								<p class="mb-4 text-secondary">{post.excerpt}</p>
 							{/if}
 
 							<div class="mb-6 flex flex-wrap gap-2">
 								{#each post.tags as tag (tag)}
 									<span
-										class="rounded px-2 py-1 text-xs font-medium"
-										style="background: rgba(232, 230, 227, 1); color: #9b8b7e;">{tag}</span
+										class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+										>{tag}</span
 									>
 								{/each}
 							</div>
@@ -311,14 +312,13 @@
 							<div class="flex items-center justify-between">
 								<div class="flex items-center gap-2">
 									<div
-										class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold text-white"
-										style="background: {getCategoryColor(post.category)};"
+										class="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-on-primary"
 									>
 										{getAuthorInitials(post.author)}
 									</div>
-									<span class="text-sm" style="color: #6b6460;">{post.author || 'Unknown'}</span>
+									<span class="text-sm text-on-surface">{post.author || 'Unknown'}</span>
 								</div>
-								<span class="text-sm" style="color: #9b8b7e;">{formatDate(post.date)}</span>
+								<span class="text-sm text-secondary">{formatDate(post.date)}</span>
 							</div>
 						</div>
 					</article>
@@ -330,14 +330,12 @@
 	<!-- All Posts Grid -->
 	<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 		{#each nonFeaturedPosts as post (post.id)}
-			<article
-				class="overflow-hidden rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
-			>
+			<article class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 				<div
 					class="flex h-40 items-center justify-center"
 					style="background: linear-gradient(135deg, {getCategoryColor(
 						post.category
-					)}20 0%, {getCategoryColor(post.category)}40 100%);"
+					)}29 0%, {getCategoryColor(post.category)}52 100%);"
 				>
 					<!-- Minimal icon based on category -->
 					<svg width="50" height="50" viewBox="0 0 80 80" fill="none">
@@ -496,36 +494,27 @@
 				<div class="p-6">
 					<div class="mb-3 flex items-center gap-3">
 						<span
-							class="rounded px-2 py-1 text-xs font-medium"
-							style="background: rgba({post.category === 'Development'
-								? '168, 90, 77'
-								: post.category === 'Technology'
-									? '139, 156, 138'
-									: post.category === 'Backend'
-										? '196, 165, 98'
-										: post.category === 'CSS'
-											? '155, 139, 126'
-											: '122, 141, 130'}, 0.15); color: {getCategoryColor(post.category)};"
+							class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-primary bg-secondary-container/10"
 							>{post.category}</span
 						>
-						<span class="text-xs" style="color: #9b8b7e;">{post.readTime}</span>
+						<span class="text-xs text-secondary">{post.readTime}</span>
 					</div>
-					<h3 class="mb-2 text-lg font-semibold" style="color: #2c2622;">{post.title}</h3>
+					<h3 class="mb-2 font-headline text-lg font-bold text-on-surface">{post.title}</h3>
 					{#if post.excerpt}
-						<p class="mb-4 line-clamp-3 text-sm" style="color: #6b6460;">{post.excerpt}</p>
+						<p class="mb-4 line-clamp-3 text-sm text-secondary">{post.excerpt}</p>
 					{/if}
 
 					<div class="mb-4 flex flex-wrap gap-1">
 						{#each post.tags.slice(0, 2) as tag (tag)}
 							<span
-								class="rounded px-2 py-1 text-xs font-medium"
-								style="background: #e8e6e3; color: #9b8b7e;">{tag}</span
+								class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+								>{tag}</span
 							>
 						{/each}
 						{#if post.tags.length > 2}
 							<span
-								class="rounded px-2 py-1 text-xs font-medium"
-								style="background: #e8e6e3; color: #9b8b7e;">+{post.tags.length - 2}</span
+								class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+								>+{post.tags.length - 2}</span
 							>
 						{/if}
 					</div>
@@ -533,14 +522,13 @@
 					<div class="flex items-center justify-between">
 						<div class="flex items-center gap-2">
 							<div
-								class="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white"
-								style="background: {getCategoryColor(post.category)};"
+								class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-on-primary"
 							>
 								{getAuthorInitials(post.author)}
 							</div>
-							<span class="text-xs" style="color: #6b6460;">{post.author || 'Unknown'}</span>
+							<span class="text-xs text-on-surface">{post.author || 'Unknown'}</span>
 						</div>
-						<span class="text-xs" style="color: #9b8b7e;">{formatDate(post.date)}</span>
+						<span class="text-xs text-secondary">{formatDate(post.date)}</span>
 					</div>
 				</div>
 			</article>
@@ -551,16 +539,9 @@
 	{#if filteredPosts.length === 0}
 		<div class="py-16 text-center">
 			<div
-				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full"
-				style="background: rgba(168, 90, 77, 0.1);"
+				class="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10"
 			>
-				<svg
-					class="h-12 w-12"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-					style="color: #a85a4d;"
-				>
+				<svg class="h-12 w-12 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -569,8 +550,8 @@
 					/>
 				</svg>
 			</div>
-			<h3 class="mb-2 text-xl font-semibold" style="color: #2c2622;">No posts found</h3>
-			<p style="color: #6b6460;">Try selecting a different category to see more blog posts.</p>
+			<h3 class="mb-2 font-headline text-xl font-bold text-on-surface">No posts found</h3>
+			<p class="text-secondary">Try selecting a different category to see more blog posts.</p>
 		</div>
 	{/if}
 </div>

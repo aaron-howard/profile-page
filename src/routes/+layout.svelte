@@ -1,125 +1,125 @@
 <script lang="ts">
 	import '../app.css';
 	import type { Snippet } from 'svelte';
+	import { page } from '$app/stores';
+
 	let { children } = $props<{ children: Snippet }>();
 	let mobileMenuOpen = $state(false);
+
+	const nav = [
+		{ href: '/', label: 'Home' },
+		{ href: '/bio', label: 'About' },
+		{ href: '/projects', label: 'Projects' },
+		{ href: '/blog', label: 'Blog' },
+		{ href: '/contact', label: 'Contact' }
+	];
+
+	function navClass(href: string, path: string): string {
+		const active = href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+		return active
+			? 'font-headline font-bold tracking-tight text-on-surface border-b-2 border-primary pb-0.5'
+			: 'font-headline font-bold tracking-tight text-secondary transition-colors duration-300 hover:text-on-surface';
+	}
 </script>
 
-<div class="min-h-screen" style="background: linear-gradient(135deg, #faf8f3 0%, #f5f3f0 100%);">
-	<!-- Navigation Header -->
-	<header class="border-b shadow-sm" style="background: #ffffff; border-color: #e8e6e3;">
-		<nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-			<div class="flex h-16 items-center justify-between">
-				<div class="flex items-center">
-					<h1 class="text-xl font-bold" style="color: #2c2622;">Aaron Howard</h1>
-				</div>
-				<div class="hidden md:block">
-					<div class="ml-10 flex items-baseline space-x-4">
+<div class="min-h-screen bg-background font-body text-on-surface antialiased">
+	<nav
+		class="fixed top-0 z-50 w-full bg-surface/80 backdrop-blur-xl backdrop-saturate-150"
+		aria-label="Primary"
+	>
+		<div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-8 md:py-6">
+			<a href="/" class="font-headline text-xl font-extrabold tracking-tighter text-on-surface">
+				Aaron Howard
+			</a>
+			<div class="hidden items-center gap-10 md:flex">
+				{#each nav as item (item.href)}
+					<a href={item.href} class={navClass(item.href, $page.url.pathname)}>{item.label}</a>
+				{/each}
+				<a
+					href="/contact"
+					class="scale-102 rounded-md bg-primary px-6 py-2 font-headline font-bold text-on-primary"
+				>
+					Hire Me
+				</a>
+			</div>
+			<div class="md:hidden">
+				<button
+					type="button"
+					onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+					class="p-2 text-on-surface"
+					aria-label="Toggle menu"
+					aria-expanded={mobileMenuOpen}
+				>
+					{#if mobileMenuOpen}
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					{:else}
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4 6h16M4 12h16M4 18h16"
+							/>
+						</svg>
+					{/if}
+				</button>
+			</div>
+		</div>
+		{#if mobileMenuOpen}
+			<div
+				class="border-t border-outline-variant/15 bg-surface/95 px-4 py-4 backdrop-blur-xl md:hidden"
+			>
+				<div class="flex flex-col gap-1">
+					{#each nav as item (item.href)}
 						<a
-							href="/"
-							class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
-							style="color: #6b6460; hover:color: #2c2622;">Home</a
+							href={item.href}
+							class="rounded-md px-3 py-3 font-headline font-semibold text-on-surface"
+							onclick={() => (mobileMenuOpen = false)}
 						>
-						<a
-							href="/bio"
-							class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
-							style="color: #6b6460;">Bio</a
-						>
-						<a
-							href="/projects"
-							class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
-							style="color: #6b6460;">Projects</a
-						>
-						<a
-							href="/blog"
-							class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
-							style="color: #6b6460;">Blog</a
-						>
-						<a
-							href="/contact"
-							class="rounded-md px-3 py-2 text-sm font-medium transition-colors"
-							style="color: #6b6460;">Contact</a
-						>
-					</div>
-				</div>
-				<!-- Mobile menu button -->
-				<div class="md:hidden">
-					<button
-						type="button"
-						onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
-						class="p-2 transition-colors"
-						style="color: #6b6460;"
-						aria-label="Toggle mobile menu"
-						aria-expanded={mobileMenuOpen}
+							{item.label}
+						</a>
+					{/each}
+					<a
+						href="/contact"
+						class="mt-2 rounded-md bg-primary px-3 py-3 text-center font-headline font-bold text-on-primary"
+						onclick={() => (mobileMenuOpen = false)}
 					>
-						{#if mobileMenuOpen}
-							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M6 18L18 6M6 6l12 12"
-								/>
-							</svg>
-						{:else}
-							<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M4 6h16M4 12h16M4 18h16"
-								/>
-							</svg>
-						{/if}
-					</button>
+						Hire Me
+					</a>
 				</div>
 			</div>
-			<!-- Mobile menu -->
-			{#if mobileMenuOpen}
-				<div class="md:hidden">
-					<div class="space-y-1 px-2 pb-3 pt-2">
-						<a
-							href="/"
-							class="block rounded-md px-3 py-2 text-base font-medium transition-colors"
-							style="color: #6b6460;">Home</a
-						>
-						<a
-							href="/bio"
-							class="block rounded-md px-3 py-2 text-base font-medium transition-colors"
-							style="color: #6b6460;">Bio</a
-						>
-						<a
-							href="/projects"
-							class="block rounded-md px-3 py-2 text-base font-medium transition-colors"
-							style="color: #6b6460;">Projects</a
-						>
-						<a
-							href="/blog"
-							class="block rounded-md px-3 py-2 text-base font-medium transition-colors"
-							style="color: #6b6460;">Blog</a
-						>
-						<a
-							href="/contact"
-							class="block rounded-md px-3 py-2 text-base font-medium transition-colors"
-							style="color: #6b6460;">Contact</a
-						>
-					</div>
-				</div>
-			{/if}
-		</nav>
-	</header>
+		{/if}
+	</nav>
 
-	<!-- Main Content -->
-	<main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+	<main class="w-full px-6 pb-16 pt-24 md:px-8 md:pt-28">
 		{@render children()}
 	</main>
 
-	<!-- Footer -->
-	<footer class="mt-16" style="background: #ffffff; border-top: 1px solid #e8e6e3;">
-		<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-			<div class="text-center" style="color: #9b8b7e;">
-				<p>&copy; 2025 Aaron Howard. All rights reserved.</p>
-			</div>
+	<footer class="w-full bg-surface-container-highest py-16 md:py-20">
+		<div
+			class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 md:flex-row md:justify-between md:px-8"
+		>
+			<a href="/" class="font-headline text-2xl font-bold text-on-surface">Aaron Howard</a>
+			<nav class="flex flex-wrap justify-center gap-8 md:gap-12" aria-label="Footer">
+				{#each nav as item (item.href)}
+					<a
+						href={item.href}
+						class="font-body text-xs uppercase tracking-widest text-secondary transition-colors hover:text-primary"
+					>
+						{item.label}
+					</a>
+				{/each}
+			</nav>
+			<p class="font-body text-center text-xs uppercase tracking-widest text-secondary">
+				© {new Date().getFullYear()} Aaron Howard
+			</p>
 		</div>
 	</footer>
 </div>

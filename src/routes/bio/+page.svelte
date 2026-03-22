@@ -2,7 +2,6 @@
 	let { data } = $props<{ data: { bio: Record<string, unknown> } }>();
 	const bio = $derived(data.bio);
 
-	// Parse experience and education from JSON (stored as JSON in database)
 	const experience = $derived(
 		(bio.experience || []) as Array<{
 			title: string;
@@ -12,7 +11,6 @@
 		}>
 	);
 
-	// These would be additional fields if needed - for now they're not stored
 	const education: Array<{
 		degree: string;
 		school: string;
@@ -24,47 +22,65 @@
 </script>
 
 <div class="mx-auto max-w-4xl">
-	<!-- Header -->
-	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold text-slate-900">About Me</h1>
-		<p class="mx-auto max-w-3xl text-xl text-slate-600">{bio.about}</p>
-	</div>
+	<header class="mb-16 md:mb-24">
+		<span
+			class="mb-4 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
+		>
+			Profile
+		</span>
+		<h1 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface md:text-6xl">
+			The philosophy of craft in every line of code.
+		</h1>
+		<p class="mt-8 max-w-2xl text-lg leading-relaxed text-secondary">
+			{bio.about}
+		</p>
+	</header>
 
-	<!-- Personal Info -->
-	<div class="mb-8 rounded-lg bg-white p-8 shadow-md">
-		<h2 class="mb-6 text-2xl font-semibold text-slate-900">Personal Information</h2>
-		<div class="grid gap-6 md:grid-cols-2">
-			<div>
-				<h3 class="mb-2 font-medium text-slate-700">Name</h3>
-				<p class="text-slate-900">{bio.name}</p>
-			</div>
-			<div>
-				<h3 class="mb-2 font-medium text-slate-700">Title</h3>
-				<p class="text-slate-900">{bio.title}</p>
-			</div>
-			<div>
-				<h3 class="mb-2 font-medium text-slate-700">Location</h3>
-				<p class="text-slate-900">{bio.location}</p>
-			</div>
-			<div>
-				<h3 class="mb-2 font-medium text-slate-700">Experience</h3>
-				<p class="text-slate-900">5+ years in web development</p>
+	<section class="mb-20 grid gap-12 md:grid-cols-2 md:items-start md:gap-20">
+		<div
+			class="flex aspect-[4/5] items-center justify-center rounded-xl bg-surface-container-highest font-headline text-7xl font-extrabold text-primary/25"
+			aria-hidden="true"
+		>
+			{(bio.name as string)
+				.split(' ')
+				.map((n) => n[0])
+				.join('')}
+		</div>
+		<div class="flex flex-col gap-8">
+			<h2 class="font-headline text-3xl font-extrabold tracking-tight text-on-surface md:text-4xl">
+				{bio.name}
+			</h2>
+			<p class="text-lg text-secondary">{bio.title} · {bio.location}</p>
+			<div class="grid grid-cols-2 gap-8 pt-2">
+				<div>
+					<span class="block font-headline text-3xl font-bold text-primary">5+</span>
+					<span class="text-xs font-medium uppercase tracking-widest text-secondary"
+						>Years building</span
+					>
+				</div>
+				<div>
+					<span class="block font-headline text-3xl font-bold text-primary">∞</span>
+					<span class="text-xs font-medium uppercase tracking-widest text-secondary">Curiosity</span
+					>
+				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
-	<!-- Skills -->
-	<div class="mb-8 rounded-lg bg-white p-8 shadow-md">
-		<h2 class="mb-6 text-2xl font-semibold text-slate-900">Skills & Technologies</h2>
+	<section class="mb-20 rounded-xl bg-surface-container-low p-8 md:p-12">
+		<h2 class="mb-10 font-headline text-2xl font-bold text-on-surface md:text-3xl">
+			Skills & technologies
+		</h2>
 
-		<div class="grid gap-8 md:grid-cols-2">
+		<div class="grid gap-12 md:grid-cols-2">
 			<div>
-				<h3 class="mb-4 text-lg font-medium text-slate-900">Frontend</h3>
+				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
+					Frontend
+				</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsFrontend as string[] as skill (skill)}
 						<span
-							class="rounded-full px-3 py-1 text-sm font-medium"
-							style="background-color: var(--color-sage-blue-light); color: var(--color-sage-blue);"
+							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 							>{skill}</span
 						>
 					{/each}
@@ -72,12 +88,13 @@
 			</div>
 
 			<div>
-				<h3 class="mb-4 text-lg font-medium text-slate-900">Backend</h3>
+				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
+					Backend
+				</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsBackend as string[] as skill (skill)}
 						<span
-							class="rounded-full px-3 py-1 text-sm font-medium"
-							style="background-color: var(--color-rust-clay-light); color: var(--color-rust-clay);"
+							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 							>{skill}</span
 						>
 					{/each}
@@ -85,12 +102,13 @@
 			</div>
 
 			<div>
-				<h3 class="mb-4 text-lg font-medium text-slate-900">Tools & Platforms</h3>
+				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
+					Tools & platforms
+				</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsTools as string[] as tool (tool)}
 						<span
-							class="rounded-full px-3 py-1 text-sm font-medium"
-							style="background-color: var(--color-terracotta-light); color: var(--color-terracotta);"
+							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 							>{tool}</span
 						>
 					{/each}
@@ -98,73 +116,72 @@
 			</div>
 
 			<div>
-				<h3 class="mb-4 text-lg font-medium text-slate-900">Programming Languages</h3>
+				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
+					Languages
+				</h3>
 				<div class="flex flex-wrap gap-2">
 					{#each bio.skillsLanguages as string[] as language (language)}
 						<span
-							class="rounded-full px-3 py-1 text-sm font-medium"
-							style="background-color: var(--color-ochre-light); color: var(--color-ochre);"
+							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 							>{language}</span
 						>
 					{/each}
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
-	<!-- Experience -->
 	{#if experience.length > 0}
-		<div class="mb-8 rounded-lg bg-white p-8 shadow-md">
-			<h2 class="mb-6 text-2xl font-semibold text-slate-900">Work Experience</h2>
+		<section class="mb-20">
+			<h2 class="mb-12 font-headline text-2xl font-bold text-on-surface md:text-3xl">
+				Work experience
+			</h2>
 
-			<div class="space-y-6">
+			<div class="flex flex-col gap-14">
 				{#each experience as job (job.title + job.company + job.period)}
-					<div class="border-l-4 border-blue-500 pl-6">
-						<div class="mb-2 flex items-start justify-between">
-							<h3 class="text-lg font-semibold text-slate-900">{job.title}</h3>
-							<span class="rounded bg-slate-100 px-2 py-1 text-sm text-slate-500">{job.period}</span
-							>
+					<div>
+						<div class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+							<h3 class="font-headline text-xl font-bold text-on-surface">{job.title}</h3>
+							<span class="font-body text-sm text-secondary">{job.period}</span>
 						</div>
-						<p class="mb-2 font-medium text-blue-600">{job.company}</p>
-						<p class="text-slate-600">{job.description}</p>
+						<p class="mb-3 font-headline font-semibold text-primary">{job.company}</p>
+						<p class="max-w-3xl leading-relaxed text-secondary">{job.description}</p>
 					</div>
 				{/each}
 			</div>
-		</div>
+		</section>
 	{/if}
 
-	<!-- Education -->
 	{#if education.length > 0}
-		<div class="mb-8 rounded-lg bg-white p-8 shadow-md">
-			<h2 class="mb-6 text-2xl font-semibold text-slate-900">Education</h2>
+		<section class="mb-20 rounded-xl bg-surface-container-low p-8 md:p-12">
+			<h2 class="mb-10 font-headline text-2xl font-bold text-on-surface md:text-3xl">Education</h2>
 
-			<div class="space-y-6">
+			<div class="flex flex-col gap-12">
 				{#each education as edu (edu.degree + edu.school + edu.period)}
-					<div class="border-l-4 border-green-500 pl-6">
-						<div class="mb-2 flex items-start justify-between">
-							<h3 class="text-lg font-semibold text-slate-900">{edu.degree}</h3>
-							<span class="rounded bg-slate-100 px-2 py-1 text-sm text-slate-500">{edu.period}</span
-							>
+					<div>
+						<div class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+							<h3 class="font-headline text-xl font-bold text-on-surface">{edu.degree}</h3>
+							<span class="font-body text-sm text-secondary">{edu.period}</span>
 						</div>
-						<p class="mb-2 font-medium text-green-600">{edu.school}</p>
-						<p class="text-slate-600">{edu.description}</p>
+						<p class="mb-3 font-headline font-semibold text-primary">{edu.school}</p>
+						<p class="text-secondary">{edu.description}</p>
 					</div>
 				{/each}
 			</div>
-		</div>
+		</section>
 	{/if}
 
-	<!-- Interests -->
 	{#if interests.length > 0}
-		<div class="rounded-lg bg-white p-8 shadow-md">
-			<h2 class="mb-6 text-2xl font-semibold text-slate-900">Interests & Hobbies</h2>
+		<section class="rounded-xl bg-surface-container-lowest p-8 shadow-ambient md:p-10">
+			<h2 class="mb-8 font-headline text-2xl font-bold text-on-surface">Interests</h2>
 			<div class="flex flex-wrap gap-3">
 				{#each interests as interest (interest)}
-					<span class="rounded-lg bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700"
+					<span
+						class="rounded-md bg-surface-container-high px-4 py-2 text-sm font-medium text-on-surface"
 						>{interest}</span
 					>
 				{/each}
 			</div>
-		</div>
+		</section>
 	{/if}
 </div>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#eae8e3",
+              "secondary-fixed-dim": "#cfc4be",
+              "primary-fixed": "#7ff9c6",
+              "on-secondary-fixed-variant": "#4d4541",
+              "on-tertiary-container": "#fffbff",
+              "on-tertiary": "#ffffff",
+              "primary": "#00694b",
+              "secondary-fixed": "#ece0da",
+              "on-primary-container": "#f5fff7",
+              "primary-fixed-dim": "#61dcab",
+              "surface-container-low": "#f5f3ee",
+              "on-tertiary-fixed-variant": "#4c4642",
+              "tertiary-fixed": "#ebe0db",
+              "on-tertiary-fixed": "#1f1b18",
+              "surface-container": "#f0eee9",
+              "tertiary-fixed-dim": "#cec5c0",
+              "secondary-container": "#e9ddd7",
+              "on-surface-variant": "#3d4a43",
+              "on-secondary-fixed": "#201a17",
+              "on-error": "#ffffff",
+              "error-container": "#ffdad6",
+              "on-primary": "#ffffff",
+              "tertiary": "#615b57",
+              "inverse-surface": "#30312e",
+              "surface-bright": "#fbf9f4",
+              "primary-container": "#008560",
+              "background": "#fbf9f4",
+              "inverse-on-surface": "#f2f1ec",
+              "on-background": "#1b1c19",
+              "outline-variant": "#bccac1",
+              "inverse-primary": "#61dcab",
+              "surface": "#fbf9f4",
+              "surface-container-highest": "#e4e2dd",
+              "surface-dim": "#dbdad5",
+              "on-primary-fixed-variant": "#005139",
+              "outline": "#6d7a72",
+              "on-surface": "#1b1c19",
+              "error": "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "on-error-container": "#93000a",
+              "surface-variant": "#e4e2dd",
+              "surface-tint": "#006c4d",
+              "secondary": "#655d58",
+              "on-primary-fixed": "#002115",
+              "on-secondary-container": "#69615c",
+              "tertiary-container": "#7a736f"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .no-line-separation {
+        border: none !important;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed-dim">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#fbf9f4]/80 dark:bg-[#1b1c19]/80 backdrop-blur-xl">
+<div class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+<a class="text-xl font-extrabold text-[#1b1c19] dark:text-[#fbf9f4] tracking-tighter font-headline" href="{{DATA:SCREEN:SCREEN_4}}">Aaron Howard</a>
+<div class="hidden md:flex items-center space-x-12">
+<a class="text-[#655d58] dark:text-[#e4e2dd] font-medium hover:text-[#0DA175] transition-colors duration-300 font-headline" href="{{DATA:SCREEN:SCREEN_4}}">Home</a>
+<a class="text-[#0DA175] font-bold border-b-2 border-[#0DA175] pb-1 font-headline" href="{{DATA:SCREEN:SCREEN_8}}">About</a>
+<a class="text-[#655d58] dark:text-[#e4e2dd] font-medium hover:text-[#0DA175] transition-colors duration-300 font-headline" href="{{DATA:SCREEN:SCREEN_2}}">Projects</a>
+<a class="text-[#655d58] dark:text-[#e4e2dd] font-medium hover:text-[#0DA175] transition-colors duration-300 font-headline" href="{{DATA:SCREEN:SCREEN_6}}">Blog</a>
+<a class="text-[#655d58] dark:text-[#e4e2dd] font-medium hover:text-[#0DA175] transition-colors duration-300 font-headline" href="{{DATA:SCREEN:SCREEN_10}}">Contact</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold hover:scale-102 hover:opacity-90 transition-all font-headline">Download CV</button>
+</div>
+</nav>
+<main class="pt-32">
+<!-- Hero Section / Personal Info -->
+<section class="max-w-7xl mx-auto px-8 mb-28">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+<div class="lg:col-span-8">
+<span class="text-primary font-bold tracking-widest text-xs uppercase mb-4 block">Full Stack Developer — Irving, USA</span>
+<h1 class="text-7xl md:text-8xl font-headline font-extrabold tracking-tighter text-on-surface leading-[0.9] mb-8">
+                        The Digital<br/>Curator.
+                    </h1>
+<p class="text-2xl text-secondary max-w-2xl leading-relaxed">
+                        Aaron Howard is a software craftsman with 5+ years of experience, merging the precision of engineering with the soul of modern design.
+                    </p>
+</div>
+<div class="lg:col-span-4 flex justify-end">
+<div class="w-full aspect-[4/5] bg-surface-container-high rounded-xl overflow-hidden relative group">
+<img class="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-700" data-alt="Professional portrait of a male developer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXqD2vScILR4v8z-McWgG5Iagi55tjzueEHfPzQ0hRfGx3T5LT5aNt5OsKR2yspYuZgaBBgNyW6Az8GrKC1Y9BjMuFkIuBlt0MhNsMlrPx0sbMTaOowMc3wlWkoelxKXGGvBwLJeqKFOuuloyI0-gD5Zq-KWpgZZQhmjr4vmf1WrNPaGqbQx2bjq2GBxSLusYrfsekUYfCQfw-o9blsxxcQUEfX7C4G26HjhjGltpOqtCK7yZPJgJHGXnEw3PmdvpHXVBed053KroJ"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Bio Section -->
+<section class="bg-surface-container-low py-28 mb-28">
+<div class="max-w-7xl mx-auto px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+<div class="lg:col-span-4">
+<h2 class="text-sm font-bold text-primary uppercase tracking-widest">The Narrative</h2>
+</div>
+<div class="lg:col-span-8">
+<div class="space-y-8 text-xl text-on-surface-variant leading-relaxed font-light">
+<p>
+                                I don't just write code; I curate digital experiences. In an era of automated templates and cluttered interfaces, my work stands as a testament to intentionality. Every pixel and every line of PostgreSQL query is part of a larger story about efficiency and beauty.
+                            </p>
+<p>
+                                Based in Irving, I've spent the last half-decade architecting systems that bridge the gap between complex backend logic and seamless frontend interactions. My philosophy is simple: technology should be invisible, yet indispensable.
+                            </p>
+<div class="pt-6">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="history_edu">history_edu</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Skills & Tech (Bento Style) -->
+<section class="max-w-7xl mx-auto px-8 mb-28">
+<h2 class="text-4xl font-headline font-bold mb-16 tracking-tight">Technical Arsenal</h2>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- Frontend -->
+<div class="md:col-span-2 bg-surface-container-lowest p-10 rounded-xl">
+<h3 class="text-primary font-bold text-sm uppercase tracking-widest mb-6">Frontend Engineering</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-xs rounded-full">React</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-xs rounded-full">Vue.js</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-xs rounded-full">Svelte</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-xs rounded-full">TypeScript</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-xs rounded-full">Tailwind CSS</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-xs rounded-full">Next.js</span>
+</div>
+</div>
+<!-- Backend -->
+<div class="md:col-span-2 bg-surface-container-high p-10 rounded-xl">
+<h3 class="text-primary font-bold text-sm uppercase tracking-widest mb-6">Backend &amp; Database</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-white/50 text-on-surface text-xs rounded-full">Node.js</span>
+<span class="px-3 py-1 bg-white/50 text-on-surface text-xs rounded-full">Python</span>
+<span class="px-3 py-1 bg-white/50 text-on-surface text-xs rounded-full">PostgreSQL</span>
+<span class="px-3 py-1 bg-white/50 text-on-surface text-xs rounded-full">MongoDB</span>
+<span class="px-3 py-1 bg-white/50 text-on-surface text-xs rounded-full">Express.js</span>
+<span class="px-3 py-1 bg-white/50 text-on-surface text-xs rounded-full">FastAPI</span>
+</div>
+</div>
+<!-- Tools -->
+<div class="md:col-span-1 bg-surface-container-low p-10 rounded-xl">
+<h3 class="text-primary font-bold text-sm uppercase tracking-widest mb-6">Platforms</h3>
+<div class="flex flex-col gap-3 text-sm text-secondary">
+<span>Netlify</span>
+<span>Vercel</span>
+<span>Docker</span>
+<span>Figma</span>
+</div>
+</div>
+<!-- Languages -->
+<div class="md:col-span-3 bg-surface-container p-10 rounded-xl flex items-center">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
+<div>
+<span class="block text-3xl font-headline font-bold text-on-surface">JS</span>
+<span class="text-xs text-secondary uppercase">JavaScript</span>
+</div>
+<div>
+<span class="block text-3xl font-headline font-bold text-on-surface">TS</span>
+<span class="text-xs text-secondary uppercase">TypeScript</span>
+</div>
+<div>
+<span class="block text-3xl font-headline font-bold text-on-surface">PY</span>
+<span class="text-xs text-secondary uppercase">Python</span>
+</div>
+<div>
+<span class="block text-3xl font-headline font-bold text-on-surface">SQL</span>
+<span class="text-xs text-secondary uppercase">Structured Query</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Experience Timeline -->
+<section class="max-w-7xl mx-auto px-8 mb-40">
+<h2 class="text-4xl font-headline font-bold mb-16 tracking-tight">Professional Journey</h2>
+<div class="space-y-12">
+<!-- Senior Role -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center py-10 border-t border-outline-variant/15 hover:bg-surface-container-lowest transition-colors px-4 -mx-4 group">
+<div>
+<span class="text-primary font-bold text-sm">2022 — Present</span>
+<h3 class="text-2xl font-headline font-bold text-on-surface mt-1">Senior Full Stack Developer</h3>
+<p class="text-secondary">City of Dallas</p>
+</div>
+<div class="mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary" data-icon="north_east">north_east</span>
+</div>
+</div>
+<!-- Mid Role -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center py-10 border-t border-outline-variant/15 hover:bg-surface-container-lowest transition-colors px-4 -mx-4 group">
+<div>
+<span class="text-secondary font-medium text-sm">2020 — 2022</span>
+<h3 class="text-2xl font-headline font-bold text-on-surface mt-1">Frontend Developer</h3>
+<p class="text-secondary">City of Dallas</p>
+</div>
+<div class="mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary" data-icon="north_east">north_east</span>
+</div>
+</div>
+<!-- Junior Role -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center py-10 border-t border-b border-outline-variant/15 hover:bg-surface-container-lowest transition-colors px-4 -mx-4 group">
+<div>
+<span class="text-secondary font-medium text-sm">2015 — 2020</span>
+<h3 class="text-2xl font-headline font-bold text-on-surface mt-1">Junior Developer</h3>
+<p class="text-secondary">City of Dallas</p>
+</div>
+<div class="mt-4 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary" data-icon="north_east">north_east</span>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-7xl mx-auto px-8 mb-40 text-center">
+<div class="bg-primary text-on-primary py-24 rounded-full flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+<h2 class="text-5xl md:text-6xl font-headline font-extrabold mb-8 tracking-tighter">Ready to collaborate?</h2>
+<a class="text-xl font-headline font-bold border-b-2 border-on-primary/30 hover:border-on-primary transition-all pb-1" href="mailto:contact@aaronhoward.com">Let's start a conversation</a>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full pt-20 pb-10 bg-[#e4e2dd] dark:bg-[#121212] border-t border-[#bccac1]/15">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 w-full max-w-7xl mx-auto">
+<div class="mb-8 md:mb-0">
+<span class="text-lg font-bold text-[#1b1c19] font-headline">Aaron Howard</span>
+<p class="text-[#655d58] text-sm tracking-wide mt-2 font-body">© 2024 Aaron Howard. Built with Craft.</p>
+<div class="flex gap-4 mt-4 font-headline text-xs font-bold uppercase tracking-widest text-[#655d58]">
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_4}}">Home</a>
+<a class="text-primary" href="{{DATA:SCREEN:SCREEN_8}}">About</a>
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_2}}">Projects</a>
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_6}}">Blog</a>
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_10}}">Contact</a>
+</div>
+</div>
+<div class="flex space-x-8">
+<a class="text-[#655d58] text-sm font-medium hover:underline decoration-[#0DA175] underline-offset-4 transition-all duration-200" href="#">Github</a>
+<a class="text-[#655d58] text-sm font-medium hover:underline decoration-[#0DA175] underline-offset-4 transition-all duration-200" href="#">LinkedIn</a>
+<a class="text-[#655d58] text-sm font-medium hover:underline decoration-[#0DA175] underline-offset-4 transition-all duration-200" href="#">Twitter</a>
+</div>
+</div>
+</footer>
+</body></html>

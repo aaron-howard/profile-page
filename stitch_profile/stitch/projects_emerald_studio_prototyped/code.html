@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Work — Emerald Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary": "#ffffff",
+              "inverse-surface": "#30312e",
+              "on-surface-variant": "#3d4a43",
+              "on-secondary": "#ffffff",
+              "on-background": "#1b1c19",
+              "on-tertiary-container": "#fffbff",
+              "secondary-container": "#e9ddd7",
+              "secondary-fixed-dim": "#cfc4be",
+              "secondary": "#655d58",
+              "on-error-container": "#93000a",
+              "primary-fixed-dim": "#61dcab",
+              "outline-variant": "#bccac1",
+              "surface-container-lowest": "#ffffff",
+              "surface-container": "#f0eee9",
+              "tertiary-fixed-dim": "#cec5c0",
+              "tertiary-fixed": "#ebe0db",
+              "on-secondary-container": "#69615c",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#4c4642",
+              "secondary-fixed": "#ece0da",
+              "surface-bright": "#fbf9f4",
+              "error": "#ba1a1a",
+              "on-surface": "#1b1c19",
+              "surface-dim": "#dbdad5",
+              "surface-variant": "#e4e2dd",
+              "on-primary-fixed": "#002115",
+              "tertiary": "#615b57",
+              "surface-container-high": "#eae8e3",
+              "surface-tint": "#006c4d",
+              "outline": "#6d7a72",
+              "primary": "#00694b",
+              "inverse-on-surface": "#f2f1ec",
+              "on-primary": "#ffffff",
+              "surface-container-highest": "#e4e2dd",
+              "background": "#fbf9f4",
+              "surface-container-low": "#f5f3ee",
+              "tertiary-container": "#7a736f",
+              "on-primary-fixed-variant": "#005139",
+              "surface": "#fbf9f4",
+              "on-tertiary-fixed": "#1f1b18",
+              "primary-fixed": "#7ff9c6",
+              "on-primary-container": "#f5fff7",
+              "on-secondary-fixed-variant": "#4d4541",
+              "primary-container": "#008560",
+              "on-secondary-fixed": "#201a17",
+              "inverse-primary": "#61dcab",
+              "error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-nav {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .scale-102:hover { transform: scale(1.02); }
+      .active-scale-98:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-xl">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<a class="text-xl font-extrabold tracking-tighter text-stone-900 dark:text-stone-50 font-headline" href="{{DATA:SCREEN:SCREEN_4}}">
+                Emerald Studio
+            </a>
+<div class="hidden md:flex items-center space-x-8 font-manrope font-bold tracking-tight text-sm">
+<a class="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" href="{{DATA:SCREEN:SCREEN_4}}">Home</a>
+<a class="text-emerald-700 dark:text-emerald-400 border-b-2 border-emerald-600 pb-1" href="#">Projects</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" href="{{DATA:SCREEN:SCREEN_8}}">About</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" href="{{DATA:SCREEN:SCREEN_6}}">Blog</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 transition-colors" href="{{DATA:SCREEN:SCREEN_10}}">Contact</a>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-md scale-102 active:scale-98 transition-transform duration-200">
+                    Resume
+                </button>
+</div>
+<button class="md:hidden text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</nav>
+<main class="pt-32 pb-20">
+<!-- Header & Filter Section -->
+<header class="max-w-7xl mx-auto px-8 mb-20">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+<div class="max-w-2xl">
+<span class="font-label text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">Selected Works</span>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-on-background mb-6">
+                        Crafting Digital <br/><span class="text-primary">Experiences.</span>
+</h1>
+<p class="text-lg text-secondary leading-relaxed font-body">
+                        A curation of full-stack applications, interactive interfaces, and architectural solutions built with precision and intent.
+                    </p>
+</div>
+<!-- Dynamic Filtering -->
+<div class="flex flex-wrap gap-2 pb-2">
+<button class="px-6 py-2 rounded-full font-label text-sm font-semibold transition-all bg-primary text-on-primary">All</button>
+<button class="px-6 py-2 rounded-full font-label text-sm font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container-highest">Frontend</button>
+<button class="px-6 py-2 rounded-full font-label text-sm font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container-highest">Backend</button>
+<button class="px-6 py-2 rounded-full font-label text-sm font-semibold transition-all bg-surface-container-high text-on-surface hover:bg-surface-container-highest">Full Stack</button>
+</div>
+</div>
+</header>
+<!-- Featured Projects - Asymmetric Layout -->
+<section class="max-w-7xl mx-auto px-8 space-y-40">
+<!-- Project 1: Nexa Banking System -->
+<article class="flex flex-col lg:flex-row gap-16 items-center">
+<div class="w-full lg:w-3/5 group cursor-pointer overflow-hidden rounded-xl bg-surface-container-low p-4 lg:p-8">
+<div class="aspect-video relative overflow-hidden rounded-lg shadow-sm">
+<img alt="Nexa Banking Dashboard" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105" data-alt="Sleek dark mode banking dashboard UI with charts" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG2xZjwOjVJBot3U0hmFeJ0klPrjoN2CBOOjbhW7SINrbDRP1YR98Qp6oDpafF3jEuqPnV3fQkGFEUlqZaBTybM08MhqwXes3FA0oKS2ZElkhwerVyZKqOH8QPfrYm6zL7bLeck8bOAMoh0frfao876SLN43Dsd5_ntOsHzOtmHize_cxjHkc6k2yWtDfu5GoIHsjkYZmid6D6Mf3t9fXkqYNy6DPGfIXnEERG6kbItDGXEdTYEeza_70Yj5sAYGl4II_dSBG8CRsY"/>
+</div>
+</div>
+<div class="w-full lg:w-2/5">
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Fintech</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Next.js</span>
+</div>
+<h2 class="font-headline text-4xl font-extrabold tracking-tight mb-4 text-on-background">Nexa Banking System</h2>
+<p class="text-secondary mb-8 leading-relaxed">
+                        A modern core banking platform built for speed and security. Featuring real-time transaction processing, automated reporting, and a high-performance dashboard for institutional users.
+                    </p>
+<div class="flex flex-wrap gap-3 mb-10">
+<span class="text-xs font-medium text-on-surface-variant bg-surface-container-high px-3 py-1 rounded">TypeScript</span>
+<span class="text-xs font-medium text-on-surface-variant bg-surface-container-high px-3 py-1 rounded">PostgreSQL</span>
+<span class="text-xs font-medium text-on-surface-variant bg-surface-container-high px-3 py-1 rounded">Redis</span>
+</div>
+<div class="flex items-center gap-6">
+<a class="group flex items-center gap-2 font-bold text-sm text-primary uppercase tracking-widest transition-all" href="#">
+                            View Case Study 
+                            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Project 2: Vélos Premium (Reversed Layout) -->
+<article class="flex flex-col lg:flex-row-reverse gap-16 items-center">
+<div class="w-full lg:w-3/5 group cursor-pointer overflow-hidden rounded-xl bg-surface-container-low p-4 lg:p-8">
+<div class="aspect-video relative overflow-hidden rounded-lg shadow-sm">
+<img alt="Velos Premium E-commerce" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105" data-alt="Premium bicycle minimalist e-commerce product page" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvZFGpcihq83LeUSsYT56AKxsVLJK-nwQnQ8ZfNWgiHdxoklCu3jpT8SmERpcA0v8WwXX-vcwmYZqaDK1fpgv0_IwgBetXwpO28Nsn3PSOT_ZlFyd9R4JB_16h8-Y1FGIzTUlds5d0bTWPoTeMyyVuHIHWhRPxzBSeAK8PsaanV5Ab0qktfTXv169-FpFE0oi4oT38TkT2vXet_kkRmAAc2erQGmEkXve2CyPyA2lj55mB7R1tsg71sYcY82rZj0S3fdE6o_TF4X4C"/>
+</div>
+</div>
+<div class="w-full lg:w-2/5">
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-[10px] font-bold uppercase tracking-widest rounded-full">E-Commerce</span>
+<span class="px-3 py-1 bg-secondary-container/10 text-on-secondary-container text-[10px] font-bold uppercase tracking-widest rounded-full">SvelteKit</span>
+</div>
+<h2 class="font-headline text-4xl font-extrabold tracking-tight mb-4 text-on-background">Vélos Premium</h2>
+<p class="text-secondary mb-8 leading-relaxed">
+                        An editorial e-commerce experience for high-end boutique cycles. Focused on immersive storytelling, 3D product previews, and a frictionless checkout journey.
+                    </p>
+<div class="flex flex-wrap gap-3 mb-10">
+<span class="text-xs font-medium text-on-surface-variant bg-surface-container-high px-3 py-1 rounded">Three.js</span>
+<span class="text-xs font-medium text-on-surface-variant bg-surface-container-high px-3 py-1 rounded">Stripe SDK</span>
+<span class="text-xs font-medium text-on-surface-variant bg-surface-container-high px-3 py-1 rounded">Tailwind</span>
+</div>
+<div class="flex items-center gap-6">
+<a class="group flex items-center gap-2 font-bold text-sm text-primary uppercase tracking-widest transition-all" href="#">
+                            Live Demo 
+                            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">open_in_new</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Project 3: The Curator Studio (Smaller Grid Pair) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<article class="group bg-surface-container-low rounded-xl p-6 transition-all hover:bg-surface-container">
+<div class="aspect-[4/3] rounded-lg overflow-hidden mb-8">
+<img alt="Curator Studio Interface" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Clean minimal project management board UI" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdxykbeKDod8LSKj0ZPeb8-Tg0WK_XmI3-4rOOGFV1un6CIxRmcLW0Rg40QfpdB85S7KLC0TuQSuQyyuD5nndgyHY3VOcCDXY9FvLLT4wR9UkITsTWmtqLzKgfo6YYzDMglgYiLkceA4mEz40RnT3_UtfLIezdsOc_Y7xGy3ZrNR9zMNlvfOY2oXocdyToNWaU53wmnNUUgMeP4sxgoj6lBkhBVd6A9sW-mFYWTdJX56MIKMoGCJLgjWQ65bFCH_VZe9ekX0o2WUcf"/>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-3 text-on-background">The Curator Studio</h3>
+<p class="text-secondary text-sm mb-6 leading-relaxed">
+                        A bespoke project management tool for creative agencies. Streamlining feedback loops and asset versioning in one unified space.
+                    </p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="text-[10px] font-label font-semibold text-secondary px-2 py-0.5 border border-outline-variant/20 rounded">React</span>
+<span class="text-[10px] font-label font-semibold text-secondary px-2 py-0.5 border border-outline-variant/20 rounded">Firebase</span>
+</div>
+<div class="flex justify-between items-center">
+<button class="text-xs font-bold uppercase tracking-widest text-primary hover:underline underline-offset-4 decoration-2">View Project</button>
+<span class="material-symbols-outlined text-secondary opacity-40">layers</span>
+</div>
+</article>
+<article class="group bg-surface-container-low rounded-xl p-6 transition-all hover:bg-surface-container">
+<div class="aspect-[4/3] rounded-lg overflow-hidden mb-8">
+<img alt="Code Infrastructure" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Abstract visualization of backend code architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGAytykyMbTSn1I48ttF0cZPnMNy0iqkmOt0Ao-8ZD__cZ2tCAas_BOnEQ47_-UgE_sbJ3gG683-4s90qeP9xbC1ea9mYF_cPNyJG2fQG8y6oU_apv1LExipU9qHG816ZkoPtOohTICYtMFnD2qCvEZj4fZS2ks7o5wOAy9wDhHSWRIjapWgNmqd8zz75MCoaSjLdE_xntcpbkWz4v-_fhCQ2Yjt13wCwbGn6tmIrT22rszP4x1jhgveRUconK9MgEhkJ3MvibZ-kv"/>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-3 text-on-background">Lumina API Gateway</h3>
+<p class="text-secondary text-sm mb-6 leading-relaxed">
+                        High-throughput API gateway with built-in rate limiting and caching. Built for scaling microservices in a distributed environment.
+                    </p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="text-[10px] font-label font-semibold text-secondary px-2 py-0.5 border border-outline-variant/20 rounded">Go</span>
+<span class="text-[10px] font-label font-semibold text-secondary px-2 py-0.5 border border-outline-variant/20 rounded">Docker</span>
+</div>
+<div class="flex justify-between items-center">
+<button class="text-xs font-bold uppercase tracking-widest text-primary hover:underline underline-offset-4 decoration-2">GitHub Repo</button>
+<span class="material-symbols-outlined text-secondary opacity-40">terminal</span>
+</div>
+</article>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="mt-40 max-w-7xl mx-auto px-8">
+<div class="bg-primary-container/20 rounded-2xl p-12 md:p-24 text-center border border-primary/10">
+<h2 class="font-headline text-3xl md:text-5xl font-extrabold text-on-background mb-6 tracking-tight">Have a project in mind?</h2>
+<p class="text-secondary max-w-xl mx-auto mb-10 text-lg">
+                    I'm currently accepting new freelance projects and full-time opportunities. Let's build something exceptional together.
+                </p>
+<div class="flex flex-col md:flex-row justify-center gap-4">
+<a class="bg-primary text-on-primary px-8 py-4 rounded-md font-bold transition-all hover:opacity-90 active:scale-95 inline-block" href="{{DATA:SCREEN:SCREEN_10}}">Start a Conversation</a>
+<button class="bg-surface border border-outline-variant/30 text-on-surface px-8 py-4 rounded-md font-bold transition-all hover:bg-surface-container-high">Download Resume</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-20 mt-32 bg-stone-200 dark:bg-stone-950">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 max-w-7xl mx-auto gap-8">
+<a class="font-manrope font-black text-stone-900 dark:text-stone-50 text-xl" href="{{DATA:SCREEN:SCREEN_4}}">
+                Emerald Studio
+            </a>
+<div class="flex flex-wrap justify-center gap-8 text-stone-500 font-inter text-xs uppercase tracking-widest">
+<a class="hover:text-emerald-600 hover:underline decoration-emerald-500 underline-offset-4 transition-all duration-300 ease-in-out" href="{{DATA:SCREEN:SCREEN_4}}">Home</a>
+<a class="text-emerald-600 underline decoration-emerald-500 underline-offset-4" href="#">Projects</a>
+<a class="hover:text-emerald-600 hover:underline decoration-emerald-500 underline-offset-4 transition-all duration-300 ease-in-out" href="{{DATA:SCREEN:SCREEN_8}}">About</a>
+<a class="hover:text-emerald-600 hover:underline decoration-emerald-500 underline-offset-4 transition-all duration-300 ease-in-out" href="{{DATA:SCREEN:SCREEN_6}}">Blog</a>
+<a class="hover:text-emerald-600 hover:underline decoration-emerald-500 underline-offset-4 transition-all duration-300 ease-in-out" href="{{DATA:SCREEN:SCREEN_10}}">Contact</a>
+</div>
+<div class="flex gap-8 text-stone-500 font-inter text-xs uppercase tracking-widest">
+<a class="hover:text-emerald-600 transition-colors" href="#">Github</a>
+<a class="hover:text-emerald-600 transition-colors" href="#">LinkedIn</a>
+<a class="hover:text-emerald-600 transition-colors" href="#">Twitter</a>
+</div>
+</div>
+<div class="text-center mt-12 text-stone-500 font-inter text-[10px] uppercase tracking-widest opacity-60">
+            © 2024 Emerald Studio. Built with Craft.
+        </div>
+</footer>
+</body></html>

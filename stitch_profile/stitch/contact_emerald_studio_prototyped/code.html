@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#fbf9f4",
+              "surface-container-lowest": "#ffffff",
+              "surface-container-high": "#eae8e3",
+              "outline": "#6d7a72",
+              "on-error-container": "#93000a",
+              "secondary-fixed-dim": "#cfc4be",
+              "tertiary-fixed-dim": "#cec5c0",
+              "error-container": "#ffdad6",
+              "on-primary-fixed-variant": "#005139",
+              "on-tertiary-container": "#fffbff",
+              "surface-container-highest": "#e4e2dd",
+              "surface": "#fbf9f4",
+              "on-primary-fixed": "#002115",
+              "primary": "#00694b",
+              "surface-container": "#f0eee9",
+              "inverse-primary": "#61dcab",
+              "surface-variant": "#e4e2dd",
+              "on-surface": "#1b1c19",
+              "tertiary-fixed": "#ebe0db",
+              "secondary": "#655d58",
+              "outline-variant": "#bccac1",
+              "primary-fixed-dim": "#61dcab",
+              "on-tertiary": "#ffffff",
+              "inverse-surface": "#30312e",
+              "on-error": "#ffffff",
+              "on-secondary-container": "#69615c",
+              "on-tertiary-fixed-variant": "#4c4642",
+              "primary-container": "#008560",
+              "surface-tint": "#006c4d",
+              "on-tertiary-fixed": "#1f1b18",
+              "secondary-fixed": "#ece0da",
+              "error": "#ba1a1a",
+              "surface-dim": "#dbdad5",
+              "surface-container-low": "#f5f3ee",
+              "tertiary-container": "#7a736f",
+              "on-surface-variant": "#3d4a43",
+              "on-primary-container": "#f5fff7",
+              "tertiary": "#615b57",
+              "on-secondary-fixed-variant": "#4d4541",
+              "surface-bright": "#fbf9f4",
+              "on-secondary": "#ffffff",
+              "primary-fixed": "#7ff9c6",
+              "on-secondary-fixed": "#201a17",
+              "secondary-container": "#e9ddd7",
+              "inverse-on-surface": "#f2f1ec",
+              "on-background": "#1b1c19",
+              "on-primary": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background-color: rgba(251, 249, 244, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .input-underline-animate:focus-within .border-bottom-line {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 glass-nav">
+<div class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+<div class="text-xl font-headline font-extrabold tracking-tighter text-on-background">Emerald Studio</div>
+<div class="hidden md:flex items-center gap-10 font-headline font-bold tracking-tight text-sm">
+<a class="text-secondary hover:text-on-surface transition-colors" href="{{DATA:SCREEN:SCREEN_4}}">Home</a>
+<a class="text-secondary hover:text-on-surface transition-colors" href="{{DATA:SCREEN:SCREEN_8}}">About</a>
+<a class="text-secondary hover:text-on-surface transition-colors" href="{{DATA:SCREEN:SCREEN_2}}">Projects</a>
+<a class="text-secondary hover:text-on-surface transition-colors" href="{{DATA:SCREEN:SCREEN_6}}">Blog</a>
+<a class="text-primary border-b-2 border-primary pb-1" href="{{DATA:SCREEN:SCREEN_10}}">Contact</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-headline font-bold text-sm hover:scale-105 transition-transform duration-200">
+            Hire Me
+        </button>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-8 max-w-7xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-24">
+<div class="max-w-3xl">
+<span class="font-label text-xs uppercase tracking-widest text-primary font-semibold mb-4 block">Let's build something great</span>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-on-surface mb-8">Get In Touch</h1>
+<p class="font-body text-lg md:text-xl text-secondary leading-relaxed">
+                I believe code is a craft and every digital experience is an opportunity for architectural precision. Whether you have a project in mind or just want to talk tech, I'm here to collaborate.
+            </p>
+</div>
+</section>
+<!-- Main Content Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+<!-- Left Column: Information -->
+<div class="lg:col-span-5 space-y-16">
+<!-- Contact Information -->
+<div class="space-y-8">
+<h2 class="font-headline text-2xl font-bold tracking-tight">Contact Information</h2>
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-low rounded-xl text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mb-1">Name</p>
+<p class="font-headline font-bold text-on-surface">Alex Rivera</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-low rounded-xl text-primary">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<div>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mb-1">Email</p>
+<p class="font-headline font-bold text-on-surface">hello@emeraldstudio.dev</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-low rounded-xl text-primary">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<div>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mb-1">Location</p>
+<p class="font-headline font-bold text-on-surface">San Francisco, CA (Remote Friendly)</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 flex items-center justify-center bg-surface-container-low rounded-xl text-primary">
+<span class="material-symbols-outlined">phone_iphone</span>
+</div>
+<div>
+<p class="text-xs font-label uppercase tracking-widest text-secondary mb-1">Phone</p>
+<p class="font-headline font-bold text-on-surface">+1 (415) 555-0128</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Follow Me -->
+<div class="space-y-8">
+<h2 class="font-headline text-2xl font-bold tracking-tight">Follow Me</h2>
+<div class="grid grid-cols-2 gap-4">
+<a class="group bg-surface-container-low p-4 rounded-xl flex items-center gap-3 hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors">code</span>
+<span class="font-headline font-bold text-sm">GitHub</span>
+</a>
+<a class="group bg-surface-container-low p-4 rounded-xl flex items-center gap-3 hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors">hub</span>
+<span class="font-headline font-bold text-sm">LinkedIn</span>
+</a>
+<a class="group bg-surface-container-low p-4 rounded-xl flex items-center gap-3 hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors">cloud</span>
+<span class="font-headline font-bold text-sm">BlueSky</span>
+</a>
+<a class="group bg-surface-container-low p-4 rounded-xl flex items-center gap-3 hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors">alternate_email</span>
+<span class="font-headline font-bold text-sm">Email</span>
+</a>
+</div>
+</div>
+<!-- Availability Card -->
+<div class="p-8 rounded-xl relative overflow-hidden bg-primary text-on-primary group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary via-primary to-[#008560] opacity-50"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="w-2 h-2 bg-[#61dcab] rounded-full animate-pulse"></span>
+<span class="font-label text-xs uppercase tracking-widest font-bold">Currently Available</span>
+</div>
+<h3 class="font-headline text-2xl font-bold mb-2">Current Availability</h3>
+<p class="font-body text-primary-fixed opacity-90 leading-relaxed mb-6">
+                        I am currently taking on freelance projects and consulting. Expected response time: less than 24 hours.
+                    </p>
+<div class="bg-on-primary/10 backdrop-blur-md p-4 rounded-lg border border-on-primary/10">
+<p class="text-xs font-label uppercase tracking-widest mb-1 opacity-70">Next Opening</p>
+<p class="font-headline font-bold">May 15th, 2024</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Form -->
+<div class="lg:col-span-7">
+<div class="bg-surface-container-lowest p-8 md:p-12 rounded-xl">
+<h2 class="font-headline text-2xl font-bold tracking-tight mb-8">Send Me a Message</h2>
+<form action="#" class="space-y-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Name Input -->
+<div class="relative">
+<label class="block text-xs font-label uppercase tracking-widest text-secondary font-bold mb-2" for="name">Name</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/40 py-3 px-0 focus:ring-0 focus:border-primary placeholder:text-outline-variant transition-all font-body text-on-surface" id="name" placeholder="John Doe" type="text"/>
+</div>
+<!-- Email Input -->
+<div class="relative">
+<label class="block text-xs font-label uppercase tracking-widest text-secondary font-bold mb-2" for="email">Email Address</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/40 py-3 px-0 focus:ring-0 focus:border-primary placeholder:text-outline-variant transition-all font-body text-on-surface" id="email" placeholder="john@example.com" type="email"/>
+</div>
+</div>
+<!-- Subject Input -->
+<div class="relative">
+<label class="block text-xs font-label uppercase tracking-widest text-secondary font-bold mb-2" for="subject">Subject</label>
+<input class="w-full bg-transparent border-0 border-b border-outline-variant/40 py-3 px-0 focus:ring-0 focus:border-primary placeholder:text-outline-variant transition-all font-body text-on-surface" id="subject" placeholder="Project Inquiry" type="text"/>
+</div>
+<!-- Message Input -->
+<div class="relative">
+<label class="block text-xs font-label uppercase tracking-widest text-secondary font-bold mb-2" for="message">Your Message</label>
+<textarea class="w-full bg-transparent border-0 border-b border-outline-variant/40 py-3 px-0 focus:ring-0 focus:border-primary placeholder:text-outline-variant transition-all font-body text-on-surface resize-none" id="message" placeholder="Tell me about your project or vision..." rows="5"></textarea>
+</div>
+<div class="pt-4">
+<button class="bg-primary text-on-primary px-10 py-4 rounded-lg font-headline font-extrabold text-sm tracking-tight flex items-center justify-center gap-2 hover:scale-105 transition-transform duration-200" type="submit">
+                            Send Message
+                            <span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Extra Detail: Map placeholder -->
+<div class="mt-8 relative h-64 rounded-xl overflow-hidden grayscale">
+<img alt="" class="w-full h-full object-cover" data-alt="Stylized monochromatic map of San Francisco area" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWoimSeA02oOj23Hi1YvenSGDoB5DMPuopmFF2a_2BTO_K13aLziFktNMX7D1S4hsnUxYT6Hly7meI0Id0b5UXQ1fdPcgJFlz_Ziwgfdf0W1X_GykuUAOpOE3oyHqWhV8hsjQYSt-op8lWi4qrydjXBAxoRYdf49sjVsp84KoRT6_3t6gjPRV5IPDvF5Wlu61zHg7zbTRJK-_K1lfBEndUudVhydd_oAM60mKOXuWkdDwysEr89eP4ckxbVZdSSfcmTgg_VkHYVzZv"/>
+<div class="absolute inset-0 bg-primary/10 mix-blend-multiply"></div>
+<div class="absolute bottom-6 left-6 bg-surface-container-lowest/90 backdrop-blur p-4 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">my_location</span>
+<span class="font-headline font-bold text-xs tracking-tight">Current Base: San Francisco, CA</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-20 bg-surface-container-highest">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-10 w-full max-w-7xl mx-auto">
+<div class="font-label text-xs uppercase tracking-widest text-secondary mb-6 md:mb-0">
+            © 2024 EMERALD STUDIO. HAND-CRAFTED WITH PRECISION.
+        </div>
+<div class="flex gap-8 font-label text-xs uppercase tracking-widest text-secondary">
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_4}}">Home</a>
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_8}}">About</a>
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_2}}">Projects</a>
+<a class="hover:text-primary transition-colors" href="{{DATA:SCREEN:SCREEN_6}}">Blog</a>
+<a class="text-primary font-bold" href="{{DATA:SCREEN:SCREEN_10}}">Contact</a>
+</div>
+</div>
+</footer>
+</body></html>

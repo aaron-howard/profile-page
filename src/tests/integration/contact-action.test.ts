@@ -17,7 +17,8 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn((schema) => schema)
+			zod: vi.fn((schema) => schema),
+			zod4: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
@@ -58,7 +59,8 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn((schema) => schema)
+			zod: vi.fn((schema) => schema),
+			zod4: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
@@ -102,7 +104,8 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn((schema) => schema)
+			zod: vi.fn((schema) => schema),
+			zod4: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
@@ -146,7 +149,8 @@ describe('contact form action', () => {
 		}));
 
 		vi.doMock('sveltekit-superforms/adapters', () => ({
-			zod: vi.fn((schema) => schema)
+			zod: vi.fn((schema) => schema),
+			zod4: vi.fn((schema) => schema)
 		}));
 
 		vi.doMock('$lib/server/email', () => ({
