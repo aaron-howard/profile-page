@@ -17,11 +17,8 @@ model Bio {
   location String
   about    String
 
-  // Skills stored as JSON
-  skillsFrontend    String[]
-  skillsBackend     String[]
-  skillsTools       String[]
-  skillsLanguages   String[]
+  // Skills grouped by category (see scripts/seed-bio.js for shape)
+  skillCategories Json @default("{}")
 
   // Experience stored as JSON array
   experience Json?

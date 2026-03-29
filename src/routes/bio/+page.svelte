@@ -2,6 +2,40 @@
 	let { data } = $props<{ data: { bio: Record<string, unknown> } }>();
 	const bio = $derived(data.bio);
 
+	/** Display order for skill categories (keys in skillCategories JSON) */
+	const SKILL_CATEGORY_ORDER = [
+		'Languages & runtimes',
+		'Frontend & UI',
+		'Backend & APIs',
+		'Data & persistence',
+		'Styling & CSS',
+		'AI, ML & documents',
+		'Python tooling & automation',
+		'Testing, quality & observability',
+		'Auth, cloud & delivery',
+		'Enterprise platforms'
+	] as const;
+
+	const skillCategories = $derived.by(() => {
+		const raw = bio.skillCategories;
+		if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+			return {} as Record<string, string[]>;
+		}
+		return raw as Record<string, string[]>;
+	});
+
+	const orderedSkillSections = $derived.by(() => {
+		const map = skillCategories;
+		const fromOrder = SKILL_CATEGORY_ORDER.filter((title) => map[title]?.length).map((title) => ({
+			title,
+			items: map[title]!
+		}));
+		const extras = Object.keys(map)
+			.filter((k) => !(SKILL_CATEGORY_ORDER as readonly string[]).includes(k) && map[k]?.length)
+			.map((title) => ({ title, items: map[title]! }));
+		return [...fromOrder, ...extras];
+	});
+
 	const experience = $derived(
 		(bio.experience || []) as Array<{
 			title: string;
@@ -72,62 +106,22 @@
 			Skills & technologies
 		</h2>
 
-		<div class="grid gap-12 md:grid-cols-2">
-			<div>
-				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
-					Frontend
-				</h3>
-				<div class="flex flex-wrap gap-2">
-					{#each bio.skillsFrontend as string[] as skill (skill)}
-						<span
-							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
-							>{skill}</span
-						>
-					{/each}
+		<div class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+			{#each orderedSkillSections as section (section.title)}
+				<div>
+					<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
+						{section.title}
+					</h3>
+					<div class="flex flex-wrap gap-2">
+						{#each section.items as item (section.title + item)}
+							<span
+								class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+								>{item}</span
+							>
+						{/each}
+					</div>
 				</div>
-			</div>
-
-			<div>
-				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
-					Backend
-				</h3>
-				<div class="flex flex-wrap gap-2">
-					{#each bio.skillsBackend as string[] as skill (skill)}
-						<span
-							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
-							>{skill}</span
-						>
-					{/each}
-				</div>
-			</div>
-
-			<div>
-				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
-					Tools & platforms
-				</h3>
-				<div class="flex flex-wrap gap-2">
-					{#each bio.skillsTools as string[] as tool (tool)}
-						<span
-							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
-							>{tool}</span
-						>
-					{/each}
-				</div>
-			</div>
-
-			<div>
-				<h3 class="mb-4 font-body text-sm font-semibold uppercase tracking-widest text-secondary">
-					Languages
-				</h3>
-				<div class="flex flex-wrap gap-2">
-					{#each bio.skillsLanguages as string[] as language (language)}
-						<span
-							class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
-							>{language}</span
-						>
-					{/each}
-				</div>
-			</div>
+			{/each}
 		</div>
 	</section>
 
