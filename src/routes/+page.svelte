@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import type { PageData } from './$types';
+	import { projectImageSrc } from '$lib/project-image';
 	import type { BlogPost, Project } from '$lib/types';
 
 	let { data } = $props<{ data: PageData }>();
@@ -244,6 +245,7 @@
 
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-12">
 				{#each featuredProjects.slice(0, 4) as project, i (project.id)}
+					{@const imgSrc = projectImageSrc(project.image)}
 					<article class="group cursor-pointer {projectGridClass(i)}">
 						<a href="/projects" class="block">
 							<div
@@ -251,9 +253,9 @@
 									i
 								)}"
 							>
-								{#if project.image && !imageLoadFailed[project.id]}
+								{#if imgSrc && !imageLoadFailed[project.id]}
 									<img
-										src={project.image}
+										src={imgSrc}
 										alt=""
 										class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
 										onerror={() => {
