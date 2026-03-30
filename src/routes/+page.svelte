@@ -24,6 +24,9 @@
 	const featuredProjects = $derived((data.featuredProjects ?? []) as Project[]);
 	const latestPosts = $derived((data.latestPosts ?? []) as BlogPost[]);
 
+	/** When a project image path has no file in /static, fall back to the gradient placeholder */
+	let imageLoadFailed = $state<Record<number, boolean>>({});
+
 	function formatPostDate(date: string | Date) {
 		const d = typeof date === 'string' ? new Date(date) : date;
 		if (Number.isNaN(d.getTime())) return '';
@@ -248,11 +251,14 @@
 									i
 								)}"
 							>
-								{#if project.image}
+								{#if project.image && !imageLoadFailed[project.id]}
 									<img
 										src={project.image}
 										alt=""
 										class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+										onerror={() => {
+											imageLoadFailed = { ...imageLoadFailed, [project.id]: true };
+										}}
 									/>
 								{:else}
 									<div

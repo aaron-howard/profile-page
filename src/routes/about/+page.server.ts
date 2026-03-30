@@ -16,6 +16,6 @@ export const load: PageServerLoad = async () => {
 	} catch (e) {
 		if (isHttpError(e)) throw e;
 		console.error('[about/+page.server] load failed:', e);
-		throw error(503, 'Could not load profile. Please try again later.');
+		return { bio: null, dbError: true as const };
 	}
 };
