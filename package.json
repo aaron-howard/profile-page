@@ -65,7 +65,7 @@
 		"zod": "^4.3.6"
 	},
 	"engines": {
-		"node": ">=22.0.0"
+		"node": "22.x"
 	},
 	"lint-staged": {
 		"*.{ts,js,svelte}": [
