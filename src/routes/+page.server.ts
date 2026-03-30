@@ -3,7 +3,7 @@ import { db } from '$lib/server/db';
 
 export const load: PageServerLoad = async () => {
 	try {
-		const [bio, featuredProjects, latestPosts] = await Promise.all([
+		const [bio, featuredOnly, latestPosts] = await Promise.all([
 			db.bio.findUnique({ where: { id: 1 } }),
 			db.project.findMany({
 				where: { featured: true },
@@ -16,10 +16,19 @@ export const load: PageServerLoad = async () => {
 			})
 		]);
 
-		const showcaseProjects =
-			featuredProjects.length > 0
-				? featuredProjects
-				: await db.project.findMany({ orderBy: { id: 'desc' }, take: 4 });
+		/** Featured rows first; if fewer than 4, pad with newest non-featured so the grid fills and recent work still appears. */
+		let showcaseProjects = featuredOnly;
+		if (featuredOnly.length > 0 && featuredOnly.length < 4) {
+			const excludeIds = featuredOnly.map((p) => p.id);
+			const filler = await db.project.findMany({
+				where: { id: { notIn: excludeIds } },
+				orderBy: { id: 'desc' },
+				take: 4 - featuredOnly.length
+			});
+			showcaseProjects = [...featuredOnly, ...filler];
+		} else if (featuredOnly.length === 0) {
+			showcaseProjects = await db.project.findMany({ orderBy: { id: 'desc' }, take: 4 });
+		}
 
 		return {
 			bio,

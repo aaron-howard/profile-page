@@ -15,6 +15,11 @@ export function projectImageSrc(path: string | null | undefined): string | null 
 	if (p.startsWith('static/')) p = p.slice('static/'.length);
 	if (!p.startsWith('/')) p = `/${p}`;
 
+	// File was renamed; older DB rows may still reference the typo
+	if (p === '/projects/service-certifiy.jpg') {
+		p = '/projects/service-certify.jpg';
+	}
+
 	const segments = p
 		.split('/')
 		.filter(Boolean)
