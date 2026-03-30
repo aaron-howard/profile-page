@@ -134,7 +134,7 @@
 
 		<div class="grid gap-10 md:grid-cols-2">
 			<a
-				href="/bio"
+				href="/about"
 				class="group block rounded-xl bg-surface-container-lowest p-8 shadow-ambient md:p-10"
 			>
 				<span class="text-xs font-medium uppercase tracking-widest text-primary">01</span>
