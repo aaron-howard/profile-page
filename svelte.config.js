@@ -16,9 +16,13 @@ const config = {
 			directives: {
 				'default-src': ['self'],
 				'script-src': ['self'],
-				'style-src': ['self', 'unsafe-inline'], // Required for Tailwind CSS
+				'style-src': [
+					'self',
+					'unsafe-inline',
+					'https://fonts.googleapis.com' // Google Fonts CSS (app.html)
+				],
 				'img-src': ['self', 'data:', 'https:'],
-				'font-src': ['self'],
+				'font-src': ['self', 'https://fonts.gstatic.com'],
 				'connect-src': ['self']
 			}
 		}
