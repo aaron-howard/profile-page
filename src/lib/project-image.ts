@@ -15,5 +15,11 @@ export function projectImageSrc(path: string | null | undefined): string | null 
 	if (p.startsWith('static/')) p = p.slice('static/'.length);
 	if (!p.startsWith('/')) p = `/${p}`;
 
-	return `${base}${p}`;
+	const segments = p
+		.split('/')
+		.filter(Boolean)
+		.map((seg) => encodeURIComponent(seg));
+	const encoded = `/${segments.join('/')}`;
+
+	return `${base}${encoded}`;
 }
