@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import type { PageData } from './$types';
 	import type { BlogPost, Project } from '$lib/types';
 
@@ -44,6 +45,16 @@
 		return 'aspect-square';
 	}
 </script>
+
+{#if dev && 'dbError' in data && data.dbError}
+	<div
+		class="mx-auto mb-4 max-w-7xl rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-on-surface"
+		role="status"
+	>
+		<strong class="font-semibold">Dev:</strong> Home page data failed to load (database). Check
+		<code class="rounded bg-surface-container-high px-1">DATABASE_URL</code> and Vercel env vars.
+	</div>
+{/if}
 
 <!-- Hero -->
 <section class="pb-16 pt-8 md:pb-24 md:pt-12">

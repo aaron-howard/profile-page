@@ -1,4 +1,4 @@
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, HandleServerError } from '@sveltejs/kit';
 
 const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event);
@@ -14,3 +14,10 @@ const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
 };
 
 export const handle: Handle = handleSecurityHeaders;
+
+/** Logs unexpected errors (e.g. Prisma/DB). Check Vercel function logs when debugging 500s. */
+export const handleError: HandleServerError = ({ error, event }) => {
+	const err = error instanceof Error ? error : new Error(String(error));
+	console.error(`[handleError] ${event.url.pathname}`, err);
+	return { message: 'Internal server error' };
+};
