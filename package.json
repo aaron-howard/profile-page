@@ -60,6 +60,7 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^6.1.0",
+		"@vercel/analytics": "^2.0.1",
 		"sveltekit-superforms": "^2.30.0",
 		"valibot": "^1.2.0",
 		"zod": "^4.3.6"

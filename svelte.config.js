@@ -12,7 +12,7 @@ const config = {
 			mode: 'auto',
 			directives: {
 				'default-src': ['self'],
-				'script-src': ['self'],
+				'script-src': ['self', 'https://va.vercel-scripts.com'],
 				'style-src': [
 					'self',
 					'unsafe-inline',
@@ -20,7 +20,7 @@ const config = {
 				],
 				'img-src': ['self', 'data:', 'https:'],
 				'font-src': ['self', 'https://fonts.gstatic.com'],
-				'connect-src': ['self']
+				'connect-src': ['self', 'https://va.vercel-scripts.com']
 			}
 		}
 	}
