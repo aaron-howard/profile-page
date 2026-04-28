@@ -28,5 +28,3 @@ export const contactFormSchema = z.object({
 		.max(5000, 'Message must be 5,000 characters or less')
 		.trim()
 });
-
-export type ContactFormSchema = typeof contactFormSchema;

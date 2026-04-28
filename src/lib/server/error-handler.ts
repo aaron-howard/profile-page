@@ -5,7 +5,7 @@
 
 import { dev } from '$app/environment';
 
-export interface AppError {
+interface AppError {
 	code: string;
 	message: string;
 	statusCode: number;
