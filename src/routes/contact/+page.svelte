@@ -3,10 +3,10 @@
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
-	const formData = $derived(data.form);
 
-	// Initialize form with Superforms
-	const { form, errors, submitting, message } = superForm(formData);
+	// superForm takes the initial SuperValidated snapshot; updates come from applyAction/enhance.
+	// svelte-ignore state_referenced_locally
+	const { form, errors, submitting, message } = superForm(data.form);
 
 	// Customize this data with your information
 	const contactData = {
