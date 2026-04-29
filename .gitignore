@@ -9,6 +9,9 @@ node_modules
 /build
 coverage/
 
+# Fallow (code health CLI)
+.fallow/
+
 # OS
 .DS_Store
 Thumbs.db
