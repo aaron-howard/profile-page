@@ -1,9 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { setPublicCacheHeaders } from '$lib/server/cache-headers';
 
-export const load: PageServerLoad = async (event) => {
-	setPublicCacheHeaders(event);
+export const load: PageServerLoad = async () => {
 	try {
 		const [bio, featuredOnly, latestPosts] = await Promise.all([
 			db.bio.findUnique({ where: { id: 1 } }),
@@ -21,7 +19,7 @@ export const load: PageServerLoad = async (event) => {
 		/** Featured rows first; if fewer than 4, pad with newest non-featured so the grid fills and recent work still appears. */
 		let showcaseProjects = featuredOnly;
 		if (featuredOnly.length > 0 && featuredOnly.length < 4) {
-			const excludeIds = featuredOnly.map((p) => p.id);
+			const excludeIds = featuredOnly.map((p: { id: number }) => p.id);
 			const filler = await db.project.findMany({
 				where: { id: { notIn: excludeIds } },
 				orderBy: { id: 'desc' },
