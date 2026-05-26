@@ -116,6 +116,15 @@ async function main() {
 			'Auth, cloud & delivery': ['Clerk', 'Vercel', 'Vite', 'Git'],
 			'Enterprise platforms': ['ServiceNow', 'PagerDuty']
 		},
+		siteMetadata: {
+			email: 'mr.aaronjhoward@outlook.com',
+			phone: '+1 (459) 964-2476',
+			github: 'https://github.com/aaron-howard',
+			linkedin: 'https://www.linkedin.com/in/aaronjhoward/',
+			bluesky: 'https://bsky.app/profile/aaron-howard.bsky.social',
+			availability: "I'm currently available for freelance work opportunities.",
+			responseTime: 'I typically respond within 24 hours.'
+		},
 		experience: [
 			{
 				title: 'Senior Full Stack Developer',

@@ -25,6 +25,9 @@ model Bio {
   // Experience stored as JSON array
   experience Json?
 
+  // Public contact / social links (see src/lib/site-metadata.ts)
+  siteMetadata Json @default("{}")
+
   updatedAt DateTime @updatedAt
 
   @@map("bio")

@@ -1,9 +1,11 @@
 <script lang="ts">
 	import '../app.css';
 	import type { Snippet } from 'svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
+	import type { LayoutData } from './$types';
 
-	let { children } = $props<{ children: Snippet }>();
+	let { children, data } = $props<{ children: Snippet; data: LayoutData }>();
+
 	let mobileMenuOpen = $state(false);
 
 	const nav = [
@@ -13,6 +15,8 @@
 		{ href: '/blog', label: 'Blog' },
 		{ href: '/contact', label: 'Contact' }
 	];
+
+	const siteName = $derived(data.site.name);
 
 	function navClass(href: string, path: string): string {
 		const active = href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
@@ -29,11 +33,11 @@
 	>
 		<div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-8 md:py-6">
 			<a href="/" class="font-headline text-xl font-extrabold tracking-tighter text-on-surface">
-				Aaron Howard
+				{siteName}
 			</a>
 			<div class="hidden items-center gap-10 md:flex">
 				{#each nav as item (item.href)}
-					<a href={item.href} class={navClass(item.href, $page.url.pathname)}>{item.label}</a>
+					<a href={item.href} class={navClass(item.href, page.url.pathname)}>{item.label}</a>
 				{/each}
 				<a
 					href="/contact"
@@ -106,7 +110,7 @@
 		<div
 			class="mx-auto flex max-w-7xl flex-col items-center gap-8 px-6 md:flex-row md:justify-between md:px-8"
 		>
-			<a href="/" class="font-headline text-2xl font-bold text-on-surface">Aaron Howard</a>
+			<a href="/" class="font-headline text-2xl font-bold text-on-surface">{siteName}</a>
 			<nav class="flex flex-wrap justify-center gap-8 md:gap-12" aria-label="Footer">
 				{#each nav as item (item.href)}
 					<a
@@ -118,7 +122,8 @@
 				{/each}
 			</nav>
 			<p class="font-body text-center text-xs uppercase tracking-widest text-secondary">
-				© {new Date().getFullYear()} Aaron Howard
+				© {new Date().getFullYear()}
+				{siteName}
 			</p>
 		</div>
 	</footer>

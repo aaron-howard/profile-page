@@ -6,6 +6,7 @@ import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
 import { logError, handleFormError } from '$lib/server/error-handler';
+import { sanitizeText } from '$lib/server/sanitize-utils';
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod4(contactFormSchema));
@@ -21,19 +22,18 @@ export const actions: Actions = {
 		}
 
 		try {
-			const {
-				name,
-				email,
-				subject,
-				message: messageText
-			} = form.data as {
+			const raw = form.data as {
 				name: string;
 				email: string;
 				subject: string;
 				message: string;
 			};
 
-			// Send email
+			const name = sanitizeText(raw.name);
+			const email = sanitizeText(raw.email);
+			const subject = sanitizeText(raw.subject);
+			const messageText = sanitizeText(raw.message);
+
 			const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';
 			const emailContent = formatContactEmail({
 				name,
@@ -44,7 +44,7 @@ export const actions: Actions = {
 
 			const emailResult = await sendEmail({
 				to: recipientEmail,
-				subject: `Contact Form: ${subject}`,
+				subject: `Contact Form: ${subject.replace(/[\r\n]/g, ' ')}`,
 				html: emailContent.html,
 				text: emailContent.text
 			});

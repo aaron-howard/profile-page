@@ -185,10 +185,23 @@ describe('contactFormSchema', () => {
 				name: 'John',
 				email: 'john@example.com',
 				subject: 'a'.repeat(200),
-				message: 'Test'
+				message: 'Test',
+				website: ''
 			};
 			const result = contactFormSchema.safeParse(data);
 			expect(result.success).toBe(true);
+		});
+
+		it('rejects subject with newline characters', () => {
+			const data = {
+				name: 'John',
+				email: 'john@example.com',
+				subject: 'Hello\r\nBcc: attacker@evil.com',
+				message: 'Test',
+				website: ''
+			};
+			const result = contactFormSchema.safeParse(data);
+			expect(result.success).toBe(false);
 		});
 	});
 

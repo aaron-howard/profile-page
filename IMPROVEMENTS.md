@@ -448,6 +448,30 @@ This document outlines recommendations for improving the codebase. These are opp
 
 ---
 
+## Priority 7: Refactor Roadmap (May 2026)
+
+**Status**: ✅ Completed in `cursor/portfolio-refactor-plan-5a9a`
+
+- ✅ Extracted shared Svelte components under `src/lib/components/`
+- ✅ Added `blog/[id]` and `projects/[id]` routes with SEO head
+- ✅ Bio `siteMetadata` JSON + layout-driven site name and contact links
+- ✅ Contact form hardening (rate limit, honeypot, CRLF validation, sanitizeText)
+- ✅ Production guard when `EMAIL_SERVICE=console`
+- ✅ Cache-Control on read-only server loads; non-blocking Google Fonts
+- ✅ `$app/state` migration for layout and error pages
+- ✅ CI coverage gate (`npm run test:coverage`)
+- ✅ Prisma migration `20260526000000_add_bio_site_metadata`
+- ✅ Removed unused `valibot` direct dependency and `stitch_profile/` artifacts
+
+**Optional follow-ups** (not blocking):
+
+- Cloudflare Turnstile on contact form
+- `isomorphic-dompurify` if blog content needs richer HTML
+- SMTP implementation in `email.ts`
+- E2E tests (Playwright)
+
+---
+
 ## Status Summary
 
 ✅ **All Priorities Complete**

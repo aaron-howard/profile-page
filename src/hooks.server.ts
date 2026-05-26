@@ -1,9 +1,20 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit';
+import { checkRateLimit, getClientIp } from '$lib/server/rate-limit';
 
 const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
+	if (event.request.method === 'POST' && event.url.pathname === '/contact') {
+		const ip = getClientIp(event.request);
+		const limit = checkRateLimit(`contact:${ip}`);
+		if (!limit.allowed) {
+			return new Response('Too many requests. Please try again later.', {
+				status: 429,
+				headers: { 'Retry-After': String(limit.retryAfterSeconds) }
+			});
+		}
+	}
+
 	const response = await resolve(event);
 
-	// Add security headers
 	response.headers.set('X-Content-Type-Options', 'nosniff');
 	response.headers.set('X-Frame-Options', 'DENY');
 	response.headers.set('X-XSS-Protection', '1; mode=block');
