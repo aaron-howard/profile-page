@@ -1,12 +1,12 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
-	const formData = $derived(data.form);
 
-	// Initialize form with Superforms
-	const { form, errors, submitting, message } = superForm(formData);
+	// superForm intentionally captures initial server form state once
+	const { form, errors, submitting, message } = superForm(untrack(() => data.form));
 
 	const site = $derived(data.site);
 	const meta = $derived(site?.metadata);

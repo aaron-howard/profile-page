@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 
 /** Do not throw at import time: missing DATABASE_URL should fail at query time so route loads can catch errors. */
 const globalForPrisma = globalThis as unknown as {
@@ -22,9 +24,16 @@ const globalForPrisma = globalThis as unknown as {
  * - Development: Shows queries, errors, and warnings
  * - Production: Only errors (for performance)
  */
+
+const connectionString =
+	process.env.DATABASE_URL || 'postgresql://localhost:5432/postgres?schema=public';
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+
 export const db =
 	globalForPrisma.prisma ??
 	new PrismaClient({
+		adapter,
 		log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error']
 	});
 

@@ -198,9 +198,8 @@ describe('error-handler - development mode (dev=true)', () => {
 			version: 'test'
 		}));
 
-		const { getUserFriendlyMessage: getUserFriendlyMessageDev } = await import(
-			'$lib/server/error-handler'
-		);
+		const { getUserFriendlyMessage: getUserFriendlyMessageDev } =
+			await import('$lib/server/error-handler');
 		const error = new Error('Sensitive database info');
 		const result = getUserFriendlyMessageDev(error);
 		expect(result).toBe('Sensitive database info');
@@ -242,9 +241,8 @@ describe('error-handler - development mode (dev=true)', () => {
 			version: 'test'
 		}));
 
-		const { handleOperationError: handleOperationErrorDev } = await import(
-			'$lib/server/error-handler'
-		);
+		const { handleOperationError: handleOperationErrorDev } =
+			await import('$lib/server/error-handler');
 		const error = new Error('Some random error');
 		const result = handleOperationErrorDev(error, 'operation');
 		expect(result).toBe('Some random error');

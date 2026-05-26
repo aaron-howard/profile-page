@@ -7,9 +7,9 @@ generator client {
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
+// Prisma 7: datasource URLs are configured in prisma.config.ts
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Bio {
@@ -25,7 +25,7 @@ model Bio {
   // Experience stored as JSON array
   experience Json?
 
-  // Public contact / social links (see src/lib/site-metadata.ts)
+  // Public contact / social links
   siteMetadata Json @default("{}")
 
   updatedAt DateTime @updatedAt
