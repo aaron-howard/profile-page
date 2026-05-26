@@ -3,7 +3,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { resolve } from 'path';
 
 export default defineConfig({
-	plugins: [svelte({ hot: false })],
+	plugins: [svelte()],
 	test: {
 		globals: true,
 		environment: 'happy-dom',
@@ -17,7 +17,6 @@ export default defineConfig({
 			exclude: [
 				'src/lib/types.ts',
 				'src/lib/index.ts',
-				'src/lib/project-image.ts',
 				'src/lib/server/db/index.ts',
 				'src/lib/server/email.ts',
 				'src/lib/server/sanitize.ts',
