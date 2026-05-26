@@ -8,21 +8,22 @@
 	// Initialize form with Superforms
 	const { form, errors, submitting, message } = superForm(formData);
 
-	// Customize this data with your information
-	const contactData = {
-		name: 'Aaron Howard',
-		email: 'mr.aaronjhoward@outlook.com',
-		location: 'Fort Worth, TX, USA',
-		phone: '+1 (459) 964-2476',
+	const site = $derived(data.site);
+	const meta = $derived(site?.metadata);
+	const contactData = $derived({
+		name: site?.name ?? 'Aaron Howard',
+		email: meta?.email ?? '',
+		location: site?.location ?? '',
+		phone: meta?.phone ?? '',
 		socialLinks: {
-			github: 'https://github.com/aaron-howard',
-			linkedin: 'https://linkedin.com/in/aaronjhoward/',
-			bluesky: 'https://bsky.app/profile/aaron-howard.bsky.social',
-			email: 'mailto:mr.aaronjhoward@outlook.com'
+			github: meta?.github ?? '',
+			linkedin: meta?.linkedin ?? '',
+			bluesky: meta?.bluesky ?? '',
+			email: meta?.email ? `mailto:${meta.email}` : ''
 		},
-		availability: "I'm currently available for freelance work opportunities.",
-		responseTime: 'I typically respond within 24 hours.'
-	};
+		availability: meta?.availability ?? '',
+		responseTime: meta?.responseTime ?? ''
+	});
 
 	// Auto-clear success message after 5 seconds
 	$effect(() => {

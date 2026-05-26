@@ -72,6 +72,7 @@ src/
 │   │   ├── email.ts         # Email utilities
 │   │   ├── error-handler.ts # Centralized error handling
 │   │   └── sanitize.ts      # HTML/input sanitization
+│   ├── components/      # Shared UI (BlogCard, ProjectCard, etc.)
 │   ├── types.ts         # TypeScript interfaces (BlogPost, Project)
 │   └── index.ts
 ├── hooks.server.ts      # SvelteKit server hooks (security headers)

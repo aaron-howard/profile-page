@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "bio" ADD COLUMN IF NOT EXISTS "siteMetadata" JSONB NOT NULL DEFAULT '{}';

@@ -6,14 +6,7 @@
 
 	let { data } = $props<{ data: PageData }>();
 
-	const profileData = {
-		socialLinks: {
-			github: 'https://github.com/aaron-howard',
-			linkedin: 'https://www.linkedin.com/in/aaronjhoward/',
-			bluesky: 'https://bsky.app/profile/aaron-howard.bsky.social',
-			email: 'mr.aaronjhoward@outlook.com'
-		}
-	};
+	const social = $derived(data.site?.metadata);
 
 	const bio = $derived(data.bio);
 	const headline = $derived(bio?.title ?? 'Full Stack Developer');
@@ -98,7 +91,7 @@
 					</a>
 					<div class="flex gap-4">
 						<a
-							href={profileData.socialLinks.github}
+							href={social?.github ?? '#'}
 							class="text-secondary transition-colors hover:text-primary"
 							aria-label="GitHub"
 						>
@@ -109,7 +102,7 @@
 							</svg>
 						</a>
 						<a
-							href={profileData.socialLinks.linkedin}
+							href={social?.linkedin ?? '#'}
 							class="text-secondary transition-colors hover:text-primary"
 							aria-label="LinkedIn"
 						>
@@ -393,10 +386,10 @@
 				</p>
 				<div class="flex flex-col gap-3 font-headline text-xl font-bold text-on-primary-container">
 					<a
-						href={`mailto:${profileData.socialLinks.email}`}
+						href={social?.email ? `mailto:${social.email}` : '#'}
 						class="transition-colors hover:text-primary-fixed-dim"
 					>
-						{profileData.socialLinks.email}
+						{social?.email ?? ''}
 					</a>
 				</div>
 			</div>

@@ -101,22 +101,4 @@ export function sanitizeEmail(email: string): string {
 	return cleaned;
 }
 
-/**
- * Sanitize URL to prevent javascript: and data: URLs
- * @param url - The URL to sanitize
- * @returns Sanitized URL or empty string if dangerous
- */
-export function sanitizeUrl(url: string): string {
-	const trimmed = url.trim().toLowerCase();
-
-	// Block dangerous protocols
-	if (
-		trimmed.startsWith('javascript:') ||
-		trimmed.startsWith('data:') ||
-		trimmed.startsWith('vbscript:')
-	) {
-		return '';
-	}
-
-	return url.trim();
-}
+export { sanitizeUrl } from '$lib/url';

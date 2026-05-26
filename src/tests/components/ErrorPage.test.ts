@@ -7,7 +7,7 @@ describe('ErrorPage component', () => {
 	const componentSource = readFileSync(componentPath, 'utf-8');
 
 	it('contains h1 element for status code display', () => {
-		expect(componentSource).toMatch(/<h1[^>]*>\s*{?\$?page\.status}?\s*<\/h1>/);
+		expect(componentSource).toMatch(/<h1[^>]*>\s*\{?page\.status\}?\s*<\/h1>/);
 	});
 
 	it('renders "Go home" link with href="/"', () => {
@@ -24,13 +24,17 @@ describe('ErrorPage component', () => {
 		expect(componentSource).toMatch(/onclick=/);
 	});
 
-	it('checks $page.status for conditional rendering', () => {
-		expect(componentSource).toMatch(/\$page\.status === 404/);
-		expect(componentSource).toMatch(/\$page\.status === 500/);
+	it('checks page.status for conditional rendering', () => {
+		expect(componentSource).toMatch(/page\.status === 404/);
+		expect(componentSource).toMatch(/page\.status === 500/);
 	});
 
 	it('displays error details conditionally', () => {
-		expect(componentSource).toMatch(/\$page\.error\?.message/);
+		expect(componentSource).toMatch(/page\.error\?.message/);
+	});
+
+	it('uses SvelteKit page state', () => {
+		expect(componentSource).toMatch(/\$app\/state/);
 	});
 
 	it('has responsive layout classes', () => {
