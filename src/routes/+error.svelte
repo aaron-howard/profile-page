@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 </script>
 
 <div class="mx-auto max-w-4xl px-4 py-16 text-center">
 	<div class="mb-8">
 		<h1 class="mb-4 font-headline text-6xl font-extrabold text-on-surface">
-			{$page.status}
+			{page.status}
 		</h1>
 		<p class="text-xl text-secondary">
-			{#if $page.status === 404}
+			{#if page.status === 404}
 				Page not found
-			{:else if $page.status === 500}
+			{:else if page.status === 500}
 				Internal server error
 			{:else}
 				An error occurred
@@ -20,23 +20,23 @@
 
 	<div class="mb-12">
 		<p class="mb-4 text-lg text-on-surface">
-			{#if $page.status === 404}
+			{#if page.status === 404}
 				The page you're looking for doesn't exist. It might have been moved or deleted.
-			{:else if $page.status === 500}
+			{:else if page.status === 500}
 				Something went wrong on our end. Please try again later.
 			{:else}
-				An unexpected error occurred: {$page.error?.message || 'Unknown error'}
+				An unexpected error occurred: {page.error?.message || 'Unknown error'}
 			{/if}
 		</p>
 
-		{#if $page.error?.message && $page.status !== 404 && $page.status !== 500}
+		{#if page.error?.message && page.status !== 404 && page.status !== 500}
 			<details class="mb-8 inline-block text-left">
 				<summary class="cursor-pointer font-medium text-secondary hover:text-on-surface">
 					Error details
 				</summary>
 				<pre
 					class="mt-2 overflow-auto rounded-md bg-surface-container-low p-4 text-sm text-on-surface">
-{$page.error.message}</pre>
+{page.error.message}</pre>
 			</details>
 		{/if}
 	</div>

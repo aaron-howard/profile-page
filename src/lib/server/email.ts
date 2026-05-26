@@ -15,10 +15,17 @@ interface EmailData {
 export async function sendEmail(data: EmailData): Promise<{ success: boolean; error?: string }> {
 	const emailService = env.EMAIL_SERVICE || 'console'; // console, smtp, resend, sendgrid
 
+	if (process.env.NODE_ENV === 'production' && emailService === 'console') {
+		console.error('EMAIL_SERVICE=console is not allowed in production');
+		return {
+			success: false,
+			error: 'Email service is not configured for production'
+		};
+	}
+
 	try {
 		switch (emailService) {
 			case 'console':
-				// Development: log to console
 				console.log('=== EMAIL ===');
 				console.log('To:', data.to);
 				console.log('Subject:', data.subject);
@@ -36,8 +43,11 @@ export async function sendEmail(data: EmailData): Promise<{ success: boolean; er
 				return await sendViaSendGrid(data);
 
 			default:
-				console.warn(`Unknown email service: ${emailService}, falling back to console`);
-				return await sendEmail({ ...data, to: 'console' });
+				console.warn(`Unknown email service: ${emailService}`);
+				return {
+					success: false,
+					error: `Unknown email service: ${emailService}`
+				};
 		}
 	} catch (error) {
 		console.error('Error sending email:', error);

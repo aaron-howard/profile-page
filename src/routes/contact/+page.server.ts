@@ -7,6 +7,10 @@ import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
 import { logError, handleFormError } from '$lib/server/error-handler';
 
+function normalizeTextInput(value: string): string {
+	return value.replace(/<[^>]*>/g, '').trim();
+}
+
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod4(contactFormSchema));
 	return { form };
@@ -21,19 +25,18 @@ export const actions: Actions = {
 		}
 
 		try {
-			const {
-				name,
-				email,
-				subject,
-				message: messageText
-			} = form.data as {
+			const raw = form.data as {
 				name: string;
 				email: string;
 				subject: string;
 				message: string;
 			};
 
-			// Send email
+			const name = normalizeTextInput(raw.name);
+			const email = normalizeTextInput(raw.email);
+			const subject = normalizeTextInput(raw.subject);
+			const messageText = normalizeTextInput(raw.message);
+
 			const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';
 			const emailContent = formatContactEmail({
 				name,
@@ -44,14 +47,14 @@ export const actions: Actions = {
 
 			const emailResult = await sendEmail({
 				to: recipientEmail,
-				subject: `Contact Form: ${subject}`,
+				subject: `Contact Form: ${subject.replace(/[\r\n]/g, ' ')}`,
 				html: emailContent.html,
 				text: emailContent.text
 			});
 
 			if (!emailResult.success) {
 				console.error('Failed to send contact email:', emailResult.error);
-				return message(form, 'Email sent but delivery may have failed');
+				return message(form, 'Message delivery failed. Please try again later.');
 			}
 
 			return message(form, "Thank you! I'll get back to you soon.");

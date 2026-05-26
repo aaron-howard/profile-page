@@ -1,8 +1,11 @@
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { error, isHttpError } from '@sveltejs/kit';
+import { setPublicCacheHeaders } from '$lib/server/cache-headers';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async (event) => {
+	setPublicCacheHeaders(event);
+
 	try {
 		const bio = await db.bio.findUnique({
 			where: { id: 1 }
