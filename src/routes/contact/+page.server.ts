@@ -6,7 +6,10 @@ import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
 import { logError, handleFormError } from '$lib/server/error-handler';
-import { sanitizeText } from '$lib/server/sanitize-utils';
+
+function normalizeTextInput(value: string): string {
+	return value.replace(/<[^>]*>/g, '').trim();
+}
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod4(contactFormSchema));
@@ -29,10 +32,10 @@ export const actions: Actions = {
 				message: string;
 			};
 
-			const name = sanitizeText(raw.name);
-			const email = sanitizeText(raw.email);
-			const subject = sanitizeText(raw.subject);
-			const messageText = sanitizeText(raw.message);
+			const name = normalizeTextInput(raw.name);
+			const email = normalizeTextInput(raw.email);
+			const subject = normalizeTextInput(raw.subject);
+			const messageText = normalizeTextInput(raw.message);
 
 			const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';
 			const emailContent = formatContactEmail({
@@ -51,7 +54,7 @@ export const actions: Actions = {
 
 			if (!emailResult.success) {
 				console.error('Failed to send contact email:', emailResult.error);
-				return message(form, 'Email sent but delivery may have failed');
+				return message(form, 'Message delivery failed. Please try again later.');
 			}
 
 			return message(form, "Thank you! I'll get back to you soon.");

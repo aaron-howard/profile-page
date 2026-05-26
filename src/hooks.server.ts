@@ -1,27 +1,31 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit';
-import { checkRateLimit, getClientIp } from '$lib/server/rate-limit';
+import { checkRateLimit } from '$lib/server/rate-limit';
 
-const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
-	if (event.request.method === 'POST' && event.url.pathname === '/contact') {
-		const ip = getClientIp(event.request);
-		const limit = checkRateLimit(`contact:${ip}`);
-		if (!limit.allowed) {
-			return new Response('Too many requests. Please try again later.', {
-				status: 429,
-				headers: { 'Retry-After': String(limit.retryAfterSeconds) }
-			});
-		}
-	}
-
-	const response = await resolve(event);
-
+function applySecurityHeaders(response: Response): Response {
 	response.headers.set('X-Content-Type-Options', 'nosniff');
 	response.headers.set('X-Frame-Options', 'DENY');
 	response.headers.set('X-XSS-Protection', '1; mode=block');
 	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 	response.headers.set('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-
 	return response;
+}
+
+const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
+	if (event.request.method === 'POST' && event.url.pathname === '/contact') {
+		const clientAddress = event.getClientAddress();
+		const limit = checkRateLimit(`contact:${clientAddress}`);
+		if (!limit.allowed) {
+			return applySecurityHeaders(
+				new Response('Too many requests. Please try again later.', {
+					status: 429,
+					headers: { 'Retry-After': String(limit.retryAfterSeconds) }
+				})
+			);
+		}
+	}
+
+	const response = await resolve(event);
+	return applySecurityHeaders(response);
 };
 
 export const handle: Handle = handleSecurityHeaders;

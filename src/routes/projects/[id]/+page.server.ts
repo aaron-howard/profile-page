@@ -9,15 +9,15 @@ export const load: PageServerLoad = async (event) => {
 		error(404, 'Project not found');
 	}
 
-	setPublicCacheHeaders(event);
-
 	try {
 		const project = await db.project.findUnique({ where: { id } });
 		if (!project) {
 			error(404, 'Project not found');
 		}
+		setPublicCacheHeaders(event);
 		return { project };
 	} catch (err) {
+		event.setHeaders({ 'Cache-Control': 'no-store' });
 		console.error('Project load failed:', err);
 		error(500, 'Failed to load project');
 	}

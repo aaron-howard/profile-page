@@ -47,8 +47,7 @@
 		{/if}
 	</header>
 
-	<div class="prose prose-lg max-w-none text-on-surface">
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -- safeContent sanitized server-side -->
-		{@html data.safeContent}
+	<div class="prose prose-lg max-w-none whitespace-pre-wrap text-on-surface">
+		{data.post.content}
 	</div>
 </article>

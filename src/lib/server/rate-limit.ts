@@ -9,14 +9,23 @@ const store = new Map<string, RateLimitEntry>();
 
 export type RateLimitResult = { allowed: true } | { allowed: false; retryAfterSeconds: number };
 
+function pruneExpired(now: number): void {
+	for (const [key, entry] of store.entries()) {
+		if (now >= entry.resetAt) {
+			store.delete(key);
+		}
+	}
+}
+
 export function checkRateLimit(
 	key: string,
 	{ maxRequests = 5, windowMs = 15 * 60 * 1000 }: { maxRequests?: number; windowMs?: number } = {}
 ): RateLimitResult {
 	const now = Date.now();
+	pruneExpired(now);
 	const entry = store.get(key);
 
-	if (!entry || now >= entry.resetAt) {
+	if (!entry) {
 		store.set(key, { count: 1, resetAt: now + windowMs });
 		return { allowed: true };
 	}
@@ -28,12 +37,4 @@ export function checkRateLimit(
 
 	entry.count += 1;
 	return { allowed: true };
-}
-
-export function getClientIp(request: Request): string {
-	return (
-		request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-		request.headers.get('x-real-ip') ||
-		'unknown'
-	);
 }

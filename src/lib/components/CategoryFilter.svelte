@@ -18,6 +18,7 @@
 			<button
 				onclick={() => onSelect(category.id)}
 				type="button"
+				aria-pressed={selectedId === category.id}
 				class="rounded-md px-6 py-2 font-headline font-semibold transition-colors"
 				class:bg-primary={selectedId === category.id}
 				class:text-on-primary={selectedId === category.id}
