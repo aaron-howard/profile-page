@@ -8,3 +8,5 @@ bun.lockb
 # Miscellaneous
 /static/
 stitch_profile/
+test-results/
+playwright-report/

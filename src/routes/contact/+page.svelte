@@ -218,8 +218,8 @@
 			<!-- Availability -->
 			<div class="rounded-xl bg-primary-container p-8 text-on-primary-container">
 				<h2 class="mb-4 font-headline text-2xl font-bold">Current availability</h2>
-				<p class="mb-4 text-on-primary-container/90">{contactData.availability}</p>
-				<p class="text-on-primary-container/75">{contactData.responseTime}</p>
+				<p class="mb-4 text-on-primary-container">{contactData.availability}</p>
+				<p class="text-on-primary-container">{contactData.responseTime}</p>
 			</div>
 		</div>
 
@@ -248,10 +248,13 @@
 						autocomplete="off"
 					/>
 				</div>
+				{#if $errors.website}
+					<p class="mb-4 text-sm text-red-600" role="alert">{$errors.website}</p>
+				{/if}
 				<div>
 					<label
 						for="name"
-						class="mb-2 block text-[10px] font-medium uppercase tracking-widest text-secondary"
+						class="mb-2 block text-xs font-medium uppercase tracking-widest text-secondary"
 						>Name</label
 					>
 					<input
@@ -273,7 +276,7 @@
 				<div>
 					<label
 						for="email"
-						class="mb-2 block text-[10px] font-medium uppercase tracking-widest text-secondary"
+						class="mb-2 block text-xs font-medium uppercase tracking-widest text-secondary"
 						>Email</label
 					>
 					<input
@@ -295,7 +298,7 @@
 				<div>
 					<label
 						for="subject"
-						class="mb-2 block text-[10px] font-medium uppercase tracking-widest text-secondary"
+						class="mb-2 block text-xs font-medium uppercase tracking-widest text-secondary"
 						>Subject</label
 					>
 					<input
@@ -317,7 +320,7 @@
 				<div>
 					<label
 						for="message"
-						class="mb-2 block text-[10px] font-medium uppercase tracking-widest text-secondary"
+						class="mb-2 block text-xs font-medium uppercase tracking-widest text-secondary"
 						>Message</label
 					>
 					<textarea

@@ -28,6 +28,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'$app/environment': resolve('./src/tests/mocks/app-environment.ts'),
+			'$app/paths': resolve('./src/tests/mocks/app-paths.ts'),
 			'$app/stores': resolve('./src/tests/mocks/app-stores.ts'),
 			'$app/navigation': resolve('./src/tests/mocks/app-navigation.ts'),
 			'$env/dynamic/private': resolve('./src/tests/mocks/env-dynamic-private.ts'),

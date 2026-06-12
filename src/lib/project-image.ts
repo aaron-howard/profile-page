@@ -28,3 +28,13 @@ export function projectImageSrc(path: string | null | undefined): string | null 
 
 	return `${base}${encoded}`;
 }
+
+/** WebP twin path for local `/projects/*.jpg` assets (after `npm run assets:project-images`). */
+export function projectWebpSrc(path: string | null | undefined): string | null {
+	const trimmed = path == null ? '' : String(path).trim();
+	if (trimmed === '' || /^https?:\/\//i.test(trimmed)) return null;
+	if (!/\.jpe?g$/i.test(trimmed)) return null;
+	const jpg = projectImageSrc(path);
+	if (!jpg) return null;
+	return jpg.replace(/\.jpe?g$/i, '.webp');
+}

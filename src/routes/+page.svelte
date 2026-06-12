@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import type { PageData } from './$types';
-	import { projectImageSrc } from '$lib/project-image';
 	import type { BlogPost, Project } from '$lib/types';
 	import SeoHead from '$lib/components/SeoHead.svelte';
+	import ProjectPicture from '$lib/components/ProjectPicture.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 
@@ -241,20 +241,20 @@
 
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-12">
 				{#each featuredProjects.slice(0, 4) as project, i (project.id)}
-					{@const imgSrc = projectImageSrc(project.image)}
 					<article class="group cursor-pointer {projectGridClass(i)}">
-						<a href="/projects" class="block">
+						<a href="/projects/{project.id}" class="block">
 							<div
 								class="relative mb-6 overflow-hidden rounded-xl bg-surface-container-low {aspectClass(
 									i
 								)}"
 							>
-								{#if imgSrc && !imageLoadFailed[project.id]}
-									<img
-										src={imgSrc}
+								{#if project.image && !imageLoadFailed[project.id]}
+									<ProjectPicture
+										imagePath={project.image}
 										alt=""
-										class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-										onerror={() => {
+										class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 group-focus-within:scale-105"
+										loading="lazy"
+										imgError={() => {
 											imageLoadFailed = { ...imageLoadFailed, [project.id]: true };
 										}}
 									/>
@@ -268,9 +268,9 @@
 									</div>
 								{/if}
 								<div
-									class="absolute inset-0 flex items-center justify-center bg-on-surface/10 opacity-0 transition-opacity group-hover:opacity-100"
+									class="absolute inset-0 flex items-center justify-center bg-on-surface/10 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
 								>
-									<span class="font-body text-sm font-semibold text-white">View projects →</span>
+									<span class="font-body text-sm font-semibold text-white">View project →</span>
 								</div>
 							</div>
 							<div class="flex items-start justify-between gap-4">
@@ -281,7 +281,7 @@
 									<div class="flex flex-wrap gap-2">
 										{#each project.technologies.slice(0, 3) as tech (tech)}
 											<span
-												class="rounded px-2 py-1 text-[10px] font-medium uppercase tracking-widest text-secondary bg-secondary-container/10"
+												class="rounded px-2 py-1 text-xs font-medium uppercase tracking-widest text-secondary bg-secondary-container/10"
 												>{tech}</span
 											>
 										{/each}
@@ -344,12 +344,11 @@
 			<div class="flex flex-col gap-10 md:w-2/3">
 				{#each latestPosts as post (post.id)}
 					<a
-						href="/blog"
+						href="/blog/{post.id}"
 						class="group flex flex-col justify-between gap-4 border-b border-outline-variant/30 pb-8 sm:flex-row sm:items-end"
 					>
 						<div>
-							<span
-								class="mb-3 block text-[10px] font-medium uppercase tracking-widest text-primary"
+							<span class="mb-3 block text-xs font-medium uppercase tracking-widest text-primary"
 								>{post.category}</span
 							>
 							<h3
@@ -383,7 +382,7 @@
 				>
 					Let's start <br /> a conversation.
 				</h2>
-				<p class="mb-10 text-xl leading-relaxed text-on-primary-container/80">
+				<p class="mb-10 text-xl leading-relaxed text-on-primary-container">
 					Have a project in mind or want to collaborate? Reach out — I typically respond within a
 					day.
 				</p>

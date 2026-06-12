@@ -20,64 +20,64 @@ This is a healthy, well-engineered codebase — far beyond a typical portfolio. 
 
 ## 2. Production Readiness Score: **85 / 100**
 
-| Category | Score | Notes |
-|---|---|---|
-| Architecture | 88 | Clean route/lib separation, server-only modules, typed utils, singleton Prisma w/ pg adapter |
-| UI/UX | 85 | Coherent design system (tokens in `app.css`), responsive, good empty/error states |
-| Accessibility | 82 | Labels, aria-expanded, aria-pressed, alt="" on decorative imgs; gaps: mobile-menu focus handling, tiny 10px label text |
-| Security | 90 | CSP, headers, rate limit, validation, escaping, honeypot (now live), 0 audit vulns after fix |
-| Performance | 78 | Cache headers, lazy images, font preload; gaps: heavy JPEGs, third-party fonts, `img-src https:` wide open |
-| Testing | 84 | 114 tests, thresholds (80/80/75/80), mocks for SvelteKit modules; gaps: no page/component coverage beyond ErrorPage, no E2E/a11y tests |
-| DevOps | 87 | Full CI gauntlet, Dependabot, Husky, engine pinning; gaps: adapter-auto unpinned, coverage runs tests twice |
-| Documentation | 80 | README/SECURITY/DEPLOYMENT/DATABASE guides exist but versions/details have drifted |
+| Category      | Score | Notes                                                                                                                                  |
+| ------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Architecture  | 88    | Clean route/lib separation, server-only modules, typed utils, singleton Prisma w/ pg adapter                                           |
+| UI/UX         | 85    | Coherent design system (tokens in `app.css`), responsive, good empty/error states                                                      |
+| Accessibility | 82    | Labels, aria-expanded, aria-pressed, alt="" on decorative imgs; gaps: mobile-menu focus handling, tiny 10px label text                 |
+| Security      | 90    | CSP, headers, rate limit, validation, escaping, honeypot (now live), 0 audit vulns after fix                                           |
+| Performance   | 78    | Cache headers, lazy images, font preload; gaps: heavy JPEGs, third-party fonts, `img-src https:` wide open                             |
+| Testing       | 84    | 114 tests, thresholds (80/80/75/80), mocks for SvelteKit modules; gaps: no page/component coverage beyond ErrorPage, no E2E/a11y tests |
+| DevOps        | 87    | Full CI gauntlet, Dependabot, Husky, engine pinning; gaps: adapter-auto unpinned, coverage runs tests twice                            |
+| Documentation | 80    | README/SECURITY/DEPLOYMENT/DATABASE guides exist but versions/details have drifted                                                     |
 
 ## 3. Detailed Findings
 
 ### A. Security
 
-| # | Issue | Severity | File(s) | Status / Fix |
-|---|---|---|---|---|
-| S1 | `joi` <18.2.1 (2 moderate advisories) via sveltekit-superforms; breaks CI audit gate | **High** | `package.json` | ✅ Fixed — override `"joi": ">=18.2.1"`; verified 0 vulns, 114/114 tests pass |
-| S2 | Honeypot field never rendered | **High** (spam) | `src/routes/contact/+page.svelte` | ✅ Fixed — hidden input wired to `$form.website` |
-| S3 | `X-XSS-Protection: 1; mode=block` is deprecated; modern guidance is to omit or set `0` | Low | `src/hooks.server.ts` | Remove the header (CSP supersedes it) |
-| S4 | No `Strict-Transport-Security` header set by app | Low | `src/hooks.server.ts` | Vercel adds HSTS on HTTPS domains; add explicitly if you ever move hosts |
-| S5 | CSP `img-src 'self' data: https:` allows any HTTPS image origin | Low | `svelte.config.js` | Tighten to known origins if project images ever come from a CDN |
-| S6 | Stale `ADMIN_TOKEN` in local `.env` (auth system was removed); also duplicated `PRISMA_DATABASE_URL` line | Low (local only — `.env` is gitignored and has never been committed) | `.env` | Delete the token, rotate the credential wherever it originated |
-| S7 | In-memory rate limiter is per-warm-instance on serverless (already documented in code) | Info | `src/lib/server/rate-limit.ts` | Fine for a portfolio; use Upstash/Vercel KV if abuse appears |
+| #   | Issue                                                                                                     | Severity                                                             | File(s)                           | Status / Fix                                                                  |
+| --- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------- |
+| S1  | `joi` <18.2.1 (2 moderate advisories) via sveltekit-superforms; breaks CI audit gate                      | **High**                                                             | `package.json`                    | ✅ Fixed — override `"joi": ">=18.2.1"`; verified 0 vulns, 114/114 tests pass |
+| S2  | Honeypot field never rendered                                                                             | **High** (spam)                                                      | `src/routes/contact/+page.svelte` | ✅ Fixed — hidden input wired to `$form.website`                              |
+| S3  | `X-XSS-Protection: 1; mode=block` is deprecated; modern guidance is to omit or set `0`                    | Low                                                                  | `src/hooks.server.ts`             | Remove the header (CSP supersedes it)                                         |
+| S4  | No `Strict-Transport-Security` header set by app                                                          | Low                                                                  | `src/hooks.server.ts`             | Vercel adds HSTS on HTTPS domains; add explicitly if you ever move hosts      |
+| S5  | CSP `img-src 'self' data: https:` allows any HTTPS image origin                                           | Low                                                                  | `svelte.config.js`                | Tighten to known origins if project images ever come from a CDN               |
+| S6  | Stale `ADMIN_TOKEN` in local `.env` (auth system was removed); also duplicated `PRISMA_DATABASE_URL` line | Low (local only — `.env` is gitignored and has never been committed) | `.env`                            | Delete the token, rotate the credential wherever it originated                |
+| S7  | In-memory rate limiter is per-warm-instance on serverless (already documented in code)                    | Info                                                                 | `src/lib/server/rate-limit.ts`    | Fine for a portfolio; use Upstash/Vercel KV if abuse appears                  |
 
 Checked and clean: no secrets in git history (`.env` never tracked), no `{@html}` usage anywhere (blog content renders as text — no XSS path), email templates escape all user input, subject line strips CRLF (header injection), Zod schema rejects control characters, parameterized queries via Prisma.
 
 ### B. Accessibility (WCAG 2.1 AA)
 
-| # | Issue | Severity | File(s) | Fix |
-|---|---|---|---|---|
-| A1 | Home/About/Contact had no `<title>` (2.4.2 Page Titled) | **High** | route pages | ✅ Fixed via `SeoHead` |
-| A2 | Mobile menu: no `Escape` to close, no focus management on open/close | Medium | `src/routes/+layout.svelte` | Add `onkeydown` Escape handler; move focus into menu on open |
-| A3 | `text-[10px]` form labels and tag chips are below comfortable reading size | Low | contact page, cards | Bump to 12px minimum |
-| A4 | Hover-only "View projects →" overlay on home cards is invisible to keyboard users | Low | `src/routes/+page.svelte` | Add `group-focus-within:opacity-100` |
+| #   | Issue                                                                             | Severity | File(s)                     | Fix                                                          |
+| --- | --------------------------------------------------------------------------------- | -------- | --------------------------- | ------------------------------------------------------------ |
+| A1  | Home/About/Contact had no `<title>` (2.4.2 Page Titled)                           | **High** | route pages                 | ✅ Fixed via `SeoHead`                                       |
+| A2  | Mobile menu: no `Escape` to close, no focus management on open/close              | Medium   | `src/routes/+layout.svelte` | Add `onkeydown` Escape handler; move focus into menu on open |
+| A3  | `text-[10px]` form labels and tag chips are below comfortable reading size        | Low      | contact page, cards         | Bump to 12px minimum                                         |
+| A4  | Hover-only "View projects →" overlay on home cards is invisible to keyboard users | Low      | `src/routes/+page.svelte`   | Add `group-focus-within:opacity-100`                         |
 
 Strengths: semantic landmarks (`nav`/`main`/`footer`, labeled), `aria-expanded` on menu toggle, `aria-pressed` on filters, `aria-invalid` + inline errors on form fields, decorative images use `alt=""`, palette passes AA contrast (#655d58 on #fbf9f4 ≈ 5.5:1; #00694b on white ≈ 6.9:1).
 
 ### C. Performance
 
-| # | Issue | Severity | File(s) | Fix |
-|---|---|---|---|---|
-| P1 | Project JPEGs 200–290 KB each (~950 KB total) | Medium | `static/projects/*.jpg` | Convert to WebP (quality ~80, max 800px wide); keep jpg fallback or update DB paths |
-| P2 | Google Fonts third-party request chain (preconnect+preload mitigates, but still a render dependency) | Low | `src/app.html` | Self-host Manrope/Inter via `@fontsource` |
-| P3 | No `og:image`, so link previews fetch nothing useful | Low | `SeoHead.svelte` | Add a static 1200×630 og image |
-| P4 | Featured-projects "filler" query runs a second sequential DB roundtrip | Low | `src/routes/+page.server.ts` | Acceptable; could be one query with ordering on `featured desc, id desc` |
+| #   | Issue                                                                                                | Severity | File(s)                      | Fix                                                                                 |
+| --- | ---------------------------------------------------------------------------------------------------- | -------- | ---------------------------- | ----------------------------------------------------------------------------------- |
+| P1  | Project JPEGs 200–290 KB each (~950 KB total)                                                        | Medium   | `static/projects/*.jpg`      | Convert to WebP (quality ~80, max 800px wide); keep jpg fallback or update DB paths |
+| P2  | Google Fonts third-party request chain (preconnect+preload mitigates, but still a render dependency) | Low      | `src/app.html`               | Self-host Manrope/Inter via `@fontsource`                                           |
+| P3  | No `og:image`, so link previews fetch nothing useful                                                 | Low      | `SeoHead.svelte`             | Add a static 1200×630 og image                                                      |
+| P4  | Featured-projects "filler" query runs a second sequential DB roundtrip                               | Low      | `src/routes/+page.server.ts` | Acceptable; could be one query with ordering on `featured desc, id desc`            |
 
 Already good: `loading="lazy"`/`decoding="async"` on card images, `Cache-Control: public, max-age=60, stale-while-revalidate=300` on read routes, esbuild minify, no sourcemaps in prod, `data-sveltekit-preload-data="hover"`.
 
 ### D. Architecture & Code Quality
 
-| # | Issue | Severity | Fix |
-|---|---|---|---|
-| C1 | Home blog teaser links to `/blog` and featured projects to `/projects` instead of their detail pages | Medium (UX) | Link to `/blog/${post.id}` and `/projects/${project.id}` |
-| C2 | Blog categories hardcoded in `blog/+page.svelte` — will drift from DB content | Low | Derive from `data.posts` |
-| C3 | Dead code: `education`/`interests` empty arrays + their render blocks in About; hardcoded "5+ years" stat | Low | Remove or move to Bio JSON |
-| C4 | `db:seed` script only seeds projects; `seed-bio.js` not wired into package.json | Low | Add `db:seed:bio` script |
-| C5 | `stitch_profile.zip` (1.5 MB) committed to repo | Low | `git rm`, keep design assets out of the repo |
+| #   | Issue                                                                                                     | Severity    | Fix                                                      |
+| --- | --------------------------------------------------------------------------------------------------------- | ----------- | -------------------------------------------------------- |
+| C1  | Home blog teaser links to `/blog` and featured projects to `/projects` instead of their detail pages      | Medium (UX) | Link to `/blog/${post.id}` and `/projects/${project.id}` |
+| C2  | Blog categories hardcoded in `blog/+page.svelte` — will drift from DB content                             | Low         | Derive from `data.posts`                                 |
+| C3  | Dead code: `education`/`interests` empty arrays + their render blocks in About; hardcoded "5+ years" stat | Low         | Remove or move to Bio JSON                               |
+| C4  | `db:seed` script only seeds projects; `seed-bio.js` not wired into package.json                           | Low         | Add `db:seed:bio` script                                 |
+| C5  | `stitch_profile.zip` (1.5 MB) committed to repo                                                           | Low         | `git rm`, keep design assets out of the repo             |
 
 ### E. Testing
 

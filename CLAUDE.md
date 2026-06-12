@@ -1,200 +1,84 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance for AI assistants working in this repository.
 
-## Quick Start Commands
+## Quick start commands
 
 ```bash
 # Development
-npm run dev              # Start dev server at http://localhost:5173
+npm run dev              # Vite dev server (default port 5173)
 
-# Building and Type Checking
-npm run build           # Build for production (includes Prisma generate)
-npm run check           # Type check with svelte-check
-npm run check:watch     # Watch mode type checking
+# Build and types
+npm run build           # prisma generate + vite build (adapter-vercel)
+npm run check           # prisma generate + svelte-kit sync + svelte-check
 
-# Code Quality
-npm run lint            # Run ESLint and Prettier check
-npm run format          # Auto-format code with Prettier
-npm test                # Run full test suite
-npm run test:watch      # Watch mode for tests
-npm run test:unit       # Run unit tests only
-npm run test:coverage   # Test coverage report
+# Quality
+npm run lint            # Prettier check + ESLint
+npm run format          # Prettier --write
+npm test                # Vitest run (~120 tests)
+npm run test:coverage   # Vitest + coverage thresholds (used in CI)
+npm run test:e2e        # Playwright (Chromium): smoke, axe, honeypot
 
 # Database
-npm run db:push         # Push schema changes to database
-npm run db:migrate      # Run database migrations interactively
-npm run db:studio       # Open Prisma Studio GUI
-npm run db:generate     # Generate Prisma client
-npm run db:seed         # Seed projects from scripts/seed-projects.js
-
-# Deployment Preview
-npm run preview         # Preview production build locally
-```
-
-## Project Architecture
-
-This is a **SvelteKit 2.16.0 portfolio application** with a custom backend for blog posts and projects management.
-
-### Tech Stack
-
-- **Frontend**: Svelte 5.0.0, TypeScript, Tailwind CSS v4
-- **Backend**: SvelteKit with server-side routes
-- **Database**: PostgreSQL with Prisma ORM
-- **Auth**: None (public portfolio)
-- **Build**: Vite 6.2.6
-- **Deployment**: Vercel (adapter-auto configured)
-
-### Directory Structure
-
-```
-src/
-├── routes/              # SvelteKit routes and pages
-│   ├── +layout.svelte   # Root layout
-│   ├── +layout.server.ts # Root layout server load
-│   ├── +page.svelte     # Home page
-│   ├── bio/             # About/Bio page
-│   │   ├── +page.svelte
-│   │   └── +page.server.ts
-│   ├── blog/            # Blog posts page
-│   │   ├── +page.svelte
-│   │   └── +page.server.ts
-│   ├── projects/        # Projects showcase
-│   │   ├── +page.svelte
-│   │   └── +page.server.ts
-│   └── contact/         # Contact form page
-│       ├── +page.svelte
-│       └── +page.server.ts
-├── lib/
-│   ├── server/
-│   │   ├── db/
-│   │   │   └── index.ts     # Prisma client singleton
-│   │   ├── email.ts         # Email utilities
-│   │   ├── error-handler.ts # Centralized error handling
-│   │   └── sanitize.ts      # HTML/input sanitization
-│   ├── components/      # Shared UI (BlogCard, ProjectCard, etc.)
-│   ├── types.ts         # TypeScript interfaces (BlogPost, Project)
-│   └── index.ts
-├── hooks.server.ts      # SvelteKit server hooks (security headers)
-├── app.css              # Global Tailwind CSS
-└── app.html             # HTML template
-```
-
-### Database Schema
-
-**Models** (in `prisma/schema.prisma`):
-
-- **Bio** (singleton): name, title, location, about, skills (frontend/backend/tools/languages), experience (JSON)
-- **BlogPost**: id, title, excerpt, content, author, date, category, readTime, featured, tags
-- **Project**: id, title, description, image, technologies, category, github, live, featured
-
-## Recent Changes
-
-**Latest Work** (Session March 2, 2026):
-
-1. ✅ **Removed Authentication System** - Deleted auth module, login/logout/admin routes, User/Session database models
-2. ✅ **Consolidated Content Sources** - Migrated bio.json to database, all content now database-driven
-3. ✅ **Cleaned Up Admin Routes** - Replaced with Prisma Studio for content management
-
-**Previous**: Svelte 5 Migration
-
-- Uses `$state()` rune for reactive variables
-- Uses `$derived()` rune for computed values (instead of `$:` reactive statements)
-- Uses `let { data } = $props()` for component props (instead of `export let`)
-
-## Content Editing Workflow
-
-Since this is a public portfolio without authentication:
-
-1. Content is managed via **Prisma Studio** (`npm run db:studio`)
-2. No login required - internal tool only
-3. For production, you would:
-   - Use Prisma Studio locally and push changes to database
-   - Or add a headless CMS integration (Sanity, Contentful, etc.)
-   - Or implement proper authentication if adding admin functionality
-
-## Styling & Components
-
-**Tailwind CSS v4** is used for all styling:
-
-- Configuration in `vite.config.ts` (via `@tailwindcss/vite`)
-- Global styles in `src/app.css`
-- Components use utility classes (no separate component library)
-- Supports: forms plugin, typography plugin
-
-CSP (Content Security Policy) configured in `svelte.config.js` with `unsafe-inline` for styles (Tailwind requirement).
-
-## Content Management
-
-All content is stored in PostgreSQL via Prisma and managed through **Prisma Studio**:
-
-```bash
+npm run db:push
+npm run db:migrate
 npm run db:studio
+npm run db:generate
+npm run db:seed         # scripts/seed-projects.js
+npm run db:seed:bio     # scripts/seed-bio.js
+
+# Assets
+npm run assets:og               # static/og-image.png via sharp
+npm run assets:project-images   # WebP alongside JPEGs in static/projects/
+
+npm run preview         # Preview production build
 ```
 
-**Content Models:**
+## Architecture
 
-- **Bio** (id=1): Personal profile, skills, and work experience
-- **BlogPost**: Blog posts with categories, tags, and featured status
-- **Project**: Portfolio projects with technologies and links
+**SvelteKit 2.61.x** portfolio: server routes + Prisma (PostgreSQL). No end-user auth; content is edited via **Prisma Studio** (`npm run db:studio`).
 
-To update content, use Prisma Studio's GUI instead of editing files. This provides a single source of truth and type-safe data management.
+- **Deployment**: `@sveltejs/adapter-vercel` with `runtime: 'nodejs22.x'` in `svelte.config.js`.
+- **Fonts**: `@fontsource/manrope` and `@fontsource/inter` imported from `src/app.css` (no Google Fonts in `app.html`).
+- **SEO**: `src/lib/components/SeoHead.svelte` — title, description, `og:image` / Twitter card (absolute URL from request origin). Default image: `/og-image.png`.
+- **Images**: `projectImageSrc` / `projectWebpSrc` in `src/lib/project-image.ts`; `<picture>` via `ProjectPicture.svelte` on home featured grid, project cards, and project detail.
+- **Contact**: `src/routes/contact/+page.server.ts` — Superforms + Zod (`contactFormSchema` includes honeypot `website`). `hooks.server.ts` applies security headers and **rate-limits** `POST /contact` per client IP (`src/lib/server/rate-limit.ts`).
+- **Redirects**: `src/routes/bio/` exists for legacy URLs; primary about route is **`/about`**.
 
-## Environment Variables
-
-`.env` file required with:
+### Routes (high level)
 
 ```
-DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
+src/routes/
+  +layout.svelte / +layout.server.ts
+  +page.svelte / +page.server.ts          # Home
+  about/                                   # Bio / profile
+  bio/                                     # Redirect → /about
+  blog/ + blog/[id]/
+  projects/ + projects/[id]/
+  contact/
 ```
 
-Optional: Connection pooling parameters in DATABASE_URL for serverless/production environments.
+### Security headers
 
-## Testing & Linting
+`src/hooks.server.ts` sets `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`. Deprecated `X-XSS-Protection` is **not** set (CSP covers XSS).
 
-- **Vitest**: Unit and component testing configured with happy-dom environment
-- **@testing-library/svelte**: Component testing with best practices
-- **ESLint**: TypeScript + Svelte rules configured in `eslint.config.js`
-- **Prettier**: Code formatter with Svelte plugin support
-- **svelte-check**: Type checking for Svelte components
-- **102 test cases** covering sanitization, validation, error handling, and components
+## Testing
 
-## Build & Deployment
+- **Vitest** (`vitest.config.ts`): happy-dom, mocks for `$app/*` and `$lib/server/db` under `src/tests/mocks/`. Coverage thresholds on `src/lib/**/*.ts`.
+- **Playwright** (`playwright.config.ts`, `e2e/`): `npx vite dev` on port **5174** as `webServer`. CI installs **Chromium** only.
 
-- **Development Build**: `npm run build` generates `.svelte-kit/` and `build/` directories
-- **Deployment**: Uses `@sveltejs/adapter-auto` (Vercel optimized)
-- **Prisma**: Must run `prisma generate` before build (included in build script)
-- **Source Maps**: Disabled in production build (vite.config.ts)
+## CI
 
-## Key Implementation Details
+`.github/workflows/ci.yml`: `npm ci` → `prisma generate` → `npm audit --audit-level=moderate` → lint → `npm run check` → **`npm run test:coverage`** (single Vitest+coverage run) → Playwright → **`npm run build`**.
 
-### Form Handling
+## Documentation
 
-- Contact form uses SvelteKit form actions in `src/routes/contact/+page.server.ts`
-- Zod schema validation for type-safe data validation
-- Superforms integration for form state management and error handling
-- Input sanitization in `src/lib/server/sanitize.ts` (sanitizeText, sanitizeHtml)
-- Email sending via SendGrid, Resend, or SMTP (configured via EMAIL_SERVICE env var)
+- `README.md` — onboarding and scripts
+- `DEPLOYMENT_GUIDE.md`, `DATABASE_CONFIG.md`, `SECURITY.md`
+- `docs/PRODUCTION_AUDIT.md`, `docs/DESIGN_ASSETS.md`
 
-### Error Handling
+## Conventions
 
-- Centralized error utilities in `src/lib/server/error-handler.ts`
-- Development vs production logging distinction
-- User-friendly error messages with security sanitization
-- Global error page at `src/routes/+error.svelte`
-
-### Server Hooks
-
-`src/hooks.server.ts` handles:
-
-- Security headers (CSP, X-Frame-Options, XSS-Protection, etc.)
-- No authentication (portfolio is public)
-
-## Git & Workflow
-
-- Main branch: `main`
-- **Pre-commit hooks**: Lint-staged checks styled/linted files only
-- **Pre-push hooks**: Full type-check and unit tests before pushing
-- **GitHub Actions CI**: Runs lint, type-check, tests, and build on every push/PR
-- Husky integrated for automated quality gates
-- Node.js 22+ required (configured in `engines` field)
+- Svelte 5 runes: `$state`, `$derived`, `$props`, `$effect` where needed.
+- Match existing Tailwind token usage from `src/app.css` `@theme`.
+- Do not commit large design archives; see `docs/DESIGN_ASSETS.md`.
