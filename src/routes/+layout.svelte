@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import { tick } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
 	import type { LayoutData } from './$types';
@@ -7,6 +8,8 @@
 	let { children, data } = $props<{ children: Snippet; data: LayoutData }>();
 
 	let mobileMenuOpen = $state(false);
+	let mobileMenuButtonEl = $state<HTMLButtonElement | undefined>(undefined);
+	let mobileMenuPanelEl = $state<HTMLDivElement | undefined>(undefined);
 
 	const nav = [
 		{ href: '/', label: 'Home' },
@@ -24,6 +27,38 @@
 			? 'font-headline font-bold tracking-tight text-on-surface border-b-2 border-primary pb-0.5'
 			: 'font-headline font-bold tracking-tight text-secondary transition-colors duration-300 hover:text-on-surface';
 	}
+
+	function closeMobileMenu() {
+		mobileMenuOpen = false;
+		queueMicrotask(() => mobileMenuButtonEl?.focus());
+	}
+
+	function toggleMobileMenu() {
+		if (mobileMenuOpen) {
+			closeMobileMenu();
+		} else {
+			mobileMenuOpen = true;
+		}
+	}
+
+	$effect(() => {
+		if (!mobileMenuOpen) return;
+		void tick().then(() => {
+			mobileMenuPanelEl?.querySelector<HTMLElement>('a')?.focus();
+		});
+	});
+
+	$effect(() => {
+		if (!mobileMenuOpen) return;
+		function handleKeydown(e: KeyboardEvent) {
+			if (e.key === 'Escape') {
+				e.preventDefault();
+				closeMobileMenu();
+			}
+		}
+		window.addEventListener('keydown', handleKeydown);
+		return () => window.removeEventListener('keydown', handleKeydown);
+	});
 </script>
 
 <div class="min-h-screen bg-background font-body text-on-surface antialiased">
@@ -49,10 +84,12 @@
 			<div class="md:hidden">
 				<button
 					type="button"
-					onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
+					bind:this={mobileMenuButtonEl}
+					onclick={toggleMobileMenu}
 					class="p-2 text-on-surface"
 					aria-label="Toggle menu"
 					aria-expanded={mobileMenuOpen}
+					aria-controls="mobile-nav-panel"
 				>
 					{#if mobileMenuOpen}
 						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -78,6 +115,8 @@
 		</div>
 		{#if mobileMenuOpen}
 			<div
+				id="mobile-nav-panel"
+				bind:this={mobileMenuPanelEl}
 				class="border-t border-outline-variant/15 bg-surface/95 px-4 py-4 backdrop-blur-xl md:hidden"
 			>
 				<div class="flex flex-col gap-1">
@@ -85,7 +124,7 @@
 						<a
 							href={item.href}
 							class="rounded-md px-3 py-3 font-headline font-semibold text-on-surface"
-							onclick={() => (mobileMenuOpen = false)}
+							onclick={closeMobileMenu}
 						>
 							{item.label}
 						</a>
@@ -93,7 +132,7 @@
 					<a
 						href="/contact"
 						class="mt-2 rounded-md bg-primary px-3 py-3 text-center font-headline font-bold text-on-primary"
-						onclick={() => (mobileMenuOpen = false)}
+						onclick={closeMobileMenu}
 					>
 						Hire Me
 					</a>

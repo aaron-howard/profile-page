@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SeoHead from '$lib/components/SeoHead.svelte';
+
 	let { data } = $props<{
 		data: { bio: Record<string, unknown> | null; dbError?: boolean };
 	}>();
@@ -46,16 +48,12 @@
 			description: string;
 		}>
 	);
-
-	const education: Array<{
-		degree: string;
-		school: string;
-		period: string;
-		description: string;
-	}> = [];
-
-	const interests: string[] = [];
 </script>
+
+<SeoHead
+	title="About"
+	description="Background, skills, and work experience of Aaron Howard — full stack developer."
+/>
 
 <div class="mx-auto max-w-4xl">
 	{#if data.dbError}
@@ -108,20 +106,6 @@
 					{bio.name}
 				</h2>
 				<p class="text-lg text-secondary">{bio.title} · {bio.location}</p>
-				<div class="grid grid-cols-2 gap-8 pt-2">
-					<div>
-						<span class="block font-headline text-3xl font-bold text-primary">5+</span>
-						<span class="text-xs font-medium uppercase tracking-widest text-secondary"
-							>Years building</span
-						>
-					</div>
-					<div>
-						<span class="block font-headline text-3xl font-bold text-primary">∞</span>
-						<span class="text-xs font-medium uppercase tracking-widest text-secondary"
-							>Curiosity</span
-						>
-					</div>
-				</div>
 			</div>
 		</section>
 
@@ -141,7 +125,7 @@
 						<div class="flex flex-wrap gap-2">
 							{#each section.items as item (section.title + item)}
 								<span
-									class="rounded px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
+									class="rounded px-2 py-1 text-xs font-medium uppercase tracking-wide text-secondary bg-secondary-container/10"
 									>{item}</span
 								>
 							{/each}
@@ -169,43 +153,6 @@
 							<p class="mb-3 font-headline font-semibold text-primary">{job.company}</p>
 							<p class="max-w-3xl leading-relaxed text-secondary">{job.description}</p>
 						</div>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		{#if education.length > 0}
-			<section class="mb-20 rounded-xl bg-surface-container-low p-8 md:p-12">
-				<h2 class="mb-10 font-headline text-2xl font-bold text-on-surface md:text-3xl">
-					Education
-				</h2>
-
-				<div class="flex flex-col gap-12">
-					{#each education as edu (edu.degree + edu.school + edu.period)}
-						<div>
-							<div
-								class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between"
-							>
-								<h3 class="font-headline text-xl font-bold text-on-surface">{edu.degree}</h3>
-								<span class="font-body text-sm text-secondary">{edu.period}</span>
-							</div>
-							<p class="mb-3 font-headline font-semibold text-primary">{edu.school}</p>
-							<p class="text-secondary">{edu.description}</p>
-						</div>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		{#if interests.length > 0}
-			<section class="rounded-xl bg-surface-container-lowest p-8 shadow-ambient md:p-10">
-				<h2 class="mb-8 font-headline text-2xl font-bold text-on-surface">Interests</h2>
-				<div class="flex flex-wrap gap-3">
-					{#each interests as interest (interest)}
-						<span
-							class="rounded-md bg-surface-container-high px-4 py-2 text-sm font-medium text-on-surface"
-							>{interest}</span
-						>
 					{/each}
 				</div>
 			</section>

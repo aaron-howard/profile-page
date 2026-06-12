@@ -7,16 +7,24 @@
 
 	let { data } = $props<{ data: { posts: BlogPost[]; dbError?: boolean } }>();
 
-	const categories = [
-		{ id: 'all', name: 'All Posts' },
-		{ id: 'Development', name: 'Development' },
-		{ id: 'Technology', name: 'Technology' },
-		{ id: 'Backend', name: 'Backend' },
-		{ id: 'CSS', name: 'CSS' },
-		{ id: 'DevOps', name: 'DevOps' }
-	];
+	const categories = $derived.by(() => {
+		const unique = [
+			...new Set(data.posts.map((p: BlogPost) => p.category).filter(Boolean))
+		] as string[];
+		unique.sort((a, b) => a.localeCompare(b));
+		return [{ id: 'all', name: 'All Posts' }, ...unique.map((id) => ({ id, name: id }))];
+	});
 
 	let selectedCategory = $state('all');
+
+	$effect(() => {
+		if (
+			selectedCategory !== 'all' &&
+			!categories.some((c: { id: string }) => c.id === selectedCategory)
+		) {
+			selectedCategory = 'all';
+		}
+	});
 
 	const filteredPosts = $derived(
 		selectedCategory === 'all'

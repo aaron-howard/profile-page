@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Project } from '$lib/types';
 	import { getProjectCategoryColor, safeProjectUrl } from '$lib/project-utils';
-	import { projectImageSrc } from '$lib/project-image';
+	import ProjectPicture from './ProjectPicture.svelte';
 	import ProjectCategoryIcon from './ProjectCategoryIcon.svelte';
 
 	let {
@@ -15,13 +15,17 @@
 	const detailHref = $derived(`/projects/${project.id}`);
 	const githubUrl = $derived(safeProjectUrl(project.github));
 	const liveUrl = $derived(safeProjectUrl(project.live));
-	const imageSrc = $derived(projectImageSrc(project.image));
 </script>
 
 <div class="overflow-hidden rounded-xl bg-surface-container-lowest shadow-ambient">
 	<a href={detailHref} class="block">
-		{#if showImage && imageSrc}
-			<img src={imageSrc} alt="" class="h-40 w-full object-cover" loading="lazy" decoding="async" />
+		{#if showImage && project.image}
+			<ProjectPicture
+				imagePath={project.image}
+				alt=""
+				class="h-40 w-full object-cover"
+				loading="lazy"
+			/>
 		{:else}
 			<div
 				class="flex h-40 items-center justify-center"

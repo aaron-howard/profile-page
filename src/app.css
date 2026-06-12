@@ -2,7 +2,15 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
-/* Emerald Studio — design tokens (stitch_profile / DESIGN.md) */
+@import '@fontsource/manrope/latin-400.css';
+@import '@fontsource/manrope/latin-600.css';
+@import '@fontsource/manrope/latin-700.css';
+@import '@fontsource/manrope/latin-800.css';
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-500.css';
+@import '@fontsource/inter/latin-600.css';
+
+/* Emerald Studio — design tokens (see DESIGN.md) */
 @theme {
 	--color-primary: #00694b;
 	--color-primary-container: #008560;

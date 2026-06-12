@@ -4,17 +4,17 @@ A modern, responsive personal portfolio website built with **SvelteKit**, **Svel
 
 ## ✨ Features
 
-- **Modern Tech Stack**: SvelteKit 2.16.0, Svelte 5, TypeScript, Tailwind CSS v4, Vite
+- **Modern Tech Stack**: SvelteKit 2.61.x, Svelte 5, TypeScript, Tailwind CSS v4, Vite 8
 - **Responsive Design**: Mobile-first approach with beautiful UI/UX
-- **Multiple Sections**: Home, Bio, Projects, Blog, and Contact pages
+- **Multiple Sections**: Home, About (`/about`; `/bio` redirects there), Projects (list + detail), Blog (list + detail), Contact
 - **Database-Driven Content**: PostgreSQL with Prisma ORM for all content
 - **Type-Safe Validation**: Zod schemas with Superforms for forms
-- **Comprehensive Testing**: Vitest with 102 tests covering utilities, validation, and components
-- **CI/CD Pipeline**: GitHub Actions for lint, type-check, test, and build verification
+- **Comprehensive Testing**: Vitest (~120 tests) with coverage thresholds; Playwright smoke + axe + contact honeypot E2E
+- **CI/CD Pipeline**: GitHub Actions for audit, lint, type-check, coverage, Playwright, and production build
 - **Pre-commit Hooks**: Husky + lint-staged for local quality gates
-- **SEO Optimized**: Proper meta tags and semantic HTML
+- **SEO**: `SeoHead` titles/descriptions, Open Graph / Twitter image (`static/og-image.png`, regenerate via `npm run assets:og`)
 - **Error Handling**: Centralized error utilities with user-friendly messages
-- **Security**: Input sanitization, CSP headers, secure form handling
+- **Security**: CSP and security headers in `hooks.server.ts`, in-memory rate limiting on `POST /contact`, honeypot field on the contact form, input sanitization
 
 ## 🚀 Quick Start
 
@@ -86,10 +86,11 @@ npm run check:watch     # Watch mode type checking
 ### Testing
 
 ```bash
-npm test                # Run full test suite (102 tests)
+npm test                # Run full Vitest suite (~120 tests)
 npm run test:watch      # Watch mode for tests
 npm run test:unit       # Run unit tests only
-npm run test:coverage   # Test coverage report
+npm run test:coverage   # Test coverage report (used in CI)
+npm run test:e2e        # Playwright: smoke routes + axe + honeypot
 npm run test:integration    # Run integration tests
 npm run test:components     # Run component tests
 ```
@@ -102,13 +103,25 @@ npm run db:migrate      # Run database migrations interactively
 npm run db:studio       # Open Prisma Studio GUI (content management)
 npm run db:generate     # Generate Prisma client
 npm run db:seed         # Seed projects from scripts/seed-projects.js
+npm run db:seed:bio     # Upsert bio/profile from scripts/seed-bio.js
 ```
+
+### Assets
+
+```bash
+npm run assets:og               # Regenerate static/og-image.png (1200×630) via sharp
+npm run assets:project-images   # Write WebP alongside JPEGs in static/projects/
+```
+
+See [docs/DESIGN_ASSETS.md](docs/DESIGN_ASSETS.md) for guidance on large design binaries in git.
 
 ### Production
 
 ```bash
 npm run build           # Build for production (includes Prisma generate)
 ```
+
+On **Windows**, the Vercel adapter may fail at the symlink step without elevated permissions or Developer Mode; **GitHub Actions** (Linux) and Vercel builds are the supported verification paths if local `npm run build` errors with `EPERM` on `.vercel/output`.
 
 ## 📁 Project Structure
 
@@ -119,7 +132,8 @@ src/
 │   ├── +layout.server.ts           # Root layout server load
 │   ├── +page.svelte                # Home page
 │   ├── +error.svelte               # Global error page
-│   ├── bio/                        # About/Bio page
+│   ├── about/                    # About page (primary bio URL)
+│   ├── bio/                      # Redirects to /about
 │   ├── blog/                       # Blog posts page
 │   ├── projects/                   # Projects showcase
 │   └── contact/                    # Contact form page
@@ -166,28 +180,23 @@ This opens a GUI where you can:
 
 ## 🔐 Security
 
-- **Input Sanitization**: All user input is sanitized using dedicated utilities
-- **Form Validation**: Zod schemas with Superforms for type-safe validation
-- **CSP Headers**: Content Security Policy configured in `svelte.config.js`
+- **Input Sanitization**: User input sanitized for display and email
+- **Form Validation**: Zod + Superforms; honeypot (`website`) must stay empty
+- **CSP**: Configured in `svelte.config.js` (self-hosted fonts; no Google Fonts domains)
+- **Contact abuse**: `POST /contact` rate-limited per IP in `hooks.server.ts` (in-memory; fine for a portfolio)
 - **Error Handling**: Sensitive errors hidden from users, logged internally
 - **CSRF Protection**: Built into SvelteKit
 
 ## ✅ Testing
 
-**102 test cases** covering:
-
-- **Sanitization utilities**: 46 tests (100% coverage)
-- **Schema validation**: 17 tests (100% coverage)
-- **Error handling**: 28 tests (100% coverage)
-- **Contact form**: 4 integration tests
-- **Error page**: 7 component tests
+Vitest covers sanitization, schemas, utilities, error handling, integration (e.g. contact action), and components, with coverage thresholds on `src/lib/**/*.ts`. Playwright runs smoke navigation, axe checks on main routes, and a honeypot rejection flow on `/contact`.
 
 Run tests with:
 
 ```bash
-npm test              # Run all tests
-npm run test:watch    # Watch mode
-npm run test:coverage # Coverage report
+npm test              # Vitest (same cases as CI unit gate)
+npm run test:coverage # Coverage report (CI)
+npm run test:e2e      # Playwright (CI; requires Chromium install)
 ```
 
 ## 🚀 Deployment
@@ -233,32 +242,35 @@ The project works on any platform supporting SvelteKit:
 
 - Lint & format check
 - Type check
-- Full test suite (102 tests)
-- Production build verification
+- `npm audit` (moderate threshold)
+- Vitest with coverage (single run; no duplicate `npm test` step)
+- Playwright (Chromium) smoke + axe + honeypot
+- Production build (`@sveltejs/adapter-vercel`, Node **22.x** runtime on Vercel)
 
 All quality gates must pass before merging to main.
 
 ## 🛠️ Tech Stack
 
-| Layer      | Technology                                       |
-| ---------- | ------------------------------------------------ |
-| Frontend   | Svelte 5.0.0, SvelteKit 2.16.0, TypeScript       |
-| Styling    | Tailwind CSS v4 with plugins (forms, typography) |
-| Build      | Vite 6.2.6                                       |
-| Database   | PostgreSQL 12+                                   |
-| ORM        | Prisma 6.1.0                                     |
-| Validation | Zod 4.3.6 + Superforms 2.30.0                    |
-| Testing    | Vitest 3.2.4 + @testing-library/svelte 5.2.7     |
-| Quality    | ESLint, Prettier, svelte-check                   |
-| Hooks      | Husky 9.1.7 + lint-staged 16.3.2                 |
-| Deployment | Vercel (adapter-auto)                            |
+| Layer      | Technology                                                                       |
+| ---------- | -------------------------------------------------------------------------------- |
+| Frontend   | Svelte 5.x, SvelteKit 2.61.x, TypeScript                                         |
+| Styling    | Tailwind CSS v4 (forms, typography plugins); Manrope & Inter via `@fontsource/*` |
+| Build      | Vite 8.x                                                                         |
+| Database   | PostgreSQL 12+                                                                   |
+| ORM        | Prisma 7.x                                                                       |
+| Validation | Zod + sveltekit-superforms                                                       |
+| Testing    | Vitest 4.x, Playwright, @axe-core/playwright, Testing Library                    |
+| Quality    | ESLint, Prettier, svelte-check                                                   |
+| Hooks      | Husky + lint-staged                                                              |
+| Deployment | Vercel (`@sveltejs/adapter-vercel`, `runtime: 'nodejs22.x'`)                     |
 
 ## 📖 Documentation
 
 - **CLAUDE.md** - Architecture overview and quick commands for Claude Code
 - **DEPLOYMENT_GUIDE.md** - Step-by-step deployment instructions
 - **DATABASE_CONFIG.md** - Connection pooling and production database setup
-- **IMPROVEMENTS.md** - Project status and task tracking
+- **docs/PRODUCTION_AUDIT.md** — Production readiness notes
+- **docs/DESIGN_ASSETS.md** — Keep large design zips out of the repo
 
 ## 🤝 Contributing
 

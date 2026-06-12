@@ -1,13 +1,12 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { projectImageSrc } from '$lib/project-image';
+	import ProjectPicture from '$lib/components/ProjectPicture.svelte';
 	import { safeProjectUrl } from '$lib/project-utils';
 	import SeoHead from '$lib/components/SeoHead.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 
 	const project = $derived(data.project);
-	const imageSrc = $derived(projectImageSrc(project.image));
 	const githubUrl = $derived(safeProjectUrl(project.github));
 	const liveUrl = $derived(safeProjectUrl(project.live));
 </script>
@@ -19,14 +18,15 @@
 		← Back to projects
 	</a>
 
-	{#if imageSrc}
-		<img
-			src={imageSrc}
-			alt={project.title}
-			class="mb-8 aspect-video w-full rounded-xl object-cover"
-			loading="lazy"
-			decoding="async"
-		/>
+	{#if project.image}
+		<div class="mb-8 aspect-video w-full overflow-hidden rounded-xl">
+			<ProjectPicture
+				imagePath={project.image}
+				alt={project.title}
+				class="h-full w-full object-cover"
+				loading="lazy"
+			/>
+		</div>
 	{/if}
 
 	<h1 class="mb-4 font-headline text-4xl font-extrabold tracking-tight text-on-surface">
