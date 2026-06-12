@@ -3,6 +3,7 @@
 	import type { PageData } from './$types';
 	import { projectImageSrc } from '$lib/project-image';
 	import type { BlogPost, Project } from '$lib/types';
+	import SeoHead from '$lib/components/SeoHead.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 
@@ -42,6 +43,8 @@
 		return 'aspect-square';
 	}
 </script>
+
+<SeoHead title={`Aaron Howard — ${headline}`} description={tagline} />
 
 {#if dev && 'dbError' in data && data.dbError}
 	<div

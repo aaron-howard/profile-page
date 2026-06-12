@@ -2,6 +2,7 @@
 	import { untrack } from 'svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
+	import SeoHead from '$lib/components/SeoHead.svelte';
 
 	let { data } = $props<{ data: PageData }>();
 
@@ -35,6 +36,11 @@
 		}
 	});
 </script>
+
+<SeoHead
+	title="Contact"
+	description="Get in touch about opportunities, collaborations, or questions."
+/>
 
 <div class="mx-auto max-w-6xl">
 	<!-- Header -->
@@ -230,6 +236,18 @@
 			{/if}
 
 			<form method="POST" class="flex flex-col gap-10">
+				<!-- Honeypot: hidden from real users; bots that fill it fail validation -->
+				<div class="sr-only" aria-hidden="true">
+					<label for="website">Website</label>
+					<input
+						type="text"
+						id="website"
+						name="website"
+						bind:value={$form.website}
+						tabindex="-1"
+						autocomplete="off"
+					/>
+				</div>
 				<div>
 					<label
 						for="name"

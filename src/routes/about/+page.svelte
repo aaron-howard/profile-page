@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SeoHead from '$lib/components/SeoHead.svelte';
+
 	let { data } = $props<{
 		data: { bio: Record<string, unknown> | null; dbError?: boolean };
 	}>();
@@ -56,6 +58,11 @@
 
 	const interests: string[] = [];
 </script>
+
+<SeoHead
+	title="About"
+	description="Background, skills, and work experience of Aaron Howard — full stack developer."
+/>
 
 <div class="mx-auto max-w-4xl">
 	{#if data.dbError}
