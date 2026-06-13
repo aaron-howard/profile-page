@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from './lib/create-prisma-client.js';
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 const projects = [
 	{

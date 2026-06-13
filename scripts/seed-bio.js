@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { createPrismaClient } from './lib/create-prisma-client.js';
 
-const db = new PrismaClient();
+const db = createPrismaClient();
 
 async function main() {
 	const bioData = {
