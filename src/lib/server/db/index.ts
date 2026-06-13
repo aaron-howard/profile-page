@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
+import { env } from '$env/dynamic/private';
+import { databaseUrlNeedsSsl, resolveRuntimeDatabaseUrl } from './connection-string';
 
-/** Do not throw at import time: missing DATABASE_URL should fail at query time so route loads can catch errors. */
+/** Do not throw at import time: missing DB URL should fail at query time so route loads can catch errors. */
 const globalForPrisma = globalThis as unknown as {
 	prisma: PrismaClient | undefined;
 };
@@ -25,9 +27,13 @@ const globalForPrisma = globalThis as unknown as {
  * - Production: Only errors (for performance)
  */
 
-const connectionString =
-	process.env.DATABASE_URL || 'postgresql://localhost:5432/postgres?schema=public';
-const pool = new Pool({ connectionString });
+const connectionString = resolveRuntimeDatabaseUrl(env) ?? '';
+const pool = new Pool({
+	connectionString,
+	...(connectionString && databaseUrlNeedsSsl(connectionString)
+		? { ssl: { rejectUnauthorized: false } }
+		: {})
+});
 const adapter = new PrismaPg(pool);
 
 export const db =

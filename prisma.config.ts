@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { defineConfig } from 'prisma/config';
+import { resolveCliDatabaseUrl } from './src/lib/server/db/connection-string';
 
 export default defineConfig({
 	schema: 'prisma/schema.prisma',
@@ -7,7 +8,7 @@ export default defineConfig({
 		path: 'prisma/migrations'
 	},
 	datasource: {
-		// Allow local type-check/generate without env set; real deployments should set DATABASE_URL.
-		url: process.env.DATABASE_URL ?? 'postgresql://localhost:5432/postgres?schema=public'
+		// Prefer direct URL for CLI; fall back through Vercel Postgres / manual env names.
+		url: resolveCliDatabaseUrl()
 	}
 });
