@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const db = new PrismaClient();
+import { disconnectPrisma, prisma as db } from './prisma-script-client.js';
 
 async function main() {
 	const bioData = {
@@ -161,7 +159,7 @@ async function main() {
 		console.error('Error seeding bio:', error);
 		process.exit(1);
 	} finally {
-		await db.$disconnect();
+		await disconnectPrisma();
 	}
 }
 
