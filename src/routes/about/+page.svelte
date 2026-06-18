@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import SeoHead from '$lib/components/SeoHead.svelte';
 
 	let { data } = $props<{
-		data: { bio: Record<string, unknown> | null; dbError?: boolean };
+		data: {
+			bio: Record<string, unknown> | null;
+			dbError?: boolean;
+			devBioFallback?: boolean;
+		};
 	}>();
 	const bio = $derived(data.bio);
 
@@ -64,9 +69,27 @@
 				Profile could not be loaded
 			</h1>
 			<p class="mb-8 text-secondary">
-				The database is unavailable or misconfigured. If you deploy this site, add
+				The database is unavailable or misconfigured. For <strong>Vercel</strong>, add
 				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm">DATABASE_URL</code>
-				in your host’s environment settings.
+				under Project → Settings → Environment Variables, redeploy, then run
+				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm"
+					>npm run db:seed:bio</code
+				>
+				(or use Prisma Studio) so the
+				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm">bio</code>
+				table has a row with
+				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm">id = 1</code>. For
+				<strong>local</strong>
+				development, copy
+				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm">.env.example</code>
+				to
+				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm">.env</code>, start
+				PostgreSQL, and run
+				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm">npm run db:push</code>
+				then
+				<code class="rounded bg-surface-container-high px-1.5 py-0.5 text-sm"
+					>npm run db:seed:bio</code
+				>.
 			</p>
 			<a
 				href="/"
@@ -75,6 +98,20 @@
 			>
 		</div>
 	{:else if data.bio}
+		{#if dev && data.devBioFallback}
+			<div
+				class="mx-auto mb-8 max-w-4xl rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-on-surface"
+				role="status"
+			>
+				<strong class="font-semibold">Dev:</strong> Could not reach PostgreSQL. Showing a
+				placeholder profile. Set
+				<code class="rounded bg-surface-container-high px-1">DATABASE_URL</code> in
+				<code class="rounded bg-surface-container-high px-1">.env</code>, start the database, then
+				run
+				<code class="rounded bg-surface-container-high px-1">npm run db:push</code> and
+				<code class="rounded bg-surface-container-high px-1">npm run db:seed:bio</code>.
+			</div>
+		{/if}
 		<header class="mb-16 md:mb-24">
 			<span
 				class="mb-4 block font-body text-xs font-medium uppercase tracking-[0.3em] text-secondary"
