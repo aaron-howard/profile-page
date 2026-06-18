@@ -18,7 +18,7 @@ export const load: PageServerLoad = async (event) => {
 		return { bio };
 	} catch (e) {
 		console.error('[about/+page.server] load failed:', e);
-		if (dev) {
+		if (dev && process.env.CI !== 'true') {
 			return { bio: devFallbackBio, devBioFallback: true as const };
 		}
 		return { bio: null, dbError: true as const };
