@@ -159,7 +159,11 @@ async function main() {
 		console.error('Error seeding bio:', error);
 		process.exit(1);
 	} finally {
-		await disconnectPrisma();
+		try {
+			await disconnectPrisma();
+		} catch (error) {
+			console.error('Error disconnecting Prisma:', error);
+		}
 	}
 }
 

@@ -1,5 +1,13 @@
-import 'dotenv/config';
+import { createRequire } from 'node:module';
 import { PrismaClient } from '@prisma/client';
+
+const require = createRequire(import.meta.url);
+
+try {
+	require('dotenv/config');
+} catch {
+	// dotenv is optional (transitive dev dep); DATABASE_URL may already be in process.env
+}
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
