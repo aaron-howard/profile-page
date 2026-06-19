@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { disconnectPrisma, prisma } from './prisma-script-client.js';
 
 const projects = [
 	{
@@ -99,7 +97,7 @@ main()
 	})
 	.finally(async () => {
 		try {
-			await prisma.$disconnect();
+			await disconnectPrisma();
 		} catch (error) {
 			console.error('Error disconnecting Prisma:', error);
 		}
