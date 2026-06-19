@@ -65,11 +65,12 @@ src/routes/
 ## Testing
 
 - **Vitest** (`vitest.config.ts`): happy-dom, mocks for `$app/*` and `$lib/server/db` under `src/tests/mocks/`. Coverage thresholds on `src/lib/**/*.ts`.
-- **Playwright** (`playwright.config.ts`, `e2e/`): `npx vite dev` on port **5174** as `webServer`. CI installs **Chromium** only.
+- **Playwright** (`playwright.config.ts`, `e2e/`): `npx vite dev` on port **5174** as `webServer`. Not on the PR merge gate — runs post-merge via `.github/workflows/e2e.yml`.
 
 ## CI
 
-`.github/workflows/ci.yml`: `npm ci` → `prisma generate` → `npm audit --audit-level=moderate` → lint → `npm run check` → **`npm run test:coverage`** (single Vitest+coverage run) → Playwright → **`npm run build`**.
+- **PR / merge gate** (`.github/workflows/ci.yml`): `npm ci` → `prisma generate` → `npm audit --audit-level=moderate` → lint → `npm run check` → **`npm run test:coverage`** → **`npm run build`**. Target ~3 minutes; no Playwright install.
+- **Post-merge E2E** (`.github/workflows/e2e.yml`): on push to `main` and `workflow_dispatch`. Playwright smoke + axe + honeypot; Chromium cached, 15-minute job timeout.
 
 ## Documentation
 
