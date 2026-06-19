@@ -332,8 +332,7 @@
 						class="w-full resize-none border-0 border-b border-outline-variant/40 bg-transparent px-0 py-2 text-on-surface placeholder:text-outline-variant/50 focus:border-primary focus:ring-0 {$errors.message
 							? 'border-b-red-500'
 							: ''}"
-						placeholder="Tell me about your project, opportunity, or just say hello!"
-					></textarea>
+						placeholder="Tell me about your project, opportunity, or just say hello!"></textarea>
 					{#if $errors.message}
 						<p class="mt-1 text-sm text-red-600">{$errors.message}</p>
 					{/if}
