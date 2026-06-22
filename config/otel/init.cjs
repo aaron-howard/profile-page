@@ -1,6 +1,4 @@
-console.log('🔥 OTEL init.js loaded BEFORE Vite');
-
-('use strict');
+'use strict';
 
 const path = require('path');
 const dotenv = require('dotenv');

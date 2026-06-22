@@ -15,7 +15,10 @@ interface EmailData {
  */
 export async function sendEmail(data: EmailData): Promise<{ success: boolean; error?: string }> {
 	return tracer.startActiveSpan('email.send', async (span) => {
-		span.setAttribute('email.to', data.to);
+		const domain = data.to.includes('@') ? data.to.split('@').at(-1) : undefined;
+		if (domain) {
+			span.setAttribute('email.domain', domain);
+		}
 		try {
 			return await actualSendEmail(data);
 		} finally {

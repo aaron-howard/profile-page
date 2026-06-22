@@ -39,8 +39,9 @@ function createPrismaClient() {
 	}).$extends({
 		query: {
 			$allOperations({ model, operation, args, query }) {
-				return tracer.startActiveSpan(`db.${model}.${operation}`, async (span) => {
-					span.setAttribute('db.model', model ?? 'unknown');
+				const modelName = model ?? 'raw';
+				return tracer.startActiveSpan(`db.${modelName}.${operation}`, async (span) => {
+					span.setAttribute('db.model', modelName);
 					span.setAttribute('db.operation', operation);
 					try {
 						return await query(args);

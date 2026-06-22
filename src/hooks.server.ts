@@ -14,8 +14,9 @@ function applySecurityHeaders(response: Response): Response {
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	return tracer.startActiveSpan(`route ${event.route.id}`, async (span) => {
-		span.setAttribute('route.id', event.route.id ?? 'unknown');
+	const routeId = event.route.id ?? event.url.pathname;
+	return tracer.startActiveSpan(`route ${routeId}`, async (span) => {
+		span.setAttribute('route.id', routeId);
 		span.setAttribute('http.method', event.request.method);
 		span.setAttribute('http.target', event.url.pathname);
 

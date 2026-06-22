@@ -13,7 +13,8 @@ jobs:
         uses: returntocorp/semgrep-action@v1
         with:
           config: |
-            https://raw.githubusercontent.com/aaron/semgrep-rules/main/semgrep.yml
+            p/ci
+            config/semgrep/project-rules.yml
           generateSarif: true
 
       - name: Upload SARIF
