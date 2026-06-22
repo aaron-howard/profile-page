@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "node --require ./config/otel/init.cjs node_modules/vite/bin/vite.js dev",
+		"dev": "node --experimental-strip-types --import ./config/otel/init.ts node_modules/vite/bin/vite.js dev",
 		"build": "prisma generate && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo '' && husky",
