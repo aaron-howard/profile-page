@@ -44,7 +44,16 @@ jobs:
 
       - name: Upload SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v4
+        continue-on-error: true
         if: always() && hashFiles('semgrep.sarif') != ''
         with:
           sarif_file: semgrep.sarif
           category: semgrep
+
+      - name: Upload SARIF artifact
+        uses: actions/upload-artifact@v4
+        if: always() && hashFiles('semgrep.sarif') != ''
+        with:
+          name: semgrep-sarif
+          path: semgrep.sarif
+          retention-days: 14

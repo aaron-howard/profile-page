@@ -18,7 +18,8 @@ config/semgrep/
 
 - Reusable workflow: [`.github/workflows/semgrep.yml`](../../.github/workflows/semgrep.yml) (native `semgrep/semgrep` container + SARIF upload)
 - Invoked from the main [`ci.yml`](../../.github/workflows/ci.yml) on every PR and push to `main`
-- Findings upload as SARIF → GitHub **Security → Code scanning** (and PR checks)
+- Findings upload as SARIF → GitHub **Security → Code scanning** when enabled on the repo
+- If code scanning is not enabled, SARIF is attached as a workflow **artifact** (`semgrep-sarif`) instead
 
 ## Run locally
 
@@ -26,6 +27,10 @@ config/semgrep/
 pip install semgrep
 semgrep scan --config p/ci --config p/typescript --config config/semgrep/rules
 ```
+
+## Optional: GitHub Code Scanning dashboard
+
+Enable **Settings → Security → Code scanning** on the repo to show Semgrep SARIF in the Security tab. Without it, download `semgrep-sarif` from the workflow run artifacts.
 
 ## Optional: PR comments via Semgrep Cloud
 
