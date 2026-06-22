@@ -55,6 +55,7 @@ export function createSdkOptions() {
 	if (process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT) {
 		options.metricReaders = [
 			new PeriodicExportingMetricReader({
+				exportIntervalMillis: process.env.VERCEL ? 5_000 : 60_000,
 				exporter: new OTLPMetricExporter({
 					url: process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT,
 					headers: parseOtlpHeaders(process.env.OTEL_EXPORTER_OTLP_METRICS_HEADERS)
