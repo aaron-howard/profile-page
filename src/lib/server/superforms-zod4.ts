@@ -1,8 +1,4 @@
 /**
- * zod4 adapter without the `sveltekit-superforms/adapters` barrel (SSR bundling).
- * Runtime load uses package resolution; see superforms-zod4.adapter.cjs.
+ * Keep a stable local import path while using Superforms' ESM-safe public adapter.
  */
-import adapters from './superforms-zod4.adapter.cjs';
-
-export const zod4 = adapters.zod4;
-export const zod4Client = adapters.zod4Client;
+export { zod4, zod4Client } from 'sveltekit-superforms/adapters';
