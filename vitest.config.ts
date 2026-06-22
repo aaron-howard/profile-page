@@ -17,6 +17,7 @@ export default defineConfig({
 			exclude: [
 				'src/lib/types.ts',
 				'src/lib/index.ts',
+				'src/lib/observability/**',
 				'src/lib/server/db/index.ts',
 				'src/lib/server/email.ts',
 				'src/lib/server/sanitize.ts',

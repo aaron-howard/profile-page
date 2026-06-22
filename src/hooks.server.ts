@@ -1,5 +1,7 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit';
+import { flushOtel } from '$lib/observability/flush';
 import { startInstrumentation } from '$lib/observability/instrumentation';
+import { isOtelEnabled } from '$lib/observability/otel-enabled';
 import { tracer } from '$lib/observability/tracer';
 import { checkRateLimit } from '$lib/server/rate-limit';
 
@@ -38,6 +40,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 			return applySecurityHeaders(response);
 		} finally {
 			span.end();
+			if (isOtelEnabled()) {
+				await flushOtel();
+			}
 		}
 	});
 };
