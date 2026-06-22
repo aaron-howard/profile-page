@@ -1,0 +1,41 @@
+rules:
+  - id: no-hardcoded-secrets
+    message: Possible hardcoded secret — use environment variables instead.
+    severity: ERROR
+    languages:
+      - typescript
+      - javascript
+    patterns:
+      - pattern-regex: '(?i)(api[_-]?key|secret|password|token|authorization)\s*[:=]\s*[''"][a-z0-9_\-]{8,}[''"]'
+    paths:
+      exclude:
+        - src/tests/**
+        - '**/*.test.ts'
+        - '**/*.spec.ts'
+
+  - id: no-log-email-recipient
+    message: Avoid logging email addresses or message bodies (PII). Use structured logs without recipient content.
+    severity: WARNING
+    languages:
+      - typescript
+    paths:
+      include:
+        - src/routes/
+        - src/lib/server/
+      exclude:
+        - src/lib/server/email.ts
+    patterns:
+      - pattern-either:
+          - pattern: console.$METHOD('To:', ...)
+          - pattern: console.$METHOD('Body:', ...)
+          - pattern: console.$METHOD('Subject:', ...)
+
+  - id: no-unsafe-html-in-svelte
+    message: '{@html ...} can cause XSS — sanitize user content before rendering raw HTML.'
+    severity: WARNING
+    languages:
+      - generic
+    paths:
+      include:
+        - src/**/*.svelte
+    pattern: '{@html'

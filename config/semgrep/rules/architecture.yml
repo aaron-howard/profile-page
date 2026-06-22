@@ -1,0 +1,53 @@
+rules:
+  - id: no-direct-prisma-in-routes
+    message: Route server files must use $lib/server/db instead of importing PrismaClient directly.
+    severity: ERROR
+    languages:
+      - typescript
+    paths:
+      include:
+        - src/routes/
+    patterns:
+      - pattern-either:
+          - pattern: import { PrismaClient } from '@prisma/client'
+          - pattern: import { ..., PrismaClient, ... } from '@prisma/client'
+
+  - id: no-db-import-in-svelte-components
+    message: Database access belongs in +page.server.ts, +layout.server.ts, or $lib/server — not in .svelte files.
+    severity: ERROR
+    languages:
+      - typescript
+    paths:
+      include:
+        - src/**/*.svelte
+    patterns:
+      - pattern-either:
+          - pattern: import { db } from '$lib/server/db'
+          - pattern: import { PrismaClient } from '@prisma/client'
+
+  - id: no-env-private-outside-server
+    message: $env/dynamic/private must only be imported from server-only code (+page.server.ts, hooks.server.ts, $lib/server/**).
+    severity: ERROR
+    languages:
+      - typescript
+    paths:
+      exclude:
+        - src/**/*.server.ts
+        - src/hooks.server.ts
+        - src/lib/server/**
+    patterns:
+      - pattern: import { ... } from '$env/dynamic/private'
+      - pattern: import $ENV from '$env/dynamic/private'
+
+  - id: no-pg-pool-outside-db-module
+    message: Instantiate PostgreSQL pools only in src/lib/server/db/index.ts.
+    severity: ERROR
+    languages:
+      - typescript
+    paths:
+      exclude:
+        - src/lib/server/db/**
+    patterns:
+      - pattern-either:
+          - pattern: import { Pool } from 'pg'
+          - pattern: new Pool(...)

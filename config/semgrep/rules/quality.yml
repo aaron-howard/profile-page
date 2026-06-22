@@ -1,0 +1,20 @@
+rules:
+  - id: no-console-log-in-routes
+    message: Use console.error or the shared error handler in route loaders — avoid console.log in server routes.
+    severity: WARNING
+    languages:
+      - typescript
+    paths:
+      include:
+        - src/routes/
+    patterns:
+      - pattern: console.log(...)
+    fix: console.error(...)
+
+  - id: no-todo-without-ticket
+    message: TODO/FIXME comments should reference an issue or ticket ID (e.g. TODO(#123)).
+    severity: INFO
+    languages:
+      - typescript
+      - javascript
+    pattern-regex: '//\s*(TODO|FIXME)(?!\\(#\\d+\\))'
