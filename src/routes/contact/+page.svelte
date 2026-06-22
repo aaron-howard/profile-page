@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import { superForm } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
 	import SeoHead from '$lib/components/SeoHead.svelte';
 
