@@ -1,4 +1,5 @@
 import { env } from '$env/dynamic/private';
+import { tracer } from '$lib/observability/tracer';
 import { escapeHtml } from './sanitize-utils';
 
 interface EmailData {
@@ -13,6 +14,17 @@ interface EmailData {
  * Supports SMTP or external services like SendGrid, Resend, etc.
  */
 export async function sendEmail(data: EmailData): Promise<{ success: boolean; error?: string }> {
+	return tracer.startActiveSpan('email.send', async (span) => {
+		span.setAttribute('email.to', data.to);
+		try {
+			return await actualSendEmail(data);
+		} finally {
+			span.end();
+		}
+	});
+}
+
+async function actualSendEmail(data: EmailData): Promise<{ success: boolean; error?: string }> {
 	const emailService = env.EMAIL_SERVICE || 'console'; // console, smtp, resend, sendgrid
 
 	if (process.env.NODE_ENV === 'production' && emailService === 'console') {

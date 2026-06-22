@@ -1,11 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
+import { tracer } from '$lib/observability/tracer';
 
 /** Do not throw at import time: missing DATABASE_URL should fail at query time so route loads can catch errors. */
 const globalForPrisma = globalThis as unknown as {
-	prisma: PrismaClient | undefined;
+	prisma: ExtendedPrismaClient | undefined;
 };
+
+type ExtendedPrismaClient = ReturnType<typeof createPrismaClient>;
 
 /**
  * PrismaClient singleton instance with connection pooling support
@@ -24,18 +27,36 @@ const globalForPrisma = globalThis as unknown as {
  * - Development: Shows queries, errors, and warnings
  * - Production: Only errors (for performance)
  */
+function createPrismaClient() {
+	const connectionString =
+		process.env.DATABASE_URL || 'postgresql://localhost:5432/postgres?schema=public';
+	const pool = new Pool({ connectionString });
+	const adapter = new PrismaPg(pool);
 
-const connectionString =
-	process.env.DATABASE_URL || 'postgresql://localhost:5432/postgres?schema=public';
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-
-export const db =
-	globalForPrisma.prisma ??
-	new PrismaClient({
+	return new PrismaClient({
 		adapter,
 		log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error']
+	}).$extends({
+		query: {
+			$allOperations({ model, operation, args, query }) {
+				return tracer.startActiveSpan(`db.${model}.${operation}`, async (span) => {
+					span.setAttribute('db.model', model ?? 'unknown');
+					span.setAttribute('db.operation', operation);
+					try {
+						return await query(args);
+					} catch (error) {
+						span.recordException(error instanceof Error ? error : new Error(String(error)));
+						throw error;
+					} finally {
+						span.end();
+					}
+				});
+			}
+		}
 	});
+}
+
+export const db = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') {
 	globalForPrisma.prisma = db;

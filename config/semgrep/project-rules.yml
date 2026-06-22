@@ -1,0 +1,9 @@
+# Repo-specific overrides (optional)
+rules:
+  - id: no-direct-db-in-routes
+    message: 'Routes must use lib/server/db/index.ts instead of direct Prisma imports.'
+    severity: ERROR
+    languages: [typescript]
+    patterns:
+      - pattern: import { PrismaClient } from "prisma"
+      - pattern-not: src/lib/server/db/

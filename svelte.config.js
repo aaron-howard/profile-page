@@ -7,7 +7,7 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [vitePreprocess()],
 	kit: {
-		adapter: adapter({ runtime: 'nodejs22.x' }),
+		adapter: adapter({ runtime: 'nodejs24.x' }),
 		csp: {
 			mode: 'auto',
 			directives: {
