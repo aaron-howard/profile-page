@@ -7,6 +7,13 @@ on:
     branches: [main]
 
 jobs:
+  semgrep:
+    name: Semgrep Security Scan
+    uses: ./.github/workflows/semgrep.yml
+    permissions:
+      contents: read
+      security-events: write
+
   ci:
     name: Lint, Type Check, Test, Build
     runs-on: ubuntu-latest

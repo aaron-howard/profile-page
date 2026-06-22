@@ -3,21 +3,32 @@ name: Semgrep
 on:
   workflow_call:
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   semgrep:
+    name: Semgrep (SAST)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
           config: |
             p/ci
-            config/semgrep/project-rules.yml
+            p/typescript
+            p/nodejs
+            config/semgrep/rules
           generateSarif: true
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
-      - name: Upload SARIF
+      - name: Upload SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
+        if: always()
         with:
           sarif_file: semgrep.sarif
+          category: semgrep

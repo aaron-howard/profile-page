@@ -1,0 +1,11 @@
+rules:
+  - id: no-server-load-in-svelte
+    message: Server load functions belong in +page.server.ts or +layout.server.ts, not in .svelte files.
+    severity: ERROR
+    languages:
+      - typescript
+    paths:
+      include:
+        - src/**/*.svelte
+    patterns:
+      - pattern-regex: export\s+(const|async function)\s+load
