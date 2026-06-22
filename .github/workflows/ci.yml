@@ -13,6 +13,7 @@ jobs:
     permissions:
       contents: read
       security-events: write
+      actions: read
 
   ci:
     name: Lint, Type Check, Test, Build

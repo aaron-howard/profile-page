@@ -16,7 +16,7 @@ config/semgrep/
 
 ## CI
 
-- Reusable workflow: [`.github/workflows/semgrep.yml`](../../.github/workflows/semgrep.yml)
+- Reusable workflow: [`.github/workflows/semgrep.yml`](../../.github/workflows/semgrep.yml) (native `semgrep/semgrep` container + SARIF upload)
 - Invoked from the main [`ci.yml`](../../.github/workflows/ci.yml) on every PR and push to `main`
 - Findings upload as SARIF → GitHub **Security → Code scanning** (and PR checks)
 
