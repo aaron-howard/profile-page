@@ -1,5 +1,9 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit';
+import { startInstrumentation } from '$lib/observability/instrumentation';
+import { tracer } from '$lib/observability/tracer';
 import { checkRateLimit } from '$lib/server/rate-limit';
+
+startInstrumentation();
 
 function applySecurityHeaders(response: Response): Response {
 	response.headers.set('X-Content-Type-Options', 'nosniff');
@@ -9,25 +13,34 @@ function applySecurityHeaders(response: Response): Response {
 	return response;
 }
 
-const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
-	if (event.request.method === 'POST' && event.url.pathname === '/contact') {
-		const clientAddress = event.getClientAddress();
-		const limit = checkRateLimit(`contact:${clientAddress}`);
-		if (!limit.allowed) {
-			return applySecurityHeaders(
-				new Response('Too many requests. Please try again later.', {
-					status: 429,
-					headers: { 'Retry-After': String(limit.retryAfterSeconds) }
-				})
-			);
+export const handle: Handle = async ({ event, resolve }) => {
+	const routeId = event.route.id ?? event.url.pathname;
+	return tracer.startActiveSpan(`route ${routeId}`, async (span) => {
+		span.setAttribute('route.id', routeId);
+		span.setAttribute('http.method', event.request.method);
+		span.setAttribute('http.target', event.url.pathname);
+
+		try {
+			if (event.request.method === 'POST' && event.url.pathname === '/contact') {
+				const clientAddress = event.getClientAddress();
+				const limit = checkRateLimit(`contact:${clientAddress}`);
+				if (!limit.allowed) {
+					return applySecurityHeaders(
+						new Response('Too many requests. Please try again later.', {
+							status: 429,
+							headers: { 'Retry-After': String(limit.retryAfterSeconds) }
+						})
+					);
+				}
+			}
+
+			const response = await resolve(event);
+			return applySecurityHeaders(response);
+		} finally {
+			span.end();
 		}
-	}
-
-	const response = await resolve(event);
-	return applySecurityHeaders(response);
+	});
 };
-
-export const handle: Handle = handleSecurityHeaders;
 
 /** Logs unexpected errors (e.g. Prisma/DB). Check Vercel function logs when debugging 500s. */
 export const handleError: HandleServerError = ({ error, event }) => {

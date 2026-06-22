@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "node --require ./config/otel/init.cjs node_modules/vite/bin/vite.js dev",
 		"build": "prisma generate && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo '' && husky",
@@ -69,6 +69,11 @@
 		"vitest": "^4.1.9"
 	},
 	"dependencies": {
+		"@opentelemetry/api": "^1.9.1",
+		"@opentelemetry/auto-instrumentations-node": "^0.77.0",
+		"@opentelemetry/exporter-metrics-otlp-http": "^0.219.0",
+		"@opentelemetry/exporter-trace-otlp-http": "^0.219.0",
+		"@opentelemetry/sdk-node": "^0.219.0",
 		"@prisma/adapter-pg": "^7.8.0",
 		"@prisma/client": "^7.8.0",
 		"pg": "^8.16.0",
@@ -80,6 +85,7 @@
 		"cookie": "^0.7.2",
 		"@hono/node-server": ">=1.19.13",
 		"joi": ">=18.2.1",
+		"ts-deepmerge": ">=8.0.0",
 		"@sveltejs/adapter-vercel": {
 			"esbuild": "^0.28.1"
 		}

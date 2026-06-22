@@ -6,7 +6,7 @@ describe('contact form action', () => {
 	});
 
 	it('validation fails with empty fields', async () => {
-		vi.doMock('sveltekit-superforms', () => ({
+		vi.doMock('sveltekit-superforms/server', () => ({
 			superValidate: vi.fn().mockResolvedValue({
 				valid: false,
 				data: { name: '', email: '', subject: '', message: '' },
@@ -16,7 +16,7 @@ describe('contact form action', () => {
 			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
 		}));
 
-		vi.doMock('sveltekit-superforms/adapters', () => ({
+		vi.doMock('$lib/server/superforms-zod4', () => ({
 			zod: vi.fn((schema) => schema),
 			zod4: vi.fn((schema) => schema)
 		}));
@@ -43,7 +43,7 @@ describe('contact form action', () => {
 	it('sends email successfully with valid data', async () => {
 		const mockSendEmail = vi.fn().mockResolvedValue({ success: true });
 
-		vi.doMock('sveltekit-superforms', () => ({
+		vi.doMock('sveltekit-superforms/server', () => ({
 			superValidate: vi.fn().mockResolvedValue({
 				valid: true,
 				data: {
@@ -58,7 +58,7 @@ describe('contact form action', () => {
 			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
 		}));
 
-		vi.doMock('sveltekit-superforms/adapters', () => ({
+		vi.doMock('$lib/server/superforms-zod4', () => ({
 			zod: vi.fn((schema) => schema),
 			zod4: vi.fn((schema) => schema)
 		}));
@@ -88,7 +88,7 @@ describe('contact form action', () => {
 	it('handles email failure gracefully', async () => {
 		const mockSendEmail = vi.fn().mockResolvedValue({ success: false, error: 'SMTP error' });
 
-		vi.doMock('sveltekit-superforms', () => ({
+		vi.doMock('sveltekit-superforms/server', () => ({
 			superValidate: vi.fn().mockResolvedValue({
 				valid: true,
 				data: {
@@ -103,7 +103,7 @@ describe('contact form action', () => {
 			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
 		}));
 
-		vi.doMock('sveltekit-superforms/adapters', () => ({
+		vi.doMock('$lib/server/superforms-zod4', () => ({
 			zod: vi.fn((schema) => schema),
 			zod4: vi.fn((schema) => schema)
 		}));
@@ -133,7 +133,7 @@ describe('contact form action', () => {
 	it('handles email service exception', async () => {
 		const mockSendEmail = vi.fn().mockRejectedValue(new Error('Service unavailable'));
 
-		vi.doMock('sveltekit-superforms', () => ({
+		vi.doMock('sveltekit-superforms/server', () => ({
 			superValidate: vi.fn().mockResolvedValue({
 				valid: true,
 				data: {
@@ -148,7 +148,7 @@ describe('contact form action', () => {
 			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
 		}));
 
-		vi.doMock('sveltekit-superforms/adapters', () => ({
+		vi.doMock('$lib/server/superforms-zod4', () => ({
 			zod: vi.fn((schema) => schema),
 			zod4: vi.fn((schema) => schema)
 		}));

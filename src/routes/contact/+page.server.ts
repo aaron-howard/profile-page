@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
-import { superValidate, message } from 'sveltekit-superforms';
-import { zod4 } from 'sveltekit-superforms/adapters';
+import { superValidate, message } from 'sveltekit-superforms/server';
+import { zod4 } from '$lib/server/superforms-zod4';
 import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';

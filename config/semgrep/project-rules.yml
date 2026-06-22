@@ -1,0 +1,13 @@
+rules:
+  - id: no-direct-prisma-in-routes
+    message: Route files must use $lib/server/db instead of importing PrismaClient from @prisma/client.
+    severity: ERROR
+    languages:
+      - typescript
+    paths:
+      include:
+        - src/routes/
+    patterns:
+      - pattern-either:
+          - pattern: import { PrismaClient } from '@prisma/client'
+          - pattern: import { ..., PrismaClient, ... } from '@prisma/client'

@@ -29,6 +29,13 @@ export default ts.config(
 		}
 	},
 	{
+		files: ['**/*.cjs'],
+		rules: {
+			'@typescript-eslint/no-require-imports': 'off',
+			'@typescript-eslint/no-unused-expressions': 'off'
+		}
+	},
+	{
 		files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
 		languageOptions: {
 			parserOptions: {
