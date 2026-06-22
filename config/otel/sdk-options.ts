@@ -1,19 +1,14 @@
-'use strict';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 
-const { NodeSDK } = require('@opentelemetry/sdk-node');
-const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http');
-const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-http');
-const { PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
-const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
-
-/** @param {string | undefined} headerEnv */
-function parseOtlpHeaders(headerEnv) {
+export function parseOtlpHeaders(headerEnv: string | undefined): Record<string, string> {
 	if (!headerEnv) {
 		return {};
 	}
 
-	/** @type {Record<string, string>} */
-	const headers = {};
+	const headers: Record<string, string> = {};
 
 	for (const part of headerEnv.split(',')) {
 		const separator = part.indexOf('=');
@@ -22,7 +17,7 @@ function parseOtlpHeaders(headerEnv) {
 		}
 
 		const key = part.slice(0, separator).trim();
-		let value = part
+		const value = part
 			.slice(separator + 1)
 			.trim()
 			.replace(/^["']|["']$/g, '');
@@ -32,16 +27,20 @@ function parseOtlpHeaders(headerEnv) {
 	return headers;
 }
 
-function isOtelEnabled() {
+export function isOtelEnabled(): boolean {
 	return Boolean(
 		process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT ||
 		process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
 	);
 }
 
-function createSdkOptions() {
-	/** @type {import('@opentelemetry/sdk-node').NodeSDKConfiguration} */
-	const options = {
+export function createSdkOptions() {
+	const options: {
+		serviceName: string;
+		instrumentations: ReturnType<typeof getNodeAutoInstrumentations>[];
+		traceExporter?: OTLPTraceExporter;
+		metricReaders?: PeriodicExportingMetricReader[];
+	} = {
 		serviceName: 'profile-page',
 		instrumentations: [getNodeAutoInstrumentations()]
 	};
@@ -66,21 +65,3 @@ function createSdkOptions() {
 
 	return options;
 }
-
-/** @type {import('@opentelemetry/sdk-node').NodeSDK | undefined} */
-let sdk;
-
-function startSdk() {
-	if (!isOtelEnabled()) {
-		return undefined;
-	}
-
-	if (!sdk) {
-		sdk = new NodeSDK(createSdkOptions());
-	}
-
-	sdk.start();
-	return sdk;
-}
-
-module.exports = { createSdkOptions, isOtelEnabled, parseOtlpHeaders, startSdk };
