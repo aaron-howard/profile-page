@@ -7,9 +7,10 @@ import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
 import { logError, handleFormError } from '$lib/server/error-handler';
 import { recordContactSubmission } from '$lib/observability/app-metrics';
+import { stripHtmlTags } from '$lib/server/sanitize-utils';
 
 function normalizeTextInput(value: string): string {
-	return value.replace(/<[^>]*>/g, '').trim();
+	return stripHtmlTags(value).trim();
 }
 
 export const load: PageServerLoad = async () => {
