@@ -21,6 +21,15 @@ const STRIP_ALL_TAGS_OPTIONS: IOptions = {
 	allowedAttributes: {}
 };
 
+function decodeHtmlEntities(text: string): string {
+	return text
+		.replace(/&amp;/g, '&')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&quot;/g, '"')
+		.replace(/&#039;/g, "'");
+}
+
 const SAFE_HTML_OPTIONS: IOptions = {
 	allowedTags: ['p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'br', 'span', 'div', 'img'],
 	allowedAttributes: {
@@ -47,7 +56,7 @@ export function escapeHtml(text: string): string {
  * Remove all HTML tags from plain text input.
  */
 export function stripHtmlTags(text: string): string {
-	return sanitizeHtmlLib(text, STRIP_ALL_TAGS_OPTIONS);
+	return decodeHtmlEntities(sanitizeHtmlLib(text, STRIP_ALL_TAGS_OPTIONS));
 }
 
 /**

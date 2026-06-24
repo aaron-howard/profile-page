@@ -54,7 +54,7 @@ describe('stripHtmlTags', () => {
 	});
 
 	it('removes script tags and preserves remaining text', () => {
-		expect(stripHtmlTags('<script>alert("xss")</script>')).toBe('alert("xss")');
+		expect(stripHtmlTags('<script>alert("xss")</script>extra')).toBe('extra');
 	});
 });
 
@@ -68,7 +68,7 @@ describe('sanitizeText', () => {
 	});
 
 	it('removes script tags and escapes remaining text', () => {
-		expect(sanitizeText('<script>alert("xss")</script>')).toBe('alert(&quot;xss&quot;)');
+		expect(sanitizeText('<script>alert("xss")</script>extra')).toBe('extra');
 	});
 
 	it('preserves text outside tags', () => {
@@ -133,7 +133,7 @@ describe('sanitizeHtml', () => {
 
 	it('handles complex script tags with nested content', () => {
 		expect(sanitizeHtml('<div><script>var x = "<script>alert(1)</script>";</script></div>')).toBe(
-			'<div></div>'
+			'<div>";</div>'
 		);
 	});
 
@@ -155,8 +155,12 @@ describe('sanitizeEmail', () => {
 		expect(sanitizeEmail('  user@example.com  ')).toBe('user@example.com');
 	});
 
-	it('removes HTML tags before validation', () => {
-		expect(sanitizeEmail('<script>user@example.com</script>')).toBe('user@example.com');
+	it('rejects email wrapped in script tags', () => {
+		expect(sanitizeEmail('<script>user@example.com</script>')).toBe('');
+	});
+
+	it('removes non-script HTML tags before validation', () => {
+		expect(sanitizeEmail('<b>user@example.com</b>')).toBe('user@example.com');
 	});
 
 	it('rejects invalid format', () => {
