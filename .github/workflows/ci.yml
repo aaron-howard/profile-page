@@ -5,11 +5,16 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   semgrep:
     name: Semgrep Security Scan
-    uses: aaron-howard/ci-templates/.github/workflows/semgrep.yml@main
+    uses: aaron-howard/ci-templates/.github/workflows/semgrep.yml@v1.0.0
     permissions:
       contents: read
       security-events: write
@@ -17,6 +22,6 @@ jobs:
 
   ci:
     name: Lint, Type Check, Test, Build
-    uses: aaron-howard/ci-templates/.github/workflows/ci.yml@main
+    uses: aaron-howard/ci-templates/.github/workflows/ci.yml@v1.0.0
     permissions:
       contents: read

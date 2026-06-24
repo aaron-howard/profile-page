@@ -74,13 +74,13 @@ Claude  → Paste GitHub Actions log; identify root cause (template repo, Semgre
 Cursor  → Apply fix in the correct repo (profile-page or ci-templates).
 ```
 
-**This repo’s CI** calls shared workflows:
+**This repo’s CI** calls shared workflows (pinned at **`v1.0.0`**):
 
-- `aaron-howard/ci-templates/.github/workflows/semgrep.yml@main`
-- `aaron-howard/ci-templates/.github/workflows/ci.yml@main`
-- `aaron-howard/ci-templates/.github/workflows/e2e.yml@main`
+- `aaron-howard/ci-templates/.github/workflows/semgrep.yml@v1.0.0`
+- `aaron-howard/ci-templates/.github/workflows/ci.yml@v1.0.0`
+- `aaron-howard/ci-templates/.github/workflows/e2e.yml@v1.0.0`
 
-`ci-templates` must stay **public** while `profile-page` is public.
+See **`docs/CI-CD.md`** for the full pipeline. `ci-templates` must stay **public** while `profile-page` is public.
 
 ### 3. Semgrep finding
 

@@ -16,7 +16,7 @@ This repo uses **Cursor Pro** for implementation and **Claude Pro** for planning
 | `.github/workflows` wrappers in this repo | CI log diagnosis; changes in `aaron-howard/ci-templates` |
 | Dependabot branch fixes                   | Dependency risk review                                   |
 
-**CI** delegates to [aaron-howard/ci-templates](https://github.com/aaron-howard/ci-templates). **Semgrep** rules live in `config/semgrep/rules/`. Blueprint progress: `docs/BLUEPRINT-STATUS.md`.
+**CI** delegates to [aaron-howard/ci-templates](https://github.com/aaron-howard/ci-templates) at **`v1.0.0`**. **Semgrep** rules live in `config/semgrep/rules/`. Pipeline guide: `docs/CI-CD.md`. Blueprint progress: `docs/BLUEPRINT-STATUS.md`.
 
 ## Git workflow
 
