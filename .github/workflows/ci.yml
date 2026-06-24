@@ -9,7 +9,7 @@ on:
 jobs:
   semgrep:
     name: Semgrep Security Scan
-    uses: ./.github/workflows/semgrep.yml
+    uses: aaron-howard/ci-templates/.github/workflows/semgrep.yml@main
     permissions:
       contents: read
       security-events: write
