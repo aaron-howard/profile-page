@@ -1,0 +1,83 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:recommended",
+		":dependencyDashboard",
+		":semanticCommits",
+		":separateMajorReleases",
+		"schedule:weekly"
+	],
+	"timezone": "America/Chicago",
+	"schedule": ["before 6am on Monday"],
+	"labels": ["dependencies", "renovate"],
+	"prConcurrentLimit": 5,
+	"rangeStrategy": "bump",
+	"lockFileMaintenance": {
+		"enabled": true,
+		"schedule": ["before 6am on the first day of the month"]
+	},
+	"packageRules": [
+		{
+			"description": "GitHub Actions are updated by Dependabot (.github/dependabot.yml)",
+			"matchManagers": ["github-actions"],
+			"enabled": false
+		},
+		{
+			"description": "Auto-merge patch devDependency updates when CI passes",
+			"matchManagers": ["npm"],
+			"matchDepTypes": ["devDependencies"],
+			"matchUpdateTypes": ["patch", "pin", "digest"],
+			"automerge": true,
+			"automergeType": "pr",
+			"platformAutomerge": true
+		},
+		{
+			"description": "Group SvelteKit ecosystem",
+			"matchPackagePatterns": ["^@sveltejs/", "^svelte$", "^svelte-check"],
+			"groupName": "sveltekit"
+		},
+		{
+			"description": "Group Prisma",
+			"matchPackagePatterns": ["^@prisma/", "^prisma$"],
+			"groupName": "prisma"
+		},
+		{
+			"description": "Group OpenTelemetry",
+			"matchPackagePatterns": ["^@opentelemetry/"],
+			"groupName": "opentelemetry"
+		},
+		{
+			"description": "Group testing stack",
+			"matchPackagePatterns": [
+				"^vitest",
+				"^@vitest/",
+				"^@testing-library/",
+				"^@playwright/",
+				"^@axe-core/",
+				"^happy-dom"
+			],
+			"groupName": "testing"
+		},
+		{
+			"description": "Group Tailwind CSS v4",
+			"matchPackagePatterns": ["^tailwindcss", "^@tailwindcss/"],
+			"groupName": "tailwind"
+		},
+		{
+			"description": "Group ESLint / Prettier tooling",
+			"matchPackagePatterns": [
+				"^eslint",
+				"^@eslint/",
+				"^typescript-eslint",
+				"^prettier",
+				"^eslint-plugin-",
+				"^eslint-config-"
+			],
+			"groupName": "linting"
+		}
+	],
+	"vulnerabilityAlerts": {
+		"enabled": true,
+		"labels": ["security"]
+	}
+}

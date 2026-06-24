@@ -9,7 +9,7 @@ Read `docs/AI-WORKFLOW-PLAYBOOK.md` for full handoff patterns.
 
 ## Tool split
 
-- **Cursor (you):** Implement code, multi-file edits, tests, Semgrep fixes, OTEL hooks, workflow YAML in this repo, Dependabot branch fixes.
+- **Cursor (you):** Implement code, multi-file edits, tests, Semgrep fixes, OTEL hooks, workflow YAML, Dependabot/Renovate PR fixes.
 - **Claude:** Architecture plans, CI log analysis, Semgrep rule design, Grafana dashboard design, dependency risk review, multi-repo docs — user brings plans here for execution.
 
 ## Stack
@@ -17,6 +17,7 @@ Read `docs/AI-WORKFLOW-PLAYBOOK.md` for full handoff patterns.
 - **CI:** Thin wrappers call `aaron-howard/ci-templates` at **`v1.0.0`**. Workflow logic changes go in **ci-templates**; bump the pin here when upgrading.
 - **Semgrep:** Custom rules in `config/semgrep/rules/`. Run locally: `semgrep scan --config p/ci --config p/typescript --config p/nodejs --config config/semgrep/rules`.
 - **OTEL:** `config/otel/`, `src/lib/observability/`, spans in `hooks.server.ts` and `$lib/server/db`. Opt-in via `OTEL_EXPORTER_OTLP_*` env vars.
+- **Dependencies:** Dependabot updates Actions; Renovate updates npm (`renovate.json`). See `docs/DEPENDENCY-MANAGEMENT.md`.
 - **Git:** Never commit to `main`. Branch → PR → merge.
 
 ## Before finishing

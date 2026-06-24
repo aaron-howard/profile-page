@@ -24,7 +24,7 @@ We aim to acknowledge reports within a few business days. Critical issues (e.g. 
 
 The following are generally **not** treated as vulnerabilities in this project alone:
 
-- **Dependency advisories** — use [Dependabot](https://docs.github.com/en/code-security/dependabot) or your package manager; upgrade via PRs as usual.
+- **Dependency advisories** — [Dependabot](https://docs.github.com/en/code-security/dependabot) (Actions), [Renovate](https://github.com/apps/renovate) (npm), and `npm audit` in CI; see `docs/DEPENDENCY-MANAGEMENT.md`.
 - **Misconfiguration of hosting** (e.g. missing `DATABASE_URL`, leaked env vars on the deploy provider) — follow your host’s and your own secret-management practices.
 - **Content stored in the database** (bio, blog, projects) when changed by the **owner** via Prisma Studio or equivalent — that is administrative access to your own data.
 - **Denial of service** against a personal portfolio unless trivially fixable in app code.

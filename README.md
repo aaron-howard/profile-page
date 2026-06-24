@@ -11,7 +11,7 @@ A modern, responsive personal portfolio website built with **SvelteKit**, **Svel
 - **Type-Safe Validation**: Zod schemas with Superforms for forms
 - **Comprehensive Testing**: Vitest (~120 tests) with coverage thresholds; Playwright smoke + axe + contact honeypot E2E
 - **CI/CD Pipeline**: Shared [ci-templates@v1.0.0](https://github.com/aaron-howard/ci-templates/releases/tag/v1.0.0) — see [docs/CI-CD.md](docs/CI-CD.md)
-- **AI Engineering Stack**: Semgrep rules, OpenTelemetry hooks, Cursor + Claude workflow — see [docs/AI-WORKFLOW-PLAYBOOK.md](docs/AI-WORKFLOW-PLAYBOOK.md)
+- **Dependency updates**: [Dependabot](https://github.com/dependabot) (GitHub Actions) + [Renovate](https://github.com/apps/renovate) (npm) — see [docs/DEPENDENCY-MANAGEMENT.md](docs/DEPENDENCY-MANAGEMENT.md)
 - **Pre-commit Hooks**: Husky + lint-staged for local quality gates
 - **SEO**: `SeoHead` titles/descriptions, Open Graph / Twitter image (`static/og-image.png`, regenerate via `npm run assets:og`)
 - **Error Handling**: Centralized error utilities with user-friendly messages
