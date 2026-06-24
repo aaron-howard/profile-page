@@ -419,6 +419,19 @@ Example setup with Redis would require:
 
 ---
 
+## 📊 Observability (Grafana Cloud OTLP)
+
+Production traces and metrics are opt-in via OpenTelemetry. Add these **Environment Variables** in Vercel (mark auth headers **Sensitive**):
+
+- `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT`
+- `OTEL_EXPORTER_OTLP_TRACES_HEADERS`
+- `OTEL_EXPORTER_OTLP_METRICS_ENDPOINT`
+- `OTEL_EXPORTER_OTLP_METRICS_HEADERS`
+
+Full setup, dashboard import, and alerts: **[docs/OBSERVABILITY.md](docs/OBSERVABILITY.md)**.
+
+---
+
 ## 🔗 Helpful Links
 
 - [Vercel Documentation](https://vercel.com/docs)

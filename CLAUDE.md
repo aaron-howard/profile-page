@@ -19,6 +19,7 @@ npm test                # Vitest run (~120 tests)
 npm run test:coverage   # Vitest + coverage thresholds (used in CI)
 npm run test:e2e        # Playwright (Chromium): smoke, axe, honeypot
 npm run semgrep:scan    # Semgrep SAST (local; CI also loads ci-templates/rules)
+npm run otel:verify     # Test OTLP connectivity to Grafana Cloud (.env.local)
 
 # Database
 npm run db:push
@@ -82,7 +83,7 @@ Workflow **logic** changes belong in `ci-templates`; bump the `@v1.x.x` tag in t
 ## Quality, security & observability
 
 - **Semgrep:** `config/semgrep/rules/` (architecture, security, quality, SvelteKit). CI scan via `ci-templates` reusable workflow.
-- **OpenTelemetry:** `config/otel/`, `src/lib/observability/` — route/DB/email spans in `hooks.server.ts` and `$lib/server/db`. Enable with `OTEL_EXPORTER_OTLP_*` (see `.env.example`).
+- **OpenTelemetry:** `config/otel/`, `src/lib/observability/` — spans, custom metrics, Grafana dashboard in `config/grafana/`. Enable with `OTEL_EXPORTER_OTLP_*`; see `docs/OBSERVABILITY.md` and `npm run otel:verify`.
 - **Dependabot:** `.github/dependabot.yml` — GitHub Actions weekly.
 - **Renovate:** `renovate.json` — npm grouped updates, security alerts, patch auto-merge for devDeps. Setup: `docs/DEPENDENCY-MANAGEMENT.md`.
 
@@ -98,7 +99,7 @@ Claude plans and reviews; Cursor implements in the repo. Do not use GitHub Copil
 
 - `README.md` — onboarding and scripts
 - `DEPLOYMENT_GUIDE.md`, `DATABASE_CONFIG.md`, `SECURITY.md`
-- `docs/PRODUCTION_AUDIT.md`, `docs/DESIGN_ASSETS.md`, `docs/AI-WORKFLOW-PLAYBOOK.md`, `docs/BLUEPRINT-STATUS.md`, `docs/CI-CD.md`, `docs/DEPENDENCY-MANAGEMENT.md`
+- `docs/PRODUCTION_AUDIT.md`, `docs/DESIGN_ASSETS.md`, `docs/AI-WORKFLOW-PLAYBOOK.md`, `docs/BLUEPRINT-STATUS.md`, `docs/CI-CD.md`, `docs/DEPENDENCY-MANAGEMENT.md`, `docs/OBSERVABILITY.md`
 - `AI-Engineering-Blueprint.md` — full stack blueprint
 
 ## Conventions

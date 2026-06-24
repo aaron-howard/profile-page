@@ -106,7 +106,7 @@ Cursor  → Implement in src/lib/observability/ and hooks; set OTLP vars per .en
 Claude  → Grafana panel / alert JSON for import.
 ```
 
-OTLP is opt-in: set `OTEL_EXPORTER_OTLP_*` in Vercel or local `.env`. Verify with `node scripts/test-otlp.mjs` (reads `.env.local`).
+OTLP is opt-in: set `OTEL_EXPORTER_OTLP_*` in Vercel or local `.env.local`. Verify with `npm run otel:verify`. Import dashboard from `config/grafana/dashboard-profile-page.json` — see `docs/OBSERVABILITY.md`.
 
 ### 5. Dependency PR (Dependabot or Renovate)
 

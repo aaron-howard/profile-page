@@ -6,6 +6,7 @@ import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
 import { logError, handleFormError } from '$lib/server/error-handler';
+import { recordContactSubmission } from '$lib/observability/app-metrics';
 
 function normalizeTextInput(value: string): string {
 	return value.replace(/<[^>]*>/g, '').trim();
@@ -21,6 +22,7 @@ export const actions: Actions = {
 		const form = await superValidate(request, zod4(contactFormSchema));
 
 		if (!form.valid) {
+			recordContactSubmission('validation_error');
 			return fail(400, { form });
 		}
 
@@ -54,12 +56,15 @@ export const actions: Actions = {
 
 			if (!emailResult.success) {
 				console.error('Failed to send contact email:', emailResult.error);
+				recordContactSubmission('delivery_error');
 				return message(form, 'Message delivery failed. Please try again later.');
 			}
 
+			recordContactSubmission('success');
 			return message(form, "Thank you! I'll get back to you soon.");
 		} catch (error) {
 			logError(error, 'contact form submission');
+			recordContactSubmission('delivery_error');
 			const errorMessage = handleFormError(error, 'contact').error;
 			return fail(400, { form, message: errorMessage });
 		}
