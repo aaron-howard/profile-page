@@ -83,7 +83,8 @@ Workflow **logic** changes belong in `ci-templates`; bump the `@v1.x.x` tag in t
 
 - **Semgrep:** `config/semgrep/rules/` (architecture, security, quality, SvelteKit). CI scan via `ci-templates` reusable workflow.
 - **OpenTelemetry:** `config/otel/`, `src/lib/observability/` — route/DB/email spans in `hooks.server.ts` and `$lib/server/db`. Enable with `OTEL_EXPORTER_OTLP_*` (see `.env.example`).
-- **Dependabot:** `.github/dependabot.yml` (npm + github-actions, weekly).
+- **Dependabot:** `.github/dependabot.yml` — GitHub Actions weekly.
+- **Renovate:** `renovate.json` — npm grouped updates, security alerts, patch auto-merge for devDeps. Setup: `docs/DEPENDENCY-MANAGEMENT.md`.
 
 ## AI workflow (Cursor + Claude)
 
@@ -97,7 +98,7 @@ Claude plans and reviews; Cursor implements in the repo. Do not use GitHub Copil
 
 - `README.md` — onboarding and scripts
 - `DEPLOYMENT_GUIDE.md`, `DATABASE_CONFIG.md`, `SECURITY.md`
-- `docs/PRODUCTION_AUDIT.md`, `docs/DESIGN_ASSETS.md`, `docs/AI-WORKFLOW-PLAYBOOK.md`, `docs/BLUEPRINT-STATUS.md`, `docs/CI-CD.md`
+- `docs/PRODUCTION_AUDIT.md`, `docs/DESIGN_ASSETS.md`, `docs/AI-WORKFLOW-PLAYBOOK.md`, `docs/BLUEPRINT-STATUS.md`, `docs/CI-CD.md`, `docs/DEPENDENCY-MANAGEMENT.md`
 - `AI-Engineering-Blueprint.md` — full stack blueprint
 
 ## Conventions
