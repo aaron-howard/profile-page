@@ -5,8 +5,14 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   e2e:
-    uses: aaron-howard/ci-templates/.github/workflows/e2e.yml@main
+    uses: aaron-howard/ci-templates/.github/workflows/e2e.yml@v1.0.0
     permissions:
       contents: read
+    secrets:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}

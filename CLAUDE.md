@@ -70,12 +70,14 @@ src/routes/
 
 ## CI
 
-Thin wrappers in `.github/workflows/` call reusable workflows from **[aaron-howard/ci-templates](https://github.com/aaron-howard/ci-templates)** (`@main`):
+Thin wrappers in `.github/workflows/` call reusable workflows from **[aaron-howard/ci-templates](https://github.com/aaron-howard/ci-templates)** (pinned at **`v1.0.0`**):
 
 - **PR / merge gate** (`ci.yml`): Semgrep → `npm ci` → `prisma generate` → `npm audit` → lint → `npm run check` → **`npm run test:coverage`** → **`npm run build`**. Target ~3 minutes; no Playwright install.
 - **Post-merge E2E** (`e2e.yml`): push to `main` and `workflow_dispatch`. Playwright smoke + axe + honeypot; Chromium cached, 15-minute job timeout.
 
-Workflow **logic** changes belong in `ci-templates`; this repo keeps triggers and `permissions` only.
+Full pipeline diagram and rollout guide: **`docs/CI-CD.md`**.
+
+Workflow **logic** changes belong in `ci-templates`; bump the `@v1.x.x` tag in this repo when upgrading.
 
 ## Quality, security & observability
 
@@ -95,7 +97,7 @@ Claude plans and reviews; Cursor implements in the repo. Do not use GitHub Copil
 
 - `README.md` — onboarding and scripts
 - `DEPLOYMENT_GUIDE.md`, `DATABASE_CONFIG.md`, `SECURITY.md`
-- `docs/PRODUCTION_AUDIT.md`, `docs/DESIGN_ASSETS.md`, `docs/AI-WORKFLOW-PLAYBOOK.md`, `docs/BLUEPRINT-STATUS.md`
+- `docs/PRODUCTION_AUDIT.md`, `docs/DESIGN_ASSETS.md`, `docs/AI-WORKFLOW-PLAYBOOK.md`, `docs/BLUEPRINT-STATUS.md`, `docs/CI-CD.md`
 - `AI-Engineering-Blueprint.md` — full stack blueprint
 
 ## Conventions

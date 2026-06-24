@@ -14,7 +14,7 @@ Read `docs/AI-WORKFLOW-PLAYBOOK.md` for full handoff patterns.
 
 ## Stack
 
-- **CI:** Thin wrappers in `.github/workflows/` call `aaron-howard/ci-templates` (`semgrep.yml`, `ci.yml`, `e2e.yml` on `@main`). Workflow logic changes usually go in **ci-templates**, not duplicated here.
+- **CI:** Thin wrappers call `aaron-howard/ci-templates` at **`v1.0.0`**. Workflow logic changes go in **ci-templates**; bump the pin here when upgrading.
 - **Semgrep:** Custom rules in `config/semgrep/rules/`. Run locally: `semgrep scan --config p/ci --config p/typescript --config p/nodejs --config config/semgrep/rules`.
 - **OTEL:** `config/otel/`, `src/lib/observability/`, spans in `hooks.server.ts` and `$lib/server/db`. Opt-in via `OTEL_EXPORTER_OTLP_*` env vars.
 - **Git:** Never commit to `main`. Branch → PR → merge.
