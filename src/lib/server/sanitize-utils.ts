@@ -22,12 +22,13 @@ const STRIP_ALL_TAGS_OPTIONS: IOptions = {
 };
 
 function decodeHtmlEntities(text: string): string {
+	// Decode &amp; last to avoid turning encoded sequences (e.g. &amp;lt;) into active markup.
 	return text
-		.replace(/&amp;/g, '&')
 		.replace(/&lt;/g, '<')
 		.replace(/&gt;/g, '>')
 		.replace(/&quot;/g, '"')
-		.replace(/&#039;/g, "'");
+		.replace(/&#039;/g, "'")
+		.replace(/&amp;/g, '&');
 }
 
 const SAFE_HTML_OPTIONS: IOptions = {

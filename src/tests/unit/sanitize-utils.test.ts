@@ -56,6 +56,10 @@ describe('stripHtmlTags', () => {
 	it('removes script tags and preserves remaining text', () => {
 		expect(stripHtmlTags('<script>alert("xss")</script>extra')).toBe('extra');
 	});
+
+	it('does not double-decode encoded less-than sequences', () => {
+		expect(stripHtmlTags('&amp;lt;')).toBe('&lt;');
+	});
 });
 
 describe('sanitizeText', () => {
