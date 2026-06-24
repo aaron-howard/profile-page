@@ -4,6 +4,20 @@ This is a SvelteKit 2 portfolio site (Svelte 5, Vite 8, TypeScript) backed by Pr
 
 Standard commands live in `package.json` scripts and `CLAUDE.md` (dev, build, check, lint, test, db:\*). Prefer those.
 
+## Cursor + Claude workflow
+
+This repo uses **Cursor Pro** for implementation and **Claude Pro** for planning, reviews, and multi-repo reasoning. Full playbook: **`docs/AI-WORKFLOW-PLAYBOOK.md`**.
+
+| Cursor (Agent)                            | Claude                                                   |
+| ----------------------------------------- | -------------------------------------------------------- |
+| Code changes, refactors, tests            | Architecture and trade-offs                              |
+| Semgrep violation fixes                   | Semgrep rule design                                      |
+| OTEL instrumentation in code              | Grafana dashboard / alert design                         |
+| `.github/workflows` wrappers in this repo | CI log diagnosis; changes in `aaron-howard/ci-templates` |
+| Dependabot branch fixes                   | Dependency risk review                                   |
+
+**CI** delegates to [aaron-howard/ci-templates](https://github.com/aaron-howard/ci-templates). **Semgrep** rules live in `config/semgrep/rules/`. Blueprint progress: `docs/BLUEPRINT-STATUS.md`.
+
 ## Git workflow
 
 - **Never commit directly to `main`.** Create a new branch for every PR (one branch per change or feature).
