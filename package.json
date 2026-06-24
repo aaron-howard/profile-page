@@ -28,7 +28,8 @@
 		"assets:og": "node scripts/generate-og.mjs",
 		"assets:project-images": "node scripts/optimize-project-images.mjs",
 		"test:e2e": "playwright test",
-		"semgrep:scan": "semgrep scan --config p/ci --config p/typescript --config p/nodejs --config config/semgrep/rules --metrics off"
+		"semgrep:scan": "semgrep scan --config p/ci --config p/typescript --config p/nodejs --config config/semgrep/rules --metrics off",
+		"otel:verify": "node scripts/test-otlp.mjs"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.10.1",

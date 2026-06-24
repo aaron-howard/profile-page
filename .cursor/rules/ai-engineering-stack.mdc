@@ -16,7 +16,7 @@ Read `docs/AI-WORKFLOW-PLAYBOOK.md` for full handoff patterns.
 
 - **CI:** Thin wrappers call `aaron-howard/ci-templates` at **`v1.0.0`**. Workflow logic changes go in **ci-templates**; bump the pin here when upgrading.
 - **Semgrep:** Custom rules in `config/semgrep/rules/`. Run locally: `semgrep scan --config p/ci --config p/typescript --config p/nodejs --config config/semgrep/rules`.
-- **OTEL:** `config/otel/`, `src/lib/observability/`, spans in `hooks.server.ts` and `$lib/server/db`. Opt-in via `OTEL_EXPORTER_OTLP_*` env vars.
+- **OTEL:** `config/otel/`, `src/lib/observability/`, `config/grafana/`. See `docs/OBSERVABILITY.md`. Verify: `npm run otel:verify`.
 - **Dependencies:** Dependabot updates Actions; Renovate updates npm (`renovate.json`). See `docs/DEPENDENCY-MANAGEMENT.md`.
 - **Git:** Never commit to `main`. Branch → PR → merge.
 
