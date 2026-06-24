@@ -16,8 +16,8 @@ config/semgrep/
 
 ## CI
 
-- Reusable workflow: [`.github/workflows/semgrep.yml`](../../.github/workflows/semgrep.yml) (native `semgrep/semgrep` container + SARIF upload)
-- Invoked from the main [`ci.yml`](../../.github/workflows/ci.yml) on every PR and push to `main`
+- Reusable workflow: [aaron-howard/ci-templates `.github/workflows/semgrep.yml`](https://github.com/aaron-howard/ci-templates/blob/main/.github/workflows/semgrep.yml)
+- Invoked from [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) on every PR and push to `main`
 - Findings upload as SARIF → GitHub **Security → Code scanning** when enabled on the repo
 - If code scanning is not enabled, SARIF is attached as a workflow **artifact** (`semgrep-sarif`) instead
 
@@ -25,8 +25,10 @@ config/semgrep/
 
 ```bash
 pip install semgrep
-semgrep scan --config p/ci --config p/typescript --config config/semgrep/rules
+semgrep scan --config p/ci --config p/typescript --config p/nodejs --config config/semgrep/rules
 ```
+
+Fix violations in Cursor; design new rules with Claude — see [docs/AI-WORKFLOW-PLAYBOOK.md](../../docs/AI-WORKFLOW-PLAYBOOK.md).
 
 ## Optional: GitHub Code Scanning dashboard
 
@@ -35,16 +37,6 @@ Enable **Settings → Security → Code scanning** on the repo to show Semgrep S
 ## Optional: PR comments via Semgrep Cloud
 
 Add a [Semgrep Cloud](https://semgrep.dev) token as `SEMGREP_APP_TOKEN` in GitHub Actions secrets for inline PR review comments.
-
-## Multi-repo rollout (blueprint Step 1)
-
-Copy `config/semgrep/rules/` into a central `aaron-howard/ci-templates` repo, then in each project:
-
-```yaml
-jobs:
-  semgrep:
-    uses: aaron-howard/ci-templates/.github/workflows/semgrep.yml@main
-```
 
 ## Custom rules to add next
 
