@@ -1,7 +1,9 @@
 /**
  * Sanitization utilities for preventing XSS and injection attacks
- * These functions escape or strip potentially dangerous HTML/JavaScript
  */
+
+import sanitizeHtmlLib from 'sanitize-html';
+import type { IOptions } from 'sanitize-html';
 
 /**
  * HTML entity escape map
@@ -14,84 +16,73 @@ const HTML_ESCAPE_MAP: Record<string, string> = {
 	"'": '&#039;'
 };
 
+const STRIP_ALL_TAGS_OPTIONS: IOptions = {
+	allowedTags: [],
+	allowedAttributes: {}
+};
+
+function decodeHtmlEntities(text: string): string {
+	// Decode &amp; last to avoid turning encoded sequences (e.g. &amp;lt;) into active markup.
+	return text
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&quot;/g, '"')
+		.replace(/&#039;/g, "'")
+		.replace(/&amp;/g, '&');
+}
+
+const SAFE_HTML_OPTIONS: IOptions = {
+	allowedTags: ['p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'br', 'span', 'div', 'img'],
+	allowedAttributes: {
+		a: ['href', 'name', 'target'],
+		img: ['src', 'alt', 'width', 'height']
+	},
+	allowedSchemes: ['http', 'https', 'mailto'],
+	allowedSchemesByTag: {
+		img: ['http', 'https']
+	},
+	disallowedTagsMode: 'discard'
+};
+
 /**
  * Escape HTML special characters
  * Converts HTML metacharacters to their entity equivalents
  * Safe for use in HTML attributes and text content
- *
- * @param text - The text to escape
- * @returns Escaped text safe for HTML context
- *
- * @example
- * escapeHtml('<script>alert("xss")</script>')
- * // Returns: '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;'
  */
 export function escapeHtml(text: string): string {
 	return text.replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
 }
 
 /**
+ * Remove all HTML tags from plain text input.
+ */
+export function stripHtmlTags(text: string): string {
+	return decodeHtmlEntities(sanitizeHtmlLib(text, STRIP_ALL_TAGS_OPTIONS));
+}
+
+/**
  * Sanitize plain text input
  * Removes HTML tags and escapes special characters
  * Safe for displaying user input as plain text
- *
- * @param text - The text to sanitize
- * @returns Sanitized text
- *
- * @example
- * sanitizeText('<img src=x onerror=alert("xss")>')
- * // Returns: '&lt;img src=x onerror=alert(&quot;xss&quot;)&gt;'
  */
 export function sanitizeText(text: string): string {
-	// Remove any HTML tags first, then escape
-	const stripped = text.replace(/<[^>]*>/g, '');
-	return escapeHtml(stripped);
+	return escapeHtml(stripHtmlTags(text));
 }
 
 /**
  * Basic HTML sanitization to prevent XSS attacks
- * Removes dangerous tags and attributes
- * For production with user-generated content, consider DOMPurify or sanitize-html
- *
- * @param html - The HTML to sanitize
- * @returns Partially sanitized HTML
- *
- * @example
- * sanitizeHtml('<p>Hello</p><script>alert("xss")</script>')
- * // Returns: '<p>Hello</p>'
+ * Uses sanitize-html to remove dangerous tags, attributes, and URL schemes
  */
 export function sanitizeHtml(html: string): string {
-	// Remove script tags completely
-	let sanitized = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-
-	// Remove event handlers
-	sanitized = sanitized.replace(/on\w+\s*=\s*["'][^"']*["']/gi, '');
-
-	// Remove javascript: and data: URLs
-	sanitized = sanitized.replace(/javascript:/gi, '');
-	sanitized = sanitized.replace(/data:text\/html/gi, '');
-
-	// Remove iframe tags
-	sanitized = sanitized.replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '');
-
-	return sanitized;
+	return sanitizeHtmlLib(html, SAFE_HTML_OPTIONS);
 }
 
 /**
  * Validate and sanitize email address
  * Removes suspicious characters while preserving valid email format
- *
- * @param email - The email to sanitize
- * @returns Sanitized email
  */
 export function sanitizeEmail(email: string): string {
-	// Remove any HTML tags and trim
-	const cleaned = email
-		.replace(/<[^>]*>/g, '')
-		.trim()
-		.toLowerCase();
-
-	// Basic email validation pattern (RFC 5322 simplified)
+	const cleaned = stripHtmlTags(email).trim().toLowerCase();
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 	if (!emailRegex.test(cleaned)) {
