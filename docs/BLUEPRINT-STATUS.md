@@ -4,19 +4,19 @@ Progress for **profile-page** as the reference implementation. Full blueprint: [
 
 Last updated: 2026-06-24
 
-| Phase | Blueprint item           | Status   | Notes                                                                                   |
-| ----- | ------------------------ | -------- | --------------------------------------------------------------------------------------- |
-| **2** | Semgrep                  | **~90%** | Rules in `config/semgrep/rules/`; CI via `ci-templates`                                 |
-| **3** | CI/CD                    | **~90%** | All jobs use `aaron-howard/ci-templates`; thin wrappers in `.github/workflows/`         |
-| **5** | OpenTelemetry + Grafana  | **~55%** | SDK + spans in repo; dashboards/alerts/production OTLP TBD                              |
-| **1** | Cursor + Claude workflow | **100%** | [AI-WORKFLOW-PLAYBOOK.md](./AI-WORKFLOW-PLAYBOOK.md), `.cursor/rules/`, doc cross-links |
-| **4** | Dependabot + Renovate    | **~50%** | Dependabot enabled; Renovate not configured                                             |
+| Phase | Blueprint item           | Status   | Notes                                                                                                 |
+| ----- | ------------------------ | -------- | ----------------------------------------------------------------------------------------------------- |
+| **2** | Semgrep                  | **100%** | Shared baseline in `ci-templates/rules`; app rules in `config/semgrep/rules/`; `npm run semgrep:scan` |
+| **3** | CI/CD                    | **~90%** | All jobs use `aaron-howard/ci-templates`; thin wrappers in `.github/workflows/`                       |
+| **5** | OpenTelemetry + Grafana  | **~55%** | SDK + spans in repo; dashboards/alerts/production OTLP TBD                                            |
+| **1** | Cursor + Claude workflow | **100%** | [AI-WORKFLOW-PLAYBOOK.md](./AI-WORKFLOW-PLAYBOOK.md), `.cursor/rules/`, doc cross-links               |
+| **4** | Dependabot + Renovate    | **~50%** | Dependabot enabled; Renovate not configured                                                           |
 
 ## Completed (this repo)
 
 - [x] Central `aaron-howard/ci-templates` (public, reusable workflows)
 - [x] `profile-page` uses shared `semgrep.yml`, `ci.yml`, `e2e.yml`
-- [x] Semgrep custom rules (architecture, security, quality, SvelteKit)
+- [x] Semgrep custom rules (architecture, security, quality, SvelteKit) + shared ci-templates baseline
 - [x] OpenTelemetry instrumentation (routes, Prisma, email)
 - [x] Dependabot (npm + github-actions)
 - [x] Husky pre-commit / pre-push

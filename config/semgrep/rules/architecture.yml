@@ -51,3 +51,14 @@ rules:
       - pattern-either:
           - pattern: import { Pool } from 'pg'
           - pattern: new Pool(...)
+
+  - id: no-server-import-in-components
+    message: Svelte components must not import $lib/server/** — pass data from +page.server.ts loaders instead.
+    severity: ERROR
+    languages:
+      - typescript
+    paths:
+      include:
+        - src/lib/components/**
+    patterns:
+      - pattern-regex: import\s+.*from\s+['"]\$lib/server/

@@ -27,7 +27,8 @@
 		"db:seed:bio": "node scripts/seed-bio.js",
 		"assets:og": "node scripts/generate-og.mjs",
 		"assets:project-images": "node scripts/optimize-project-images.mjs",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"semgrep:scan": "semgrep scan --config p/ci --config p/typescript --config p/nodejs --config config/semgrep/rules --metrics off"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.10.1",

@@ -18,6 +18,7 @@ npm run format          # Prettier --write
 npm test                # Vitest run (~120 tests)
 npm run test:coverage   # Vitest + coverage thresholds (used in CI)
 npm run test:e2e        # Playwright (Chromium): smoke, axe, honeypot
+npm run semgrep:scan    # Semgrep SAST (local; CI also loads ci-templates/rules)
 
 # Database
 npm run db:push

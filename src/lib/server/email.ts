@@ -99,7 +99,8 @@ async function sendViaResend(data: EmailData): Promise<{ success: boolean; error
 			subject: data.subject,
 			html: data.html,
 			text: data.text
-		})
+		}),
+		signal: AbortSignal.timeout(15_000)
 	});
 
 	if (!response.ok) {
@@ -134,7 +135,8 @@ async function sendViaSendGrid(data: EmailData): Promise<{ success: boolean; err
 				{ type: 'text/html', value: data.html },
 				...(data.text ? [{ type: 'text/plain', value: data.text }] : [])
 			]
-		})
+		}),
+		signal: AbortSignal.timeout(15_000)
 	});
 
 	if (!response.ok) {
