@@ -1,177 +1,82 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import { submitContact } from '../../routes/contact/+page.server';
+
+function contactRequest(fields: {
+	name?: string;
+	email?: string;
+	subject?: string;
+	message?: string;
+}): Request {
+	const formData = new FormData();
+	if (fields.name !== undefined) formData.set('name', fields.name);
+	if (fields.email !== undefined) formData.set('email', fields.email);
+	if (fields.subject !== undefined) formData.set('subject', fields.subject);
+	if (fields.message !== undefined) formData.set('message', fields.message);
+	return new Request('http://localhost/contact', { method: 'POST', body: formData });
+}
+
+const validFields = {
+	name: 'John Doe',
+	email: 'john@example.com',
+	subject: 'Test',
+	message: 'Test message'
+};
 
 describe('contact form action', () => {
-	beforeEach(() => {
-		vi.resetModules();
-	});
-
 	it('validation fails with empty fields', async () => {
-		vi.doMock('sveltekit-superforms/server', () => ({
-			superValidate: vi.fn().mockResolvedValue({
-				valid: false,
-				data: { name: '', email: '', subject: '', message: '' },
-				errors: {},
-				constraints: {}
-			}),
-			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
-		}));
-
-		vi.doMock('$lib/server/superforms-zod4', () => ({
-			zod: vi.fn((schema) => schema),
-			zod4: vi.fn((schema) => schema)
-		}));
-
-		vi.doMock('$lib/server/email', () => ({
-			sendEmail: vi.fn(),
-			formatContactEmail: vi.fn()
-		}));
-
-		const { actions } = await import('../../routes/contact/+page.server');
-
-		const mockRequest = {
-			method: 'POST',
-			json: vi.fn().mockResolvedValue({})
-		};
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const result = await actions.default({ request: mockRequest } as any);
-
-		// Should return fail(400, { form })
+		const result = await submitContact(contactRequest({}));
 		expect(result).toBeDefined();
+		if (!('status' in result)) {
+			throw new Error('expected a failed contact action');
+		}
+		expect(result.status).toBe(400);
 	});
 
 	it('sends email successfully with valid data', async () => {
-		const mockSendEmail = vi.fn().mockResolvedValue({ success: true });
+		const sendEmail = vi.fn().mockResolvedValue({ success: true });
+		const formatContactEmail = vi.fn().mockReturnValue({
+			html: '<p>Test</p>',
+			text: 'Test'
+		});
 
-		vi.doMock('sveltekit-superforms/server', () => ({
-			superValidate: vi.fn().mockResolvedValue({
-				valid: true,
-				data: {
-					name: 'John Doe',
-					email: 'john@example.com',
-					subject: 'Test',
-					message: 'Test message'
-				},
-				errors: {},
-				constraints: {}
-			}),
-			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
-		}));
+		const result = await submitContact(contactRequest(validFields), {
+			sendEmail,
+			formatContactEmail
+		});
 
-		vi.doMock('$lib/server/superforms-zod4', () => ({
-			zod: vi.fn((schema) => schema),
-			zod4: vi.fn((schema) => schema)
-		}));
-
-		vi.doMock('$lib/server/email', () => ({
-			sendEmail: mockSendEmail,
-			formatContactEmail: vi.fn().mockReturnValue({
-				html: '<p>Test</p>',
-				text: 'Test'
-			})
-		}));
-
-		const { actions } = await import('../../routes/contact/+page.server');
-
-		const mockRequest = {
-			method: 'POST',
-			json: vi.fn().mockResolvedValue({})
-		};
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const result = await actions.default({ request: mockRequest } as any);
-
-		expect(mockSendEmail).toHaveBeenCalled();
+		expect(sendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();
 	});
 
 	it('handles email failure gracefully', async () => {
-		const mockSendEmail = vi.fn().mockResolvedValue({ success: false, error: 'SMTP error' });
+		const sendEmail = vi.fn().mockResolvedValue({ success: false, error: 'SMTP error' });
+		const formatContactEmail = vi.fn().mockReturnValue({
+			html: '<p>Test</p>',
+			text: 'Test'
+		});
 
-		vi.doMock('sveltekit-superforms/server', () => ({
-			superValidate: vi.fn().mockResolvedValue({
-				valid: true,
-				data: {
-					name: 'John Doe',
-					email: 'john@example.com',
-					subject: 'Test',
-					message: 'Test message'
-				},
-				errors: {},
-				constraints: {}
-			}),
-			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
-		}));
+		const result = await submitContact(contactRequest(validFields), {
+			sendEmail,
+			formatContactEmail
+		});
 
-		vi.doMock('$lib/server/superforms-zod4', () => ({
-			zod: vi.fn((schema) => schema),
-			zod4: vi.fn((schema) => schema)
-		}));
-
-		vi.doMock('$lib/server/email', () => ({
-			sendEmail: mockSendEmail,
-			formatContactEmail: vi.fn().mockReturnValue({
-				html: '<p>Test</p>',
-				text: 'Test'
-			})
-		}));
-
-		const { actions } = await import('../../routes/contact/+page.server');
-
-		const mockRequest = {
-			method: 'POST',
-			json: vi.fn().mockResolvedValue({})
-		};
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const result = await actions.default({ request: mockRequest } as any);
-
-		expect(mockSendEmail).toHaveBeenCalled();
+		expect(sendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();
 	});
 
 	it('handles email service exception', async () => {
-		const mockSendEmail = vi.fn().mockRejectedValue(new Error('Service unavailable'));
+		const sendEmail = vi.fn().mockRejectedValue(new Error('Service unavailable'));
+		const formatContactEmail = vi.fn().mockReturnValue({
+			html: '<p>Test</p>',
+			text: 'Test'
+		});
 
-		vi.doMock('sveltekit-superforms/server', () => ({
-			superValidate: vi.fn().mockResolvedValue({
-				valid: true,
-				data: {
-					name: 'John Doe',
-					email: 'john@example.com',
-					subject: 'Test',
-					message: 'Test message'
-				},
-				errors: {},
-				constraints: {}
-			}),
-			message: vi.fn((form, msg, opts) => ({ form, message: msg, status: opts?.status }))
-		}));
+		const result = await submitContact(contactRequest(validFields), {
+			sendEmail,
+			formatContactEmail
+		});
 
-		vi.doMock('$lib/server/superforms-zod4', () => ({
-			zod: vi.fn((schema) => schema),
-			zod4: vi.fn((schema) => schema)
-		}));
-
-		vi.doMock('$lib/server/email', () => ({
-			sendEmail: mockSendEmail,
-			formatContactEmail: vi.fn().mockReturnValue({
-				html: '<p>Test</p>',
-				text: 'Test'
-			})
-		}));
-
-		const { actions } = await import('../../routes/contact/+page.server');
-
-		const mockRequest = {
-			method: 'POST',
-			json: vi.fn().mockResolvedValue({})
-		};
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const result = await actions.default({ request: mockRequest } as any);
-
-		expect(mockSendEmail).toHaveBeenCalled();
+		expect(sendEmail).toHaveBeenCalled();
 		expect(result).toBeDefined();
 	});
 });

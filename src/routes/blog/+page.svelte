@@ -7,21 +7,19 @@
 
 	let { data } = $props<{ data: { posts: BlogPost[]; dbError?: boolean } }>();
 
-	const categories = $derived.by(() => {
-		const unique = [
-			...new Set(data.posts.map((p: BlogPost) => p.category).filter(Boolean))
-		] as string[];
-		unique.sort((a, b) => a.localeCompare(b));
+	type CategoryOption = { id: string; name: string };
+
+	const categories = $derived.by((): CategoryOption[] => {
+		const names: string[] = data.posts.map((post: BlogPost) => post.category);
+		const unique = [...new Set(names)];
+		unique.sort((left, right) => left.localeCompare(right));
 		return [{ id: 'all', name: 'All Posts' }, ...unique.map((id) => ({ id, name: id }))];
 	});
 
 	let selectedCategory = $state('all');
 
 	$effect(() => {
-		if (
-			selectedCategory !== 'all' &&
-			!categories.some((c: { id: string }) => c.id === selectedCategory)
-		) {
+		if (selectedCategory !== 'all' && !categories.some((c) => c.id === selectedCategory)) {
 			selectedCategory = 'all';
 		}
 	});

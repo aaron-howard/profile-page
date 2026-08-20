@@ -10,3 +10,7 @@ bun.lockb
 stitch_profile/
 test-results/
 playwright-report/
+
+# Vendored Oxlint anti-slop plugin and installed agent skill assets
+.agents/skills/
+tools/oxlint/anti-slop/

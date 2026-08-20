@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 	import type { PageData } from './$types';
-	import type { BlogPost, Project } from '$lib/types';
 	import SeoHead from '$lib/components/SeoHead.svelte';
 	import ProjectPicture from '$lib/components/ProjectPicture.svelte';
 
@@ -16,14 +15,14 @@
 			'I specialize in crafting high-performance web applications where architectural integrity meets exceptional user experience.'
 	);
 
-	const featuredProjects = $derived((data.featuredProjects ?? []) as Project[]);
-	const latestPosts = $derived((data.latestPosts ?? []) as BlogPost[]);
+	const featuredProjects = $derived(data.featuredProjects ?? []);
+	const latestPosts = $derived(data.latestPosts ?? []);
 
 	/** When a project image path has no file in /static, fall back to the gradient placeholder */
 	let imageLoadFailed = $state<Record<number, boolean>>({});
 
 	function formatPostDate(date: string | Date) {
-		const d = typeof date === 'string' ? new Date(date) : date;
+		const d = date instanceof Date ? date : new Date(date);
 		if (Number.isNaN(d.getTime())) return '';
 		return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 	}

@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
+	import type { PageData } from './$types';
 	import SeoHead from '$lib/components/SeoHead.svelte';
 
-	let { data } = $props<{
-		data: {
-			bio: Record<string, unknown> | null;
-			dbError?: boolean;
-			devBioFallback?: boolean;
-		};
-	}>();
+	let { data } = $props<{ data: PageData }>();
 	const bio = $derived(data.bio);
 
 	/** Display order for skill categories (keys in skillCategories JSON) */
@@ -25,34 +20,20 @@
 		'Enterprise platforms'
 	] as const;
 
-	const skillCategories = $derived.by(() => {
-		const raw = bio?.skillCategories;
-		if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
-			return {} as Record<string, string[]>;
-		}
-		return raw as Record<string, string[]>;
-	});
-
 	const orderedSkillSections = $derived.by(() => {
-		const map = skillCategories;
+		if (!bio) return [];
+		const map = bio.skillCategories;
 		const fromOrder = SKILL_CATEGORY_ORDER.filter((title) => map[title]?.length).map((title) => ({
 			title,
-			items: map[title]!
+			items: map[title] ?? []
 		}));
 		const extras = Object.keys(map)
-			.filter((k) => !(SKILL_CATEGORY_ORDER as readonly string[]).includes(k) && map[k]?.length)
-			.map((title) => ({ title, items: map[title]! }));
+			.filter((k) => !SKILL_CATEGORY_ORDER.some((title) => title === k) && map[k]?.length)
+			.map((title) => ({ title, items: map[title] ?? [] }));
 		return [...fromOrder, ...extras];
 	});
 
-	const experience = $derived(
-		(bio?.experience ?? []) as Array<{
-			title: string;
-			company: string;
-			period: string;
-			description: string;
-		}>
-	);
+	const experience = $derived(bio?.experience ?? []);
 </script>
 
 <SeoHead
@@ -131,9 +112,9 @@
 				class="flex aspect-[4/5] items-center justify-center rounded-xl bg-surface-container-highest font-headline text-7xl font-extrabold text-primary/25"
 				aria-hidden="true"
 			>
-				{(bio.name as string)
+				{bio.name
 					.split(' ')
-					.map((n) => n[0])
+					.map((n: string) => n[0])
 					.join('')}
 			</div>
 			<div class="flex flex-col gap-8">

@@ -35,7 +35,10 @@ export default defineConfig({
 			'$env/dynamic/private': resolve('./src/tests/mocks/env-dynamic-private.ts'),
 			'$env/dynamic/public': resolve('./src/tests/mocks/env-dynamic-public.ts'),
 			$lib: resolve('./src/lib'),
-			'$lib/server/db': resolve('./src/tests/mocks/db.ts')
+			'$lib/server/db': resolve('./src/tests/mocks/db.ts'),
+			'superforms-zod4-adapter': resolve(
+				'./node_modules/sveltekit-superforms/dist/adapters/zod4.js'
+			)
 		}
 	}
 });

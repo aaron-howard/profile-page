@@ -71,7 +71,9 @@
 				"^typescript-eslint",
 				"^prettier",
 				"^eslint-plugin-",
-				"^eslint-config-"
+				"^eslint-config-",
+				"^oxlint",
+				"^@oxlint/"
 			],
 			"groupName": "linting"
 		}

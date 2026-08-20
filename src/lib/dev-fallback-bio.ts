@@ -1,11 +1,10 @@
-import type { Bio, Prisma } from '@prisma/client';
+import type { BioProfile } from '$lib/bio-profile';
 
 /**
- * Minimal Bio row used only when `dev` is true and the database cannot be reached,
+ * Minimal profile used only when `dev` is true and the database cannot be reached,
  * so `/about` still renders for local work without Postgres.
  */
-export const devFallbackBio: Bio = {
-	id: 1,
+export const devFallbackBio: BioProfile = {
 	name: 'Aaron Howard',
 	title: 'Full Stack Developer',
 	location: 'Local development',
@@ -15,7 +14,7 @@ export const devFallbackBio: Bio = {
 	skillCategories: {
 		'Languages & runtimes': ['TypeScript', 'JavaScript'],
 		'Frontend & UI': ['Svelte', 'SvelteKit', 'Tailwind CSS']
-	} satisfies Prisma.JsonObject as unknown as Prisma.JsonValue,
+	},
 	experience: [
 		{
 			title: 'Connect your database',
@@ -24,7 +23,5 @@ export const devFallbackBio: Bio = {
 			description:
 				'Replace this block by seeding the bio table. Run `npm run db:seed:bio` after `DATABASE_URL` is configured.'
 		}
-	] as unknown as Prisma.JsonValue,
-	siteMetadata: {} as unknown as Prisma.JsonValue,
-	updatedAt: new Date(0)
+	]
 };
