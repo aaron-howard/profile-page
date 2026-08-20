@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { submitContact } from '../../routes/contact/+page.server';
+import { submitContact } from '$lib/server/contact';
 
 function contactRequest(fields: {
 	name?: string;
