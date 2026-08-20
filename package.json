@@ -13,6 +13,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
+		"lint:oxlint": "oxlint",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
@@ -37,6 +38,7 @@
 		"@eslint/js": "^10.0.1",
 		"@fontsource/inter": "^5.2.5",
 		"@fontsource/manrope": "^5.2.5",
+		"@oxlint/plugins": "^1.79.0",
 		"@playwright/test": "^1.61.0",
 		"@sveltejs/adapter-vercel": "^6.3.4",
 		"@sveltejs/kit": "^2.66.0",
@@ -58,6 +60,7 @@
 		"happy-dom": "^20.10.6",
 		"husky": "^9.1.7",
 		"lint-staged": "^17.0.7",
+		"oxlint": "^1.79.0",
 		"prettier": "3.8.4",
 		"prettier-plugin-svelte": "^4.1.1",
 		"prettier-plugin-tailwindcss": "^0.8.0",
@@ -100,7 +103,7 @@
 	"lint-staged": {
 		"*.{ts,js,svelte}": [
 			"prettier --check",
-			"eslint --max-warnings 0"
+			"eslint --max-warnings 0 --no-warn-ignored"
 		],
 		"*.{css,json,md,yml}": [
 			"prettier --check"

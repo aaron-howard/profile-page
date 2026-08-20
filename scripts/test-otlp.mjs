@@ -48,12 +48,15 @@ function parseAuth(headersEnv) {
 }
 
 async function postOtlp(url, auth, body) {
+	const headers = {
+		'Content-Type': 'application/json'
+	};
+	if (auth) {
+		headers.Authorization = auth;
+	}
 	const response = await fetch(url, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			...(auth ? { Authorization: auth } : {})
-		},
+		headers,
 		body: JSON.stringify(body)
 	});
 	const text = await response.text();

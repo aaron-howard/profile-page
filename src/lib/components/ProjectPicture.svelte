@@ -6,7 +6,7 @@
 		alt = '',
 		class: imgClass = '',
 		loading = 'lazy',
-		decoding = 'async' as 'async' | 'auto' | 'sync',
+		decoding = 'async',
 		imgError
 	}: {
 		imagePath: string | null | undefined;

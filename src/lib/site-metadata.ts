@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { Prisma } from '@prisma/client';
 
 export const siteMetadataSchema = z.object({
 	email: z.string().email().optional(),
@@ -22,7 +23,7 @@ export const defaultSiteMetadata: SiteMetadata = {
 	responseTime: 'I typically respond within 24 hours.'
 };
 
-export function parseSiteMetadata(raw: unknown): SiteMetadata {
+export function parseSiteMetadata(raw: Prisma.JsonValue | null | undefined): SiteMetadata {
 	const parsed = siteMetadataSchema.safeParse(raw);
 	if (parsed.success) {
 		return { ...defaultSiteMetadata, ...parsed.data };

@@ -8,13 +8,26 @@ import type { IOptions } from 'sanitize-html';
 /**
  * HTML entity escape map
  */
-const HTML_ESCAPE_MAP: Record<string, string> = {
+const HTML_ESCAPE_MAP = {
 	'&': '&amp;',
 	'<': '&lt;',
 	'>': '&gt;',
 	'"': '&quot;',
 	"'": '&#039;'
-};
+} as const;
+
+function escapeHtmlChar(char: string): string {
+	switch (char) {
+		case '&':
+		case '<':
+		case '>':
+		case '"':
+		case "'":
+			return HTML_ESCAPE_MAP[char];
+		default:
+			return char;
+	}
+}
 
 const STRIP_ALL_TAGS_OPTIONS: IOptions = {
 	allowedTags: [],
@@ -50,7 +63,7 @@ const SAFE_HTML_OPTIONS: IOptions = {
  * Safe for use in HTML attributes and text content
  */
 export function escapeHtml(text: string): string {
-	return text.replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
+	return text.replace(/[&<>"']/g, escapeHtmlChar);
 }
 
 /**

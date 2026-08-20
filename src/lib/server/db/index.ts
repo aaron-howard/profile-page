@@ -3,12 +3,15 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { tracer } from '$lib/observability/tracer';
 
-/** Do not throw at import time: missing DATABASE_URL should fail at query time so route loads can catch errors. */
-const globalForPrisma = globalThis as unknown as {
+type ExtendedPrismaClient = ReturnType<typeof createPrismaClient>;
+
+type PrismaGlobal = typeof globalThis & {
 	prisma: ExtendedPrismaClient | undefined;
 };
 
-type ExtendedPrismaClient = ReturnType<typeof createPrismaClient>;
+/** Do not throw at import time: missing DATABASE_URL should fail at query time so route loads can catch errors. */
+// SAFETY: Node reuses this process-wide slot for the Prisma client across Vite HMR; globalThis is that slot.
+const globalForPrisma = globalThis as PrismaGlobal;
 
 /**
  * PrismaClient singleton instance with connection pooling support

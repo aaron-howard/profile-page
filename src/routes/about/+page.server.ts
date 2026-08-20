@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
 import type { PageServerLoad } from './$types';
+import { toBioProfile } from '$lib/bio-profile';
 import { devFallbackBio } from '$lib/dev-fallback-bio';
 import { db } from '$lib/server/db';
 import { setPublicCacheHeaders } from '$lib/server/cache-headers';
@@ -15,7 +16,7 @@ export const load: PageServerLoad = async (event) => {
 		}
 
 		setPublicCacheHeaders(event);
-		return { bio };
+		return { bio: toBioProfile(bio) };
 	} catch (e) {
 		console.error('[about/+page.server] load failed:', e);
 		if (dev && process.env.CI !== 'true') {

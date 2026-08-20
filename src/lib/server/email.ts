@@ -147,12 +147,19 @@ async function sendViaSendGrid(data: EmailData): Promise<{ success: boolean; err
 	return { success: true };
 }
 
-export function formatContactEmail(data: {
+export interface ContactMessage {
 	name: string;
 	email: string;
 	subject: string;
 	message: string;
-}): { html: string; text: string } {
+}
+
+export interface FormattedContactEmail {
+	html: string;
+	text: string;
+}
+
+export function formatContactEmail(data: ContactMessage): FormattedContactEmail {
 	const html = `
 		<!DOCTYPE html>
 		<html>
