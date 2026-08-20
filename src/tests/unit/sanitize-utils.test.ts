@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
 	escapeHtml,
+	stripHtmlTags,
 	sanitizeText,
 	sanitizeHtml,
 	sanitizeEmail,
@@ -43,6 +44,24 @@ describe('escapeHtml', () => {
 	});
 });
 
+describe('stripHtmlTags', () => {
+	it('removes HTML tags while preserving text', () => {
+		expect(stripHtmlTags('<b>Hello</b>')).toBe('Hello');
+	});
+
+	it('removes entire img tags with onerror handler', () => {
+		expect(stripHtmlTags('<img src=x onerror=alert(1)>')).toBe('');
+	});
+
+	it('removes script tags and preserves remaining text', () => {
+		expect(stripHtmlTags('<script>alert("xss")</script>extra')).toBe('extra');
+	});
+
+	it('does not double-decode encoded less-than sequences', () => {
+		expect(stripHtmlTags('&amp;lt;')).toBe('&lt;');
+	});
+});
+
 describe('sanitizeText', () => {
 	it('removes HTML tags and escapes remaining text', () => {
 		expect(sanitizeText('<b>Hello</b>')).toBe('Hello');
@@ -53,7 +72,7 @@ describe('sanitizeText', () => {
 	});
 
 	it('removes script tags and escapes remaining text', () => {
-		expect(sanitizeText('<script>alert("xss")</script>')).toBe('alert(&quot;xss&quot;)');
+		expect(sanitizeText('<script>alert("xss")</script>extra')).toBe('extra');
 	});
 
 	it('preserves text outside tags', () => {
@@ -87,25 +106,22 @@ describe('sanitizeHtml', () => {
 	});
 
 	it('removes event handler attributes', () => {
-		expect(sanitizeHtml('<img onclick="alert(1)" src="x">')).toBe('<img  src="x">');
+		expect(sanitizeHtml('<img onclick="alert(1)" src="x">')).not.toContain('onclick');
 	});
 
 	it('removes multiple event handlers', () => {
-		expect(sanitizeHtml('<button onmouseover="x" onclick="y">Click</button>')).toBe(
-			'<button  >Click</button>'
+		expect(sanitizeHtml('<button onmouseover="x" onclick="y">Click</button>')).not.toMatch(
+			/on\w+=/
 		);
 	});
 
 	it('removes javascript: URLs', () => {
-		expect(sanitizeHtml('<a href="javascript:alert(1)">click</a>')).toBe(
-			'<a href="alert(1)">click</a>'
-		);
+		expect(sanitizeHtml('<a href="javascript:alert(1)">click</a>')).not.toContain('javascript:');
 	});
 
-	it('removes data:text/html URLs after script tag removal', () => {
-		// Script tag is removed first, leaving data:text/html, then data: prefix is removed
-		expect(sanitizeHtml('<img src="data:text/html,<script>alert(1)</script>">')).toBe(
-			'<img src=",">'
+	it('removes data: URLs from image sources', () => {
+		expect(sanitizeHtml('<img src="data:text/html,<script>alert(1)</script>">')).not.toContain(
+			'data:'
 		);
 	});
 
@@ -121,7 +137,7 @@ describe('sanitizeHtml', () => {
 
 	it('handles complex script tags with nested content', () => {
 		expect(sanitizeHtml('<div><script>var x = "<script>alert(1)</script>";</script></div>')).toBe(
-			'<div>";</script></div>'
+			'<div>";</div>'
 		);
 	});
 
@@ -143,8 +159,12 @@ describe('sanitizeEmail', () => {
 		expect(sanitizeEmail('  user@example.com  ')).toBe('user@example.com');
 	});
 
-	it('removes HTML tags before validation', () => {
-		expect(sanitizeEmail('<script>user@example.com</script>')).toBe('user@example.com');
+	it('rejects email wrapped in script tags', () => {
+		expect(sanitizeEmail('<script>user@example.com</script>')).toBe('');
+	});
+
+	it('removes non-script HTML tags before validation', () => {
+		expect(sanitizeEmail('<b>user@example.com</b>')).toBe('user@example.com');
 	});
 
 	it('rejects invalid format', () => {

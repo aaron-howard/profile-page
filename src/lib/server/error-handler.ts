@@ -5,12 +5,25 @@
 
 import { dev } from '$app/environment';
 
+export interface AppErrorDetails {
+	readonly [key: string]: string | number | boolean | null;
+}
+
 export interface AppError {
 	code: string;
 	message: string;
 	statusCode: number;
-	details?: unknown;
+	details?: AppErrorDetails;
 	timestamp: string;
+}
+
+export interface FormErrorResult {
+	error: string;
+}
+
+/** Decode a catch-clause value into an Error at the I/O boundary. */
+export function toError(cause: unknown): Error {
+	return cause instanceof Error ? cause : new Error(String(cause));
 }
 
 /**
@@ -20,40 +33,34 @@ export interface AppError {
  *
  * @param error - The error to log
  * @param context - Additional context (function name, action, etc.)
+ * @param isDev - Whether to log the raw error object
  */
-export function logError(error: unknown, context: string): void {
+export function logError(error: Error, context: string, isDev = dev): void {
 	const timestamp = new Date().toISOString();
 
-	if (dev) {
-		// Development: log everything for debugging
+	if (isDev) {
 		console.error(`[${timestamp}] Error in ${context}:`, error);
 	} else {
-		// Production: log sanitized version
-		const errorMessage = error instanceof Error ? error.message : String(error);
-		console.error(`[${timestamp}] Error in ${context}: ${errorMessage}`);
+		console.error(`[${timestamp}] Error in ${context}: ${error.message}`);
 	}
 }
 
 /**
- * Create a user-friendly error message from an unknown error
+ * Create a user-friendly error message from an Error
  * Sanitizes sensitive information in production
  *
  * @param error - The error object
  * @param defaultMessage - Fallback message if error can't be determined
+ * @param isDev - Whether to surface the raw error message
  * @returns User-friendly error message
  */
 export function getUserFriendlyMessage(
-	error: unknown,
-	defaultMessage: string = 'An unexpected error occurred. Please try again.'
+	error: Error,
+	defaultMessage = 'An unexpected error occurred. Please try again.',
+	isDev = dev
 ): string {
-	if (error instanceof Error) {
-		// In development, show the actual error
-		if (dev) {
-			return error.message;
-		}
-
-		// In production, show generic message for security
-		return defaultMessage;
+	if (isDev) {
+		return error.message;
 	}
 
 	return defaultMessage;
@@ -66,13 +73,15 @@ export function getUserFriendlyMessage(
  * @param message - User-friendly message
  * @param statusCode - HTTP status code
  * @param details - Optional error details (only in dev)
+ * @param isDev - Whether to attach details
  * @returns Standardized error object
  */
 export function createAppError(
 	code: string,
 	message: string,
 	statusCode: number = 500,
-	details?: unknown
+	details?: AppErrorDetails,
+	isDev = dev
 ): AppError {
 	const base: AppError = {
 		code,
@@ -80,7 +89,7 @@ export function createAppError(
 		statusCode,
 		timestamp: new Date().toISOString()
 	};
-	if (dev && details !== undefined) {
+	if (isDev && details !== undefined) {
 		base.details = details;
 	}
 	return base;
@@ -92,15 +101,14 @@ export function createAppError(
  *
  * @param error - The error that occurred
  * @param formName - Name of the form (for logging)
+ * @param isDev - Whether to surface the raw error message
  * @returns Object with user-friendly error message
  */
-export function handleFormError(error: unknown, formName: string): { error: string } {
-	logError(error, `form: ${formName}`);
+export function handleFormError(error: Error, formName: string, isDev = dev): FormErrorResult {
+	logError(error, `form: ${formName}`, isDev);
 
 	const message =
-		error instanceof Error && dev
-			? error.message
-			: 'Unable to process your request. Please try again.';
+		isDev && error.message ? error.message : 'Unable to process your request. Please try again.';
 
 	return { error: message };
 }
@@ -111,32 +119,28 @@ export function handleFormError(error: unknown, formName: string): { error: stri
  *
  * @param error - The error that occurred
  * @param operation - What operation was being performed
+ * @param isDev - Whether to surface the raw error message
  * @returns User-friendly error message
  */
-export function handleOperationError(error: unknown, operation: string): string {
-	logError(error, operation);
+export function handleOperationError(error: Error, operation: string, isDev = dev): string {
+	logError(error, operation, isDev);
 
-	if (error instanceof Error) {
-		const msg = error.message.toLowerCase();
+	const msg = error.message.toLowerCase();
 
-		// Handle common error patterns
-		if (msg.includes('not found')) {
-			return 'The requested resource was not found.';
-		}
-		if (msg.includes('unauthorized')) {
-			return 'You do not have permission to perform this action.';
-		}
-		if (msg.includes('timeout')) {
-			return 'Request timed out. Please try again.';
-		}
-		if (msg.includes('network')) {
-			return 'Network error. Please check your connection.';
-		}
-
-		return dev ? error.message : 'An error occurred. Please try again.';
+	if (msg.includes('not found')) {
+		return 'The requested resource was not found.';
+	}
+	if (msg.includes('unauthorized')) {
+		return 'You do not have permission to perform this action.';
+	}
+	if (msg.includes('timeout')) {
+		return 'Request timed out. Please try again.';
+	}
+	if (msg.includes('network')) {
+		return 'Network error. Please check your connection.';
 	}
 
-	return 'An unexpected error occurred. Please try again.';
+	return isDev ? error.message : 'An error occurred. Please try again.';
 }
 
 /**
@@ -154,13 +158,15 @@ export function notFoundError(message = 'Page not found'): AppError {
  *
  * @param message - Custom 500 message
  * @param details - Error details (only shown in dev)
+ * @param isDev - Whether to attach details
  * @returns Error object
  */
 export function internalServerError(
 	message = 'An unexpected error occurred',
-	details?: unknown
+	details?: AppErrorDetails,
+	isDev = dev
 ): AppError {
-	return createAppError('INTERNAL_SERVER_ERROR', message, 500, details);
+	return createAppError('INTERNAL_SERVER_ERROR', message, 500, details, isDev);
 }
 
 /**

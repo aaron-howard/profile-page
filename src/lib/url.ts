@@ -2,16 +2,30 @@
  * Client-safe URL validation (no server-only imports).
  */
 
-export function sanitizeUrl(url: string): string {
-	const trimmed = url.trim().toLowerCase();
+const DANGEROUS_PROTOCOLS = new Set(['javascript:', 'data:', 'vbscript:']);
 
-	if (
-		trimmed.startsWith('javascript:') ||
-		trimmed.startsWith('data:') ||
-		trimmed.startsWith('vbscript:')
-	) {
+function protocolForUrl(url: string): string | null {
+	try {
+		return new URL(url, 'https://example.invalid').protocol.toLowerCase();
+	} catch {
+		return null;
+	}
+}
+
+/**
+ * Reject javascript:, data:, and vbscript: URLs using URL parsing
+ * instead of partial string replacement.
+ */
+export function sanitizeUrl(url: string): string {
+	const trimmed = url.trim();
+	if (!trimmed) {
 		return '';
 	}
 
-	return url.trim();
+	const protocol = protocolForUrl(trimmed);
+	if (protocol && DANGEROUS_PROTOCOLS.has(protocol)) {
+		return '';
+	}
+
+	return trimmed;
 }

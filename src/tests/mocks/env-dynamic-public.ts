@@ -1,1 +1,1 @@
-export const env: Record<string, string | undefined> = {};
+export const env = {};

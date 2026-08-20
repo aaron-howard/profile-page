@@ -5,63 +5,72 @@ import { zod4 } from '$lib/server/superforms-zod4';
 import { env } from '$env/dynamic/private';
 import { sendEmail, formatContactEmail } from '$lib/server/email';
 import { contactFormSchema } from '$lib/schemas';
-import { logError, handleFormError } from '$lib/server/error-handler';
+import { handleFormError, toError } from '$lib/server/error-handler';
+import { recordContactSubmission } from '$lib/observability/app-metrics';
+import { stripHtmlTags } from '$lib/server/sanitize-utils';
 
 function normalizeTextInput(value: string): string {
-	return value.replace(/<[^>]*>/g, '').trim();
+	return stripHtmlTags(value).trim();
 }
+
+export type ContactMailer = {
+	sendEmail: typeof sendEmail;
+	formatContactEmail: typeof formatContactEmail;
+};
+
+const defaultMailer: ContactMailer = { sendEmail, formatContactEmail };
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(zod4(contactFormSchema));
 	return { form };
 };
 
-export const actions: Actions = {
-	default: async ({ request }) => {
-		const form = await superValidate(request, zod4(contactFormSchema));
+export async function submitContact(request: Request, mailer: ContactMailer = defaultMailer) {
+	const form = await superValidate(request, zod4(contactFormSchema));
 
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-
-		try {
-			const raw = form.data as {
-				name: string;
-				email: string;
-				subject: string;
-				message: string;
-			};
-
-			const name = normalizeTextInput(raw.name);
-			const email = normalizeTextInput(raw.email);
-			const subject = normalizeTextInput(raw.subject);
-			const messageText = normalizeTextInput(raw.message);
-
-			const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';
-			const emailContent = formatContactEmail({
-				name,
-				email,
-				subject,
-				message: messageText
-			});
-
-			const emailResult = await sendEmail({
-				to: recipientEmail,
-				subject: `Contact Form: ${subject.replace(/[\r\n]/g, ' ')}`,
-				html: emailContent.html,
-				text: emailContent.text
-			});
-
-			if (!emailResult.success) {
-				console.error('Failed to send contact email:', emailResult.error);
-				return message(form, 'Message delivery failed. Please try again later.');
-			}
-
-			return message(form, "Thank you! I'll get back to you soon.");
-		} catch (error) {
-			logError(error, 'contact form submission');
-			const errorMessage = handleFormError(error, 'contact').error;
-			return fail(400, { form, message: errorMessage });
-		}
+	if (!form.valid) {
+		recordContactSubmission('validation_error');
+		return fail(400, { form });
 	}
+
+	try {
+		const submitted = contactFormSchema.parse(form.data);
+		const name = normalizeTextInput(submitted.name);
+		const email = normalizeTextInput(submitted.email);
+		const subject = normalizeTextInput(submitted.subject);
+		const messageText = normalizeTextInput(submitted.message);
+
+		const recipientEmail = env.CONTACT_EMAIL || env.EMAIL_TO || 'admin@example.com';
+		const emailContent = mailer.formatContactEmail({
+			name,
+			email,
+			subject,
+			message: messageText
+		});
+
+		const emailResult = await mailer.sendEmail({
+			to: recipientEmail,
+			subject: `Contact Form: ${subject.replace(/[\r\n]/g, ' ')}`,
+			html: emailContent.html,
+			text: emailContent.text
+		});
+
+		if (!emailResult.success) {
+			console.error('Failed to send contact email:', emailResult.error);
+			recordContactSubmission('delivery_error');
+			return message(form, 'Message delivery failed. Please try again later.');
+		}
+
+		recordContactSubmission('success');
+		return message(form, "Thank you! I'll get back to you soon.");
+	} catch (cause) {
+		const error = toError(cause);
+		recordContactSubmission('delivery_error');
+		const errorMessage = handleFormError(error, 'contact').error;
+		return fail(400, { form, message: errorMessage });
+	}
+}
+
+export const actions: Actions = {
+	default: async ({ request }) => submitContact(request)
 };

@@ -25,13 +25,13 @@ Operational guide for this repo and the wider **aaron-howard** GitHub portfolio.
 
 ## Engineering stack (this repo)
 
-| Layer              | Tool                          | Location                                                                                      |
-| ------------------ | ----------------------------- | --------------------------------------------------------------------------------------------- |
-| Quality & security | Semgrep                       | `config/semgrep/rules/` · CI via [ci-templates](https://github.com/aaron-howard/ci-templates) |
-| CI/CD              | GitHub Actions                | `.github/workflows/ci.yml`, `e2e.yml` → `uses: aaron-howard/ci-templates/...`                 |
-| Observability      | OpenTelemetry + Grafana Cloud | `config/otel/`, `src/lib/observability/`                                                      |
-| Dependencies       | Dependabot                    | `.github/dependabot.yml`                                                                      |
-| Local gates        | Husky + lint-staged           | `.husky/`                                                                                     |
+| Layer              | Tool                                  | Location                                                                                      |
+| ------------------ | ------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Quality & security | Semgrep                               | `config/semgrep/rules/` · CI via [ci-templates](https://github.com/aaron-howard/ci-templates) |
+| CI/CD              | GitHub Actions                        | `.github/workflows/ci.yml`, `e2e.yml` → `uses: aaron-howard/ci-templates/...`                 |
+| Observability      | OpenTelemetry + Grafana Cloud         | `config/otel/`, `src/lib/observability/`                                                      |
+| Dependencies       | Dependabot (Actions) + Renovate (npm) | `.github/dependabot.yml`, `renovate.json` — see `docs/DEPENDENCY-MANAGEMENT.md`               |
+| Local gates        | Husky + lint-staged                   | `.husky/`                                                                                     |
 
 ---
 
@@ -106,14 +106,19 @@ Cursor  → Implement in src/lib/observability/ and hooks; set OTLP vars per .en
 Claude  → Grafana panel / alert JSON for import.
 ```
 
-OTLP is opt-in: set `OTEL_EXPORTER_OTLP_*` in Vercel or local `.env`. Verify with `node scripts/test-otlp.mjs` (reads `.env.local`).
+OTLP is opt-in: set `OTEL_EXPORTER_OTLP_*` in Vercel or local `.env.local`. Verify with `npm run otel:verify`. Import dashboard from `config/grafana/dashboard-profile-page.json` — see `docs/OBSERVABILITY.md`.
 
-### 5. Dependabot PR
+### 5. Dependency PR (Dependabot or Renovate)
 
 ```text
-Claude  → Summarize release notes; flag breaking changes for SvelteKit/Prisma/Actions.
-Cursor  → Checkout dependabot branch → npm ci → fix types/tests → push to PR branch.
+Claude  → Summarize release notes; flag breaking changes for SvelteKit/Prisma/Vite.
+Cursor  → gh pr checkout <n> → npm ci → npm run check && npm test → fix breakages → push.
 ```
+
+- **Dependabot:** GitHub Actions only in this repo.
+- **Renovate:** npm (grouped weekly; patch devDeps may auto-merge when CI passes).
+
+Install Renovate: [github.com/apps/renovate](https://github.com/apps/renovate). Full guide: `docs/DEPENDENCY-MANAGEMENT.md`.
 
 After merge: confirm CI + E2E on `main`.
 
@@ -141,7 +146,7 @@ Before ending an Agent session:
 
 - [ ] CI green (Semgrep + lint + coverage + build)
 - [ ] E2E runs post-merge on `main` (or run `workflow_dispatch` on E2E if risky)
-- [ ] Dependabot/npm audit not newly failing
+- [ ] Dependabot/Renovate/npm audit not newly failing
 - [ ] `CLAUDE.md` / playbook updated if commands or stack changed
 
 ---

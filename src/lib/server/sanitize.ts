@@ -6,6 +6,7 @@
 // Sanitization exports
 export {
 	escapeHtml,
+	stripHtmlTags,
 	sanitizeText,
 	sanitizeHtml,
 	sanitizeEmail,

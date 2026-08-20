@@ -78,7 +78,7 @@ Husky runs lint-staged on commit and `check` + unit tests on push.
 ## Rolling out to another repo
 
 1. Copy `.github/workflows/ci.yml` and `e2e.yml` (adjust if private repo — see ci-templates README visibility rules).
-2. Add `.github/dependabot.yml` if missing.
+2. Add `.github/dependabot.yml` and `renovate.json`; install the [Renovate app](https://github.com/apps/renovate).
 3. Add `config/semgrep/rules/` for stack-specific Semgrep rules (optional).
 4. Ensure `package.json` has `lint`, `check`, `test:coverage`, `build` scripts (CI contract).
 

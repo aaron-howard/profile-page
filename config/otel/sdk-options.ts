@@ -1,14 +1,27 @@
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { resourceFromAttributes } from '@opentelemetry/resources';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 
-export function parseOtlpHeaders(headerEnv: string | undefined): Record<string, string> {
+export interface OtlpHeaders {
+	[name: string]: string;
+}
+
+export interface ProfilePageSdkOptions {
+	resource: ReturnType<typeof resourceFromAttributes>;
+	serviceName: string;
+	instrumentations: ReturnType<typeof getNodeAutoInstrumentations>[];
+	traceExporter?: OTLPTraceExporter;
+	metricReaders?: PeriodicExportingMetricReader[];
+}
+
+export function parseOtlpHeaders(headerEnv: string | undefined): OtlpHeaders {
 	if (!headerEnv) {
 		return {};
 	}
 
-	const headers: Record<string, string> = {};
+	const headers: OtlpHeaders = {};
 
 	for (const part of headerEnv.split(',')) {
 		const separator = part.indexOf('=');
@@ -34,13 +47,13 @@ export function isOtelEnabled(): boolean {
 	);
 }
 
-export function createSdkOptions() {
-	const options: {
-		serviceName: string;
-		instrumentations: ReturnType<typeof getNodeAutoInstrumentations>[];
-		traceExporter?: OTLPTraceExporter;
-		metricReaders?: PeriodicExportingMetricReader[];
-	} = {
+export function createSdkOptions(): ProfilePageSdkOptions {
+	const options: ProfilePageSdkOptions = {
+		resource: resourceFromAttributes({
+			'service.name': 'profile-page',
+			'service.version': process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? 'local',
+			'deployment.environment': process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'development'
+		}),
 		serviceName: 'profile-page',
 		instrumentations: [getNodeAutoInstrumentations()]
 	};

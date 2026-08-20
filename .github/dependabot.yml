@@ -1,20 +1,20 @@
+# Dependabot — GitHub Actions only
+#
+# npm is managed by Renovate (renovate.json) to avoid duplicate version PRs.
+# GitHub security advisories for npm still surface via Renovate vulnerabilityAlerts
+# and npm audit in CI.
+#
+# See docs/DEPENDENCY-MANAGEMENT.md
+
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 10
-    groups:
-      dev-dependencies:
-        dependency-type: development
-        patterns:
-          - '*'
-
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
       day: monday
     open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - '*'

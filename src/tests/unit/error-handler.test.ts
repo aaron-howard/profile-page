@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
 	logError,
 	getUserFriendlyMessage,
@@ -7,12 +7,24 @@ import {
 	handleOperationError,
 	notFoundError,
 	internalServerError,
-	validationError
+	validationError,
+	toError
 } from '$lib/server/error-handler';
 
 describe('error-handler - production mode (dev=false)', () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+	});
+
+	describe('toError', () => {
+		it('returns Error instances unchanged', () => {
+			const error = new Error('boom');
+			expect(toError(error)).toBe(error);
+		});
+
+		it('wraps non-Error values', () => {
+			expect(toError('nope').message).toBe('nope');
+		});
 	});
 
 	describe('logError', () => {
@@ -35,7 +47,7 @@ describe('error-handler - production mode (dev=false)', () => {
 		});
 
 		it('returns default message for non-Error values', () => {
-			const result = getUserFriendlyMessage('some error string');
+			const result = getUserFriendlyMessage(toError('some error string'));
 			expect(result).toBe('An unexpected error occurred. Please try again.');
 		});
 
@@ -89,7 +101,7 @@ describe('error-handler - production mode (dev=false)', () => {
 		});
 
 		it('handles non-Error values', () => {
-			const result = handleFormError('some string error', 'contactForm');
+			const result = handleFormError(toError('some string error'), 'contactForm');
 			expect(result.error).toBe('Unable to process your request. Please try again.');
 		});
 	});
@@ -125,9 +137,9 @@ describe('error-handler - production mode (dev=false)', () => {
 			expect(result).toBe('An error occurred. Please try again.');
 		});
 
-		it('handles non-Error values', () => {
-			const result = handleOperationError('string error', 'operation');
-			expect(result).toBe('An unexpected error occurred. Please try again.');
+		it('handles wrapped non-Error values as unrecognized errors', () => {
+			const result = handleOperationError(toError('string error'), 'operation');
+			expect(result).toBe('An error occurred. Please try again.');
 		});
 
 		it('calls logError', () => {
@@ -181,70 +193,28 @@ describe('error-handler - production mode (dev=false)', () => {
 	});
 });
 
-describe('error-handler - development mode (dev=true)', () => {
-	beforeEach(() => {
-		vi.resetModules();
-	});
-
-	afterEach(() => {
-		vi.clearAllMocks();
-	});
-
-	it('shows actual error message in dev mode', async () => {
-		vi.doMock('$app/environment', () => ({
-			dev: true,
-			browser: false,
-			building: false,
-			version: 'test'
-		}));
-
-		const { getUserFriendlyMessage: getUserFriendlyMessageDev } =
-			await import('$lib/server/error-handler');
+describe('error-handler - development mode (isDev=true)', () => {
+	it('shows actual error message in dev mode', () => {
 		const error = new Error('Sensitive database info');
-		const result = getUserFriendlyMessageDev(error);
+		const result = getUserFriendlyMessage(error, undefined, true);
 		expect(result).toBe('Sensitive database info');
 	});
 
-	it('includes details in createAppError in dev mode', async () => {
-		vi.doMock('$app/environment', () => ({
-			dev: true,
-			browser: false,
-			building: false,
-			version: 'test'
-		}));
-
-		const { createAppError: createAppErrorDev } = await import('$lib/server/error-handler');
-		const error = createAppErrorDev('TEST_ERROR', 'Test message', 400, { sensitive: 'data' });
+	it('includes details in createAppError in dev mode', () => {
+		const error = createAppError('TEST_ERROR', 'Test message', 400, { sensitive: 'data' }, true);
 		expect(error).toHaveProperty('details');
 		expect(error.details).toEqual({ sensitive: 'data' });
 	});
 
-	it('returns actual error message in handleFormError in dev mode', async () => {
-		vi.doMock('$app/environment', () => ({
-			dev: true,
-			browser: false,
-			building: false,
-			version: 'test'
-		}));
-
-		const { handleFormError: handleFormErrorDev } = await import('$lib/server/error-handler');
+	it('returns actual error message in handleFormError in dev mode', () => {
 		const error = new Error('Database constraint violation');
-		const result = handleFormErrorDev(error, 'contactForm');
+		const result = handleFormError(error, 'contactForm', true);
 		expect(result.error).toBe('Database constraint violation');
 	});
 
-	it('returns actual error message in handleOperationError for unrecognized errors in dev', async () => {
-		vi.doMock('$app/environment', () => ({
-			dev: true,
-			browser: false,
-			building: false,
-			version: 'test'
-		}));
-
-		const { handleOperationError: handleOperationErrorDev } =
-			await import('$lib/server/error-handler');
+	it('returns actual error message in handleOperationError for unrecognized errors in dev', () => {
 		const error = new Error('Some random error');
-		const result = handleOperationErrorDev(error, 'operation');
+		const result = handleOperationError(error, 'operation', true);
 		expect(result).toBe('Some random error');
 	});
 });
