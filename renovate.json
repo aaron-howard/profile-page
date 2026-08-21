@@ -12,6 +12,7 @@
 	"labels": ["dependencies", "renovate"],
 	"prConcurrentLimit": 5,
 	"rangeStrategy": "bump",
+	"minimumReleaseAge": "7 days",
 	"lockFileMaintenance": {
 		"enabled": true,
 		"schedule": ["before 6am on the first day of the month"]
@@ -20,31 +21,36 @@
 		{
 			"description": "GitHub Actions are updated by Dependabot (.github/dependabot.yml)",
 			"matchManagers": ["github-actions"],
-			"enabled": false
+			"enabled": false,
+			"minimumReleaseAge": "7 days"
 		},
 		{
 			"description": "Auto-merge patch devDependency updates when CI passes",
 			"matchManagers": ["npm"],
 			"matchDepTypes": ["devDependencies"],
-			"matchUpdateTypes": ["patch", "pin", "digest"],
+			"matchUpdateTypes": ["patch", "digest"],
 			"automerge": true,
 			"automergeType": "pr",
-			"platformAutomerge": true
+			"platformAutomerge": true,
+			"minimumReleaseAge": "7 days"
 		},
 		{
 			"description": "Group SvelteKit ecosystem",
 			"matchPackagePatterns": ["^@sveltejs/", "^svelte$", "^svelte-check"],
-			"groupName": "sveltekit"
+			"groupName": "sveltekit",
+			"minimumReleaseAge": "7 days"
 		},
 		{
 			"description": "Group Prisma",
 			"matchPackagePatterns": ["^@prisma/", "^prisma$"],
-			"groupName": "prisma"
+			"groupName": "prisma",
+			"minimumReleaseAge": "7 days"
 		},
 		{
 			"description": "Group OpenTelemetry",
 			"matchPackagePatterns": ["^@opentelemetry/"],
-			"groupName": "opentelemetry"
+			"groupName": "opentelemetry",
+			"minimumReleaseAge": "7 days"
 		},
 		{
 			"description": "Group testing stack",
@@ -56,12 +62,14 @@
 				"^@axe-core/",
 				"^happy-dom"
 			],
-			"groupName": "testing"
+			"groupName": "testing",
+			"minimumReleaseAge": "7 days"
 		},
 		{
 			"description": "Group Tailwind CSS v4",
 			"matchPackagePatterns": ["^tailwindcss", "^@tailwindcss/"],
-			"groupName": "tailwind"
+			"groupName": "tailwind",
+			"minimumReleaseAge": "7 days"
 		},
 		{
 			"description": "Group ESLint / Prettier tooling",
@@ -75,7 +83,8 @@
 				"^oxlint",
 				"^@oxlint/"
 			],
-			"groupName": "linting"
+			"groupName": "linting",
+			"minimumReleaseAge": "7 days"
 		}
 	],
 	"vulnerabilityAlerts": {

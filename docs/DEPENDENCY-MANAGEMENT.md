@@ -13,6 +13,18 @@ Implements **AI Engineering Blueprint §4** — Dependabot + Renovate with predi
 
 npm version updates are **not** in Dependabot — duplicate PRs from both bots are avoided.
 
+## Supply-chain cooldown (7 days)
+
+Newly published versions wait **7 days** before Dependabot, Renovate, or `npm install` will take them. That matches Semgrep `p/ci` package-manager rules and reduces the window for a hijacked release.
+
+| Tool           | Setting                                          | Security updates                           |
+| -------------- | ------------------------------------------------ | ------------------------------------------ |
+| **npm**        | `.npmrc` `min-release-age=7`                     | Exclude the package or relax the setting   |
+| **Dependabot** | `cooldown.default-days: 7` (Actions only)        | Security PRs skip cooldown                 |
+| **Renovate**   | `minimumReleaseAge: "7 days"` (root + each rule) | Vulnerability alerts bypass age by default |
+
+`npm ci` still installs the lockfile. `min-release-age` only affects resolving _new_ versions.
+
 ## One-time setup: Renovate GitHub App
 
 Renovate runs via the [Mend Renovate GitHub App](https://github.com/apps/renovate) (free for public repos).
@@ -43,8 +55,9 @@ Cursor  → Merge if CI green, or update workflow if action API changed.
 | ---------- | ------------------------------------------------------------ |
 | Schedule   | Weekly, before 6am Monday (America/Chicago)                  |
 | Groups     | sveltekit, prisma, opentelemetry, testing, tailwind, linting |
-| Auto-merge | Patch/pin/digest **devDependencies** when CI passes          |
+| Auto-merge | Patch/digest **devDependencies** when CI passes              |
 | Security   | `vulnerabilityAlerts` enabled (labels: `security`)           |
+| Cooldown   | `minimumReleaseAge: "7 days"` (vuln alerts still immediate)  |
 | Lock file  | Monthly maintenance                                          |
 
 ### Dependency Dashboard
