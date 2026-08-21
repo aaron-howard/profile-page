@@ -55,7 +55,7 @@ Cursor  → Merge if CI green, or update workflow if action API changed.
 | ---------- | ------------------------------------------------------------ |
 | Schedule   | Weekly, before 6am Monday (America/Chicago)                  |
 | Groups     | sveltekit, prisma, opentelemetry, testing, tailwind, linting |
-| Auto-merge | Patch/pin/digest **devDependencies** when CI passes          |
+| Auto-merge | Patch/digest **devDependencies** when CI passes              |
 | Security   | `vulnerabilityAlerts` enabled (labels: `security`)           |
 | Cooldown   | `minimumReleaseAge: "7 days"` (vuln alerts still immediate)  |
 | Lock file  | Monthly maintenance                                          |

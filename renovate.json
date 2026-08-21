@@ -28,7 +28,7 @@
 			"description": "Auto-merge patch devDependency updates when CI passes",
 			"matchManagers": ["npm"],
 			"matchDepTypes": ["devDependencies"],
-			"matchUpdateTypes": ["patch", "pin", "digest"],
+			"matchUpdateTypes": ["patch", "digest"],
 			"automerge": true,
 			"automergeType": "pr",
 			"platformAutomerge": true,
